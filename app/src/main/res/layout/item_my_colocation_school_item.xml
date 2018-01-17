@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_marginTop="10dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/couseImage"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:src="@color/base_color"/>
+
+        <TextView
+            android:id="@+id/courseTitle"
+            tools:text="范美忠将庄周子之无用之用"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/couseImage"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="18dp"
+            android:layout_toRightOf="@+id/couseImage"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/couseImage"
+            android:layout_alignLeft="@+id/courseTitle"
+            android:layout_toRightOf="@+id/couseImage"
+            android:text="地址：成都市锦江区XX街道"
+            android:textColor="@color/text_color_thin"
+            android:textSize="14sp"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

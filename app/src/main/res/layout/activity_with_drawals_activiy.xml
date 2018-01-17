@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="www.test720.com.naneducation.personcenteractivity.WithDrawalsActiviy">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/canWithDrwasMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="18dp"
+            android:text="可提现金额"
+            android:textColor="@color/black"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/ServiceCharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/canWithDrwasMoney"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="请输入提现金额(提现收取1%的手续费)"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="55dp"
+            android:text="￥"/>
+
+        <RelativeLayout
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/no_corners_gray_frame">
+
+            <www.test720.com.naneducation.utils.AmountEditText
+                android:inputType="number"
+                android:digits="0123456789."
+                android:id="@+id/WithdrawalMoney"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/leastCanWithDrawal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/relative"
+            android:layout_below="@+id/relative"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="最少可提现金额200元"
+            android:textColor="#FF9475"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/confirmWithDrawal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="157dp"
+        android:background="@drawable/all_corners_base_color"
+        android:text="提现"
+        android:textColor="@color/white"/>
+</LinearLayout>

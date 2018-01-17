@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:background="@drawable/all_corners_white_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:background="@null"
+                android:id="@+id/gaode"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="高德地图"
+                android:textSize="18sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/textviewLine"
+                android:background="@color/system_color"
+                android:layout_below="@+id/gaode"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <Button
+                android:background="@null"
+                android:layout_below="@+id/textviewLine"
+                android:id="@+id/baidu"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="百度地图"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:background="@drawable/all_corners_white_color"
+                android:id="@+id/btn_camera_pop_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:text="取消"
+                android:layout_marginBottom="15dp"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

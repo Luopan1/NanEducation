@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="www.test720.com.naneducation.MapActivity">
+
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.baidu.mapapi.map.TextureMapView>
+
+
+    <LinearLayout
+        android:layout_marginRight="5dp"
+        android:id="@+id/schoolKindLinear"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/youer"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/youer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/xiaoxue"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/xiaoxue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/chuzhong"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/chuzhong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/gaozhong"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/gaoz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/zhixiao"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/zhixiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

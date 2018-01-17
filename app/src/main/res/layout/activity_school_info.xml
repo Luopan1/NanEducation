@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="www.test720.com.naneducation.activity.SchoolInfoActivity">
+
+    <ImageView
+        android:id="@+id/schoolImage"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+        <www.test720.com.naneducation.view.CircleImageView
+            android:id="@+id/schoolBdage"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            tools:src="@color/base_color"/>
+
+        <TextView
+            android:maxEms="15"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:id="@+id/schoolName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/schoolBdage"
+            android:text="成都七中"
+            android:textColor="@color/black"/>
+
+
+        <TextView
+            android:id="@+id/colocation"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/orange_corners1_frame"
+            android:drawableLeft="@drawable/shouckong"
+            android:drawablePadding="-5dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_10"
+            android:text="收藏"
+            android:textColor="#F7736E"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="00.5dp"
+        android:background="@color/gray_line"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
+        android:background="@color/white">
+
+        <TextView
+            android:maxEms="18"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:id="@+id/schoolAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/dizhi"
+            android:drawablePadding="5dp"
+            tools:text="重庆市合川区合阳街道办"
+            android:textColor="@color/text_color_thin"/>
+
+        <TextView
+            android:id="@+id/schoolPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:drawableLeft="@drawable/dainhua2"
+            android:drawablePadding="5dp"
+            tools:text="023-4281688"
+            android:textColor="@color/text_color_thin"
+            android:layout_below="@+id/toTheSchool"
+            android:layout_alignStart="@+id/schoolAddress"/>
+
+        <TextView
+            android:id="@+id/toTheSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="17dp"
+            android:layout_marginRight="17dp"
+            android:drawableLeft="@drawable/qunali"
+            android:drawablePadding="5dp"
+            android:text="到这里去"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="00.5dp"
+        android:background="@color/gray_line"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/textview_drawable_line"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="学校介绍"/>
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/textview_drawable_line"
+            android:button="@null"
+            android:gravity="center"
+            android:text="报名"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="00.5dp"
+        android:background="@color/gray_line"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+</LinearLayout>

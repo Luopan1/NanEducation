@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/x100"
+              android:background="@color/white"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/item"
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/x70"
+        android:background="@drawable/all_corners_system_color"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/courseKind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            tools:text="十二年级"/>
+    </RelativeLayout>
+</LinearLayout>

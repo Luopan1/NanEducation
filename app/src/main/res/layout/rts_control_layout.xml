@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/control_layout"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/choose_color_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/choose_black_circle_shape"/>
+
+    <TextView
+        android:id="@+id/play_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/choose_color_btn"
+        android:background="@drawable/chat_room_play_back_selector"/>
+
+    <TextView
+        android:id="@+id/join_tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/play_back_btn"
+        android:text="@string/join_tip"
+        android:textColor="@color/color_black_999999"
+        android:textSize="13sp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/clear_all_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/play_back_btn"
+        android:background="@drawable/chat_room_clear_all_selector"/>
+
+    <TextView
+        android:id="@+id/file_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/clear_all_btn"
+        android:background="@drawable/chat_room_file_selector"/>
+
+    <LinearLayout
+        android:id="@+id/pages_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/previous_page"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="17dp">
+
+            <ImageView
+                android:id="@+id/previous_page_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/chat_room_previous_page_selector"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/pages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"/>
+
+        <RelativeLayout
+            android:id="@+id/next_page"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="17dp">
+
+            <ImageView
+                android:id="@+id/next_page_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/chat_room_next_page_selector"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

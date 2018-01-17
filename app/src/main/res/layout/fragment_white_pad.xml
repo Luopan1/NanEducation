@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                tools:context="www.test720.com.naneducation.classroomsdk.WBFragment">
+    <!--<WebView-->
+    <!--android:id="@+id/web_white_pad"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"/>-->
+    <org.xwalk.core.XWalkView
+        android:id="@+id/xwalkWebView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"/>
+
+</RelativeLayout>

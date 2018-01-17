@@ -1,0 +1,1 @@
+include ':app', ':ClassRoomSdk', ':edusdk', ':jjdxm-ijkplayer'

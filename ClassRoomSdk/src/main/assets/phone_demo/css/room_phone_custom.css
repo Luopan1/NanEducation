@@ -1,0 +1,2234 @@
+@charset "utremf-8";
+/**{
+	-webkit-transform: translateZ(0);
+}*/
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td , figure , article , section , header , nav , footer{
+    margin:0;
+    padding:0;
+    /*overflow: hidden;*/
+}
+html{
+    font-family: 'Open Sans', sans-serif;
+    font-size:62.5%;
+    -webkit-text-size-adjust: none;
+}
+img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+body{
+    font-size: 14px;
+    font-size: 0.14rem;
+}
+ul , ol{
+    list-style: none;
+}
+ol li{
+    float: left;
+}
+button{
+    outline: none;
+    border:none;
+    background: none;
+}
+#debuggapRoot div.dg-out{
+	left: 0px;
+	z-index: 99999;
+}
+video {
+    width: 100%;
+}
+video::-webkit-media-controls {display:none !important;}
+video::-moz-media-controls {display:none !important;}
+video:-ms-media-controls {display:none !important;}
+video:-o-media-controls {display:none !important;}
+video:-media-controls {display:none !important;}
+button:not([disabled]):hover{
+	/*opacity: 0.8;*/
+}
+
+li.disabled{
+	pointer-events: none;
+}
+.disabled{
+	cursor: default !important;
+}
+
+/*.tool-container , .h-tool  , #header , .h-tool li , #header * {
+	overflow:initial;
+}*/
+.all-wrap{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+/*select 样式扩展*/
+.curtom-select select {
+	-o-appearance: none;
+	-ms-appearance: none;
+	-moz-appearance: none;
+	 -webkit-appearance: none; /*去除系统默认的样式*/
+	 -webkit-tap-highlight-color:rgba(255,0,0,0); 
+	 appearance: none;
+	 background: none;
+	 border: none;
+	 outline: none;
+}
+
+
+/*===扩展功能样式===*/
+/*全屏样式*/
+:full-screen{}
+:-moz-full-screen{
+	background-color: #fff;
+}
+:-webkit-full-screen{}
+:-o-full-screen{}
+:-ms-full-screen{}
+
+
+
+/*手机端样式 start*/
+/*literally canvas*/
+.white-board-outer-layout {
+	overflow: hidden;
+}
+.white-board-outer-layout  , .literally-data-loading-wrap , .big-literally-wrap ,   .big-literally-wrap .literally , .big-literally-wrap .literally canvas , .big-literally-wrap  .literallydiv , .role-control-draw-permission{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.big-literally-wrap{
+	overflow: hidden;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.literally-data-loading-wrap , .role-control-draw-permission{
+	background: rgba(0,0,0,0.43) ;
+	z-index: 98;
+	display: none;
+}
+
+div.role-control-draw-permission.no-permission{
+	display: block;
+}
+
+div.literally-data-loading-wrap ,div.role-control-draw-permission{
+	z-index: 1;
+}
+.literally-data-loading-wrap:after{
+	color: #DDD;
+    position: absolute;
+    content: "正在加载中";
+    display: block;
+    width: 1.6rem;
+    min-width: 70px;
+    height: 0.27rem;
+    text-align: center;
+    line-height: 0.3rem;
+    font-size: 0.23rem;
+    left: 50%;
+    top: 50%;
+    margin-left: -0.8rem;
+    margin-top: -0.45rem;
+    padding-top: 0.6rem;
+    background: url(../img/spinner.gif) no-repeat top center;
+    background-size: 0.6rem 0.6rem;
+    font-family: "楷体";
+    z-index: 2;
+}
+
+div.role-control-draw-permission{
+	display: none;
+	background:none;
+	background: transparent ;
+}
+.big-literally-wrap .literally{
+	min-height: inherit;
+}
+.lc-container .lc-btn{
+	position: absolute;
+	z-index: 5;
+	width: 0.44rem;
+	height: 0.44rem;
+	background-size: 100% 100%;
+	border-radius: 50%;
+	top: 50%;
+	margin-top: -0.22rem;
+}
+.lc-container .lc-btn.lc-btn-full{
+	right: 0.1rem;
+	top: 0.1rem;
+	margin-top: 0;
+}
+.lc-container .lc-btn.lc-btn-prev{
+	left: 0.1rem;
+}
+.lc-container .lc-btn.lc-btn-next ,.lc-container .lc-btn.lc-btn-add  {
+	right: 0.1rem;
+} 
+.lc-container button.lc-btn.lc-btn-add{
+}
+
+.lc-container.phone{
+	width: 100%;
+	height: 100%;
+	background: #161616;
+}
+
+.lc-container>div>.lc-tool-icon-wrap{
+	position: absolute;
+	top: 50%;
+	width: 0.64rem;
+	height: 0.64rem;
+	margin-top: -0.32rem;
+	background: url(../img/phone/btn_left_normal@2x.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+.lc-container .lc-tool-icon-wrap.no-permission{
+	display: none !important; 
+	pointer-events: none;
+	cursor: default !important;
+}
+.page-phone-none{
+	/*display: none !important;*/
+}
+.lc-container .lc-tool-icon-wrap.lc-prev-page{
+	left: 0.2rem;
+	background-image: url(../img/phone/btn_left_normal@2x.png) ;
+}
+.lc-container .lc-tool-icon-wrap.lc-prev-page.disabled{
+	background-image: url(../img/phone/btn_left_disabled@2x.png) ;
+}
+.lc-container .lc-tool-icon-wrap.lc-next-page , .lc-container .lc-tool-icon-wrap.lc-add-page{
+	right: 0.1rem;
+	background-image: url(../img/phone/btn_right_normal@2x.png) ;
+}
+.lc-container .lc-tool-icon-wrap.lc-next-page.disabled , .lc-container .lc-tool-icon-wrap.lc-add-page.disabled{
+	background-image: url(../img/phone/btn_right_disabled@2x.png) ;
+}
+.lc-container .lc-tool-container{
+	left:50%;
+	transform: translateX(-50%);
+	top:0.2rem;
+}
+.lc-container .lc-tool-container.no-permission{
+	display: none;
+}
+.lc-container .lc-tool-container ul{
+	background-color: #555658;
+	padding: 0.1rem 0.33rem;
+	border-radius: 0.33rem;
+}
+.lc-container .lc-tool-container li{
+	margin-right: 0.4rem;
+	float: left;
+}
+.lc-container .lc-tool-container li:first-of-type {
+	margin-left: 0.25rem;
+}
+.lc-container .lc-tool-container li:last-of-type{
+	margin-right: 0.25rem;
+}
+.lc-container .lc-tool-container li button{
+	height: 0.48rem;
+	width:0.48rem ;
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	padding: 0.02rem;
+}
+
+/*pad*/
+
+.lc-container .pad-draw-tool li button{
+	height: 0.5rem;
+	width:0.5rem ;
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	padding: 0.027rem;
+}
+.lc-container .pad-draw-tool li button.color-tool{
+	background: transparent;
+}
+.lc-container .pad-draw-tool li.active button.color-tool{
+	background: #fff;
+}
+.lc-container .pad-draw-tool li button.color-tool .color{
+	position: relative;
+	width: 0.44rem;
+	height: 0.44rem;
+	display: block;
+	content: '';
+	background: #555658;
+	left: 0;
+	top: 0;
+}
+.lc-container .pad-draw-tool li button.color-tool.black .color:after{
+	background: #000000;
+}
+.lc-container .pad-draw-tool li button.color-tool.red .color:after{
+	background: #ff0000;
+}
+.lc-container .pad-draw-tool li button.color-tool.yellow .color:after{
+	background: #fcd000;
+}
+.lc-container .pad-draw-tool li button.color-tool.blue .color:after{
+	background: #0488f8;
+}
+.lc-container .pad-draw-tool li button.color-tool .color:after{
+	position: absolute;
+	width: 0.35rem;
+	height: 0.35rem;
+	display: block;
+	content: '';
+	left: 0.042rem;
+	top: 0.042rem;
+}
+
+
+.lc-container .pad-draw-tool .tool-pencil {
+	display: block;
+	width: 0.5rem;
+	height: 0.5rem;
+	background: url(../img/phone/tools/btn_pencil_normal@2x.png) no-repeat center center;
+	background-size: 0.5rem 0.5rem;
+}
+/*pad*/
+
+
+.lc-container .lc-tool-container li button.tool-color{
+	background: transparent;
+}
+.lc-container .lc-tool-container li.active button.tool-color{
+	background: #fff;
+}
+
+.lc-container .lc-tool-container li button.tool-color .color{
+    position: relative;
+    width: 0.43rem;
+    height: 0.44rem;
+    display: block;
+    content: '';
+    background: #555658;
+    left: 0;
+    top: 0;
+}
+
+.lc-container .lc-tool-container li button.tool-color .color:after {
+	position: absolute;
+	width: 0.37rem;
+	height: 0.37rem;
+	display: block;
+	content: '';
+	left: 0.028rem;
+	top: 0.028rem;
+}
+.lc-container .lc-tool-container li button.tool-color.black .color:after{
+	background: #000000;
+}
+.lc-container .lc-tool-container li button.tool-color.red .color:after{
+	background: #ff0000;
+}
+.lc-container .lc-tool-container li button.tool-color.yellow .color:after{
+	background: #fcd000;
+}
+.lc-container .lc-tool-container li button.tool-color.blue .color:after{
+	background: #0488f8;
+}
+.lc-container .lc-tool-container li button.tool-color.blue .color:after{
+	background: #0488f8;
+}
+.lc-container .lc-tool-container li button .tool-img-wrap{
+	display: block;
+	width: 100%;
+	height:100%;
+	background: url("../img/phone/btn_pencil_normal@2x.png") no-repeat center center;
+	background-size: 0.44rem 0.44rem;
+}
+
+.lc-container .lc-tool-container li.active button .tool-img-wrap.tool-pencil-icon{
+	background-image: url("../img/phone/btn_pencil_pressed@2x.png");
+}
+
+.lc-container .lc-tool-container li button .tool-img-wrap.tool-eraser-icon{
+	 background-image: url("../img/phone/btn_eraser_normal@2x.png");
+ }
+.lc-container .lc-tool-container li.active button .tool-img-wrap.tool-eraser-icon{
+	background-image: url("../img/phone/btn_eraser_pressed@2x.png");
+}
+.lc-container .lc-tool-container li button .tool-mouse-icon{
+	background: url(../img/phone/tools/icon_mouse_normal.png) no-repeat;
+	background-size: 100% auto;
+}
+.lc-container .lc-tool-container li.active button .tool-mouse-icon{
+	background: url(../img/phone/tools/icon_mouse_pressed.png) no-repeat;
+	background-size: 100% auto;
+}
+/*手机端样式 end*/
+
+
+
+/*动态ppt*/
+.aynamic-ppt-conwrap{
+	width: 100%;
+	height: 100%;
+	/*background: rgba(0,0,0,0.5);*/
+}
+.ppt-vessel {
+	max-height: 100%;
+	max-width: 100%;
+	width: 100%;
+	height:100%;
+	position: relative;
+	overflow: hidden;
+	/*overflow: auto;*/
+}
+.aynamic-ppt-conwrap .ppt-vessel .ppt-zoom-container{
+	position: absolute;
+	width: 100%;
+	height:100%;
+}
+.aynamic-ppt-container{
+	position: absolute;
+	z-index: 100;
+	top: 0%;
+	/*left: 50%*/
+	left: 0%;
+}
+.aynamic-ppt-container iframe {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border:none;
+	top: 0;
+	left: 0;
+}
+
+.aynamic-ppt-resizer{
+	left: 0;
+    top: 0;
+    overflow: hidden;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+}
+.aynamic-ppt-resizer img{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+}
+.aynamic-ppt-resizer pre{
+	position: absolute;
+    margin: 0px;
+    letter-spacing: -0.04px;
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+	overflow: hidden;
+}
+.aynamic-ppt-resizer canvas{
+	top: 0px;
+    left: 0px;
+    position: absolute;
+}
+.aynamic-ppt-resizer  div,.aynamic-ppt-resizer iframe{
+	position: absolute;
+}
+.aynamic-ppt-resizer .DC0{
+	top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+}
+.aynamic-ppt-resizer .DC1{
+	top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+}
+.aynamic-ppt-conwrap .click-next-or-prev-container{
+	width: 100%;
+	height:100%;
+	z-index: 103;
+}
+
+.aynamic-ppt-lc.literally{
+	z-index: 102;
+}
+.aynamic-ppt-lc.literally , .aynamic-ppt-lc.literally .lc-drawing {
+	background-color: transparent !important;
+}
+.tk-filetype-h5document.literally{
+	z-index: 102;
+}
+.tk-filetype-h5document.literally , .tk-filetype-h5document.literally .lc-drawing {
+	background-color: transparent !important;
+}
+.phone-video-play-newppt-container{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 50;
+	display: none;
+}
+/*动态ppt end*/
+
+
+/*---position相关----*/
+.add-position-relative{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.add-position-absolute-top0-left0{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.add-position-absolute-top0-right0{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.add-position-absolute-bottom0-left0{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.add-position-absolute-bottom0-right0{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.add-fl{
+    float: left;
+}
+
+.add-fr{
+    float: right;
+}
+.add-block{
+    display: block;
+}
+.custom-hide{
+    display: none!important;
+}
+.custom-show{
+    display: inherit!important;
+}
+
+.add-nowrap{
+    display: inline-block;
+    overflow: hidden; /*自动隐藏文字*/
+    text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+    white-space: nowrap;/*强制不换行*/
+}
+
+.clear-margin-bottom{
+	margin-bottom:0 !important;
+}
+
+.display-none{
+	display: none !important;
+}
+.add-display-none{
+	display: none;
+}
+/*---清除浮动----*/
+.clear-float:after,.clear-float:before{
+    content:"";
+    display: block;
+    /*box-sizing: content-box;*/
+    height: 0;
+    visibility: hidden;
+}
+
+.clear-float:after{
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+
+.clear-float{
+    zoom: 1;
+}
+
+
+/*扩展样式*/
+.add-over-auto-max-height{
+	overflow: auto;
+	height: 100%;
+}
+.tool-set-extend .select_option , .text-select-wrap .select_option , .custom-scroll-bar   {
+	scrollbar-base-color:rgba(85, 85, 85, 1) ;/*设置滚动条主要构成部分的颜色*/
+	scrollbar-face-color: rgba(103, 100, 103, 0.96);/*设置滚动框和滚动条箭头的颜色*/
+	scrollbar-shadow-color:  rgba(85, 85, 85, 1);/*设置滚动框的和滚动条箭头右下边缘的颜色*/
+	scrollbar-highlight-color: #C3D6DA;/*设置滚动框的和滚动条箭头左上边缘的颜色*/
+	scrollbar-3dlight-color: #3D5054;/*设置滚动框的和滚动条箭头左上边缘的颜色*/
+	scrollbar-darkshadow-color: #85989C;
+	scrollbar-track-color: rgba(85, 85, 85, 1); /*设置滚动条轨迹组成部分的颜色*/
+	scrollbar-arrow-color: rgba(121, 119, 121, 0.92);/*设置滚动条箭头的颜色*/
+}
+
+/*
+::-webkit-scrollbar        滚动条整体部分，其中的属性有width,height,background,border（就和一个块级元素一样）等。
+::-webkit-scrollbar-button      滚动条两端的按钮。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。
+::-webkit-scrollbar-track         外层轨道。可以用display:none让其不显示，也可以添加背景图片，颜色改变显示效果。
+::-webkit-scrollbar-track-piece        内层轨道，滚动条中间部分（除去）。
+::-webkit-scrollbar-thumb               滚动条里面可以拖动的那部分
+::-webkit-scrollbar-corner               边角
+::-webkit-resizer                       定义右下角拖动块的样式
+*/
+
+/*
+:horizontal     horizontal  伪类，主要应用于选择水平方向滚动条。
+:vertical    vertical伪类主要是应用于选择竖直方向滚动条
+:decrement    decrement伪类应用于按钮和内层轨道(track piece)。它用来指示按钮或者内层轨道是否会减小视窗的位置(比如，垂直滚动条的上面，水平滚动条的左边。)
+:increment     increment伪类与和decrement类似，用来指示按钮或内层轨道是否会增大视窗的位置(比如，垂直滚动条的下面和水平滚动条的右边。)
+:start    start伪类也应用于按钮和滑块。它用来定义对象是否放到滑块的前面。
+:end     类似于start伪类，标识对象是否放到滑块的后面。
+:double-button    该伪类可以用于按钮和内层轨道。用于判断一个按钮是不是放在滚动条同一端的一对按钮中的一个。对于内层轨道来说，它表示内层轨道是否紧靠一对按钮。
+:single-button    类似于double-button伪类。对按钮来说，它用于判断一个按钮是否自己独立的在滚动条的一段。对内层轨道来说，它表示内层轨道是否紧靠一个single-button。
+:no-button    用于内层轨道，表示内层轨道是否要滚动到滚动条的终端，比如，滚动条两端没有按钮的时候。
+:corner-present    用于所有滚动条轨道，指示滚动条圆角是否显示。
+:window-inactive    用于所有的滚动条轨道，指示应用滚动条的某个页面容器(元素)是否当前被激活。(在webkit最近的版本中，该伪类也可以用于::selection伪元素。webkit团队有计划扩展它并推动成为一个标准的伪类)
+另外，:enabled、:disabled、:hover、和:active等伪类同样在滚动条中适用。
+*/
+@-moz-document url-prefix(http://),url-prefix(https://) {   /*只有火狐才能使用的代码*/
+}
+
+.tool-set-extend .select_option::-webkit-scrollbar , .text-select-wrap .select_option::-webkit-scrollbar , .custom-scroll-bar::-webkit-scrollbar  { /*滚动条整体部分，其中的属性有width,height,background,border（就和一个块级元素一样）等。*/
+   width: 0.06rem;
+   height: 0.06rem;
+   background: #182236;
+   /*border-radius:0;*/
+}
+.tool-set-extend .select_option::-webkit-scrollbar-thumb , .text-select-wrap .select_option::-webkit-scrollbar-thumb , .custom-scroll-bar::-webkit-scrollbar-thumb  { /* 滚动条里面可以拖动的那部分*/
+    /*background: #182236;*/
+    background: rgba(85, 85, 85, 1);
+    /*border-radius:0.04rem;*/
+}
+.tool-set-extend .select_option::-webkit-scrollbar-corner , .text-select-wrap .select_option::-webkit-scrollbar-corner , .custom-scroll-bar::-webkit-scrollbar-corner {/*边角*/
+ 	 background: #182236;
+}
+.big-literally-wrap.custom-scroll-bar{
+  overflow: auto;
+}
+.big-literally-wrap.custom-scroll-bar::-webkit-scrollbar{
+   width: 0.15rem;
+   height: 0.15rem;
+}
+
+/*白板工具*/
+.pad-draw-tool{
+	width:0.8rem;
+	/*height: 8rem;*/
+	background: #3B3B3B;
+	position: absolute;
+	top: 0.1rem;
+	right: 0.1rem;
+	z-index: 150;
+	font-size: 0.3rem;
+}
+.pad-draw-tool .tool-box{
+	width: 100%;
+	height: 100%;
+}
+.pad-draw-tool .tool-box>li ,.pad-draw-tool .box-tool>li{
+	width: 0.8rem;
+	height: 0.8rem;
+	margin-bottom: 0.1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.pad-draw-tool .tool-box li:last-child{
+	margin-bottom: 0;
+}
+.tool-box>li .btn-tool{
+	width: 0.6rem;
+	height: 0.6rem;
+}
+
+/*老师的功能软件*/
+.answer-implement-bg{
+	background: url(../img/phone/tools/icon_answer_normal.png) no-repeat;
+	background-size: 150% 150%;
+	background-position:-0.02rem -0.1rem;
+}
+.turnplate-implement-bg{
+	background: url(../img/phone/tools/icon_turnplate_normal.png) no-repeat;
+	background-size: 150% 150%;
+	background-position:-0.02rem -0.1rem;
+}
+.timer-implement-bg{
+	background: url(../img/phone/tools/icon_timer_normal.png) no-repeat;
+	background-size: 150% 150%;
+	background-position:-0.02rem -0.1rem;
+}
+.teach-box-left
+{
+	height:0.6rem;
+	width: 1.8rem;
+	position: absolute;
+	display: none;
+	z-index: -100;
+	left:-2rem;
+	top:-0.085rem;
+	background: #3B3B3B;
+}
+.answer-implement-bg
+{
+	width:30%;
+	height: 80%;
+	float: left;
+}
+.turnplate-implement-bg
+{
+	width:30%;
+	height: 80%;
+	float: left;
+}
+.timer-implement-bg
+{
+	width:30%;
+	height:80%;
+	float: left;
+}
+.responder-implement-bg
+{
+	width:30%;
+	height: 80%;
+	float: left;
+	background: url(../img/phone/tools/icon_responder_normal.png) no-repeat;
+	background-size: 150% 150%;
+	background-position:-0.02 -0.1rem;
+}
+/*倒计时*/
+.timer-teachTool-wrap
+{
+    width:3.8rem;
+    height: 1.6rem;
+    border:1px solid ;
+    background-color: #202C4A;
+    position: absolute;
+    display: none;
+    top:0;
+    left: 0;
+    z-index: 9999;
+}
+.timer-studentTool-wrap
+{
+	width:3.8rem;
+    height: 1.6rem;
+    border:1px solid ;
+    background-color: #202C4A;
+    position: absolute;
+    display: none;
+    top:1rem;
+    left: 0;
+    z-index: 9999;
+}
+.timer-teachTool-header
+{
+    width: 100%;
+    height: 0.28rem;
+    display: flex;
+    justify-content: space-between;
+    background: #0b1c38;
+    color:#bdbdbd;
+    line-height: 0.28rem;
+}
+.timer-teachTool-triangle-top
+{
+    width: 0;
+    height: 0;
+    margin-left: 0.1rem;
+    margin-bottom:0.05rem; 
+    border-left: 0.1rem solid transparent;
+    border-right: 0.1rem solid transparent;
+    border-bottom: 0.1rem solid #F2F2F2;
+    cursor:pointer;
+}
+.timer-teachTool-num-div
+{
+    width:0.5rem;
+    height: 1.12rem;
+    float: left;
+    margin-left: 0.1rem;
+    margin-top:0.1rem; 
+
+}
+
+.timer-teachTool-triangle-down
+{
+    width: 0;
+    height: 0;
+    margin-left:0.1rem; 
+    margin-top: 0.05rem; 
+    border-left: 0.1rem solid transparent;
+    border-right: 0.1rem solid transparent;
+    border-top: 0.1rem solid #F2F2F2;
+    cursor:pointer;
+}
+.timer-teachTool-triangle-down:hover
+{
+    border-top: 0.1rem solid green;
+}
+.timer-teachTool-triangle-top:hover
+{
+    border-bottom: 0.1rem solid green;
+}
+.timer-teachTool-num-content
+{
+    height: 0.7rem;
+    width:0.4rem;
+    margin-top:0.02rem;
+    margin-bottom: 0.02rem;
+    background: #F2F2F2;
+    font-size: 0.6rem;
+    line-height: 0.7rem;
+    text-align: center;
+}
+.timer-teachTool-colon
+{
+    width: 0.2rem;
+    height: 0.7rem;
+    float: left;
+    margin-top: 0.18rem; 
+    margin-left: 0.08rem;
+    margin-right: -0.08rem;
+
+}
+.timer-teachTool-colon div
+{
+    width: 0.05rem; 
+    height: 0.05rem; 
+    background: #F2F2F2;
+    border-radius: 0.05rem; 
+    margin-left: 0.02rem; 
+    margin-top: 0.2rem;
+    }
+.timer-teachTool-startBtn
+{
+    width: 0.35rem;
+    height: 0.35rem;
+    cursor:pointer;
+    background-position: 100% 100%;
+    background: url('../img/phone/tools/timer-rectangle-normal.png') no-repeat center center;
+     background-size: 100% 100%;
+    text-align: center;
+    line-height: 0.35rem;
+    color:white;
+    float: left;
+    margin-left: 0.29rem;
+    cursor: pointer;
+    margin-top:0.15rem;
+    font-size:0.2rem;
+}
+.timer-teachTool-stopBtn
+{
+    width: 0.35rem;
+    height: 0.35rem;
+    cursor:pointer;
+    background-position: 100% 100%;
+    background: url('../img/phone/tools/timer_stop_normal.png') no-repeat center center;
+     background-size: 100% 100%;
+    text-align: center;
+    line-height: 0.35rem;
+    color:white;
+    float: left;
+    margin-left: 0.29rem;
+    margin-top:0.15rem;
+    font-size:0.2rem;
+}
+.stop-btn-Img
+{
+    width: 0.6rem;
+    height: 0.6rem;
+	cursor:pointer;
+	background:  url('../img/phone/tools/timer_stop_btn_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+    border-radius:0.3rem; 
+}
+.timer-teachTool-closeSpan
+{
+	width:0.3rem;
+	height: 0.3rem;
+	background:  url('../img/phone/tools/timer_close_normal.png') no-repeat center center;
+    background-size: 100% 100%;
+    margin-right:0.05rem; 
+}
+
+.timer-teachTool-againBtn
+{
+    width: 0.35rem;
+    height: 0.35rem;
+     background: url('../img/phone/tools/timer_again_normal.png') no-repeat center center;
+     background-size: 100% 100%;
+   	display:none;
+    text-align: center;
+    line-height: 0.35rem;
+    margin-top: 0.1rem; 
+    color:white;
+    float: left;
+    margin-left: 0.3rem; 
+    display:none ;
+    font-size:0.2rem;
+}
+.timer-teachTool-againBtn-unclickable
+{
+	width: 0.35rem;
+    height: 0.35rem;
+    background: url('../img/phone/tools/timer_restart_not.png') no-repeat center center;
+    background-size: 100% 100%;
+   	display:none;
+    text-align: center;
+    line-height: 0.35rem;
+    margin-top: 0.1rem; 
+    color:white;
+    float: left;
+    margin-left: 0.3rem; 
+    font-size:0.2rem;
+}
+/*学生端*/
+.timer-studentTool-header
+{
+    width: 100%;
+    height: 0.28rem;
+    display: flex;
+    justify-content: space-between;
+     background: #0b1c38;
+    color:#bdbdbd;
+    line-height: 0.28rem;
+}
+.timer-studentTool-triangle-top
+{
+    width: 0;
+    height: 0;
+    margin-left: 0.1rem;
+    margin-bottom:0.05rem; 
+    border-left: 0.1rem solid transparent;
+    border-right: 0.1rem solid transparent;
+    border-bottom: 0.1rem solid #F2F2F2;
+    cursor:pointer;
+}
+.timer-studentTool-num-div
+{
+    width:0.5rem;
+    height: 1.12rem;
+    float: left;
+    margin-left: 0.1rem;
+    margin-top:0.1rem; 
+
+}
+
+.timer-studentTool-triangle-down
+{
+    width: 0;
+    height: 0;
+    margin-left:0.1rem; 
+    margin-top: 0.05rem; 
+    border-left: 0.1rem solid transparent;
+    border-right: 0.1rem solid transparent;
+    border-top: 0.1rem solid #F2F2F2;
+    cursor:pointer;
+}
+.timer-studentTool-triangle-down:hover
+{
+    border-top: 0.1rem solid green;
+}
+.timer-studentTool-triangle-top:hover
+{
+    border-bottom: 0.1rem solid green;
+}
+.timer-studentTool-num-content
+{
+    height: 0.7rem;
+    width:0.4rem;
+    margin-top:0.02rem;
+    margin-bottom: 0.02rem;
+    background: #F2F2F2;
+    font-size: 0.6rem;
+    line-height: 0.7rem;
+    text-align: center;
+}
+.timer-studentTool-colon
+{
+    width: 0.2rem;
+    height: 0.7rem;
+    float: left;
+    margin-top: 0.18rem; 
+    margin-left: 0.08rem;
+    margin-right: -0.08rem;
+
+}
+.timer-studentTool-colon div
+{
+    width: 0.05rem; 
+    height: 0.05rem; 
+    background: #F2F2F2;
+    border-radius: 0.05rem; 
+    margin-left: 0.02rem; 
+    margin-top: 0.2rem;
+    }
+.timer-studentTool-startBtn
+{
+    width: 0.8rem;
+    height: 0.35rem;
+    cursor:pointer;
+    background-position: 100% 100%;
+    text-align: center;
+    line-height: 0.35rem;
+    color:white;
+    float: left;
+    margin-left: 0.1rem
+    cursor: pointer;
+    margin-top:0.1rem;
+    font-size:0.2rem;
+}
+.stop-btn-Img
+{
+    width: 0.6rem;
+    height: 0.6rem;
+	cursor:pointer;
+    background-position: 100% 100%;
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+    border-radius:0.3rem; 
+}
+.timer-studentTool-closeSpan
+{
+    margin-right:0.05rem; 
+    cursor:pointer;
+}
+.timer-studentTool-closeSpan:hover
+{
+    color: #96CDCD;
+}
+.timer-studentTool-againBtn
+{
+    cursor:pointer;
+    width: 0.8rem;
+    height: 0.35rem;
+    
+    background-position: 100% 100%;
+    text-align: center;
+    line-height: 0.35rem;
+    margin-top: 0.1rem; 
+    color:white;
+    float: left;
+    margin-left: 0.1rem; 
+    cursor: pointer;
+    display:none ;
+    font-size:0.2rem;
+}
+/*答题卡*/
+.answer-teach-wrapDiv
+{
+    width:4.4rem;
+    height: 2rem;
+    position: absolute;
+    display: none;
+    overflow: hidden;
+    top:1rem;
+    left: 0;
+    z-index: 9999;
+    left:5rem;
+   
+    border-radius: 0.05rem;
+}
+.answer-teach-header
+{
+    display: flex;
+    background:#0b1c38;
+    justify-content: space-between; 
+    border-bottom: 1px solid;   
+}
+.answer-teach-headerImg
+{
+   
+    float: left;
+    margin-top: 0.05rem;
+}
+.answer-teach-header-left
+{
+    width: 4.4rem;
+    height: 0.3rem;
+    background:#0b1c38;
+}
+.answer-teach-header-left-grey
+{
+   color: #bdbdbd;
+    float: left;
+    margin-left: 0.1rem;
+    line-height: 0.3rem;
+}
+.answer-teach-header-left-green
+{
+    color: #2196f3;
+    line-height: 0.3rem;
+    float: left;
+    margin-left: 0.1rem;
+}
+.answer-teach-header-right
+{
+	width:0.3rem;
+	height:0.3rem;
+    line-height: 0.3rem;
+    margin-right: 0.05rem;
+    background-image:url('../img/phone/tools/timer_close_normal.png');
+    background-size: 100% 100%; 
+    color: grey;
+}
+.answer-teach-content
+{
+    width:4.4rem;
+    background:#202C4A;
+    height: 3.5rem;
+}
+
+.answer-teach-lis
+{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    border:0.03rem solid black;
+    margin-left: 0.3rem;
+    margin-top: 0.3rem;
+    line-height: 0.5rem;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    font-size: 0.25rem;
+}
+.changeOneAnswer
+{
+    color: red;
+    font-size: 0.25rem;
+    width: 100%;
+    height:0.3rem;
+   	position: absolute;
+   	top:0.3rem;
+    display: none;
+    text-align:center;
+}
+
+.result-teach-wrapDiv
+{
+    width:4.4rem;
+    height: 5rem;
+    margin:auto;
+    position: absolute;
+    display:none;
+   	top:2rem;
+   	left:3rem;
+    z-index: 9999;
+}
+.result-student-wrapDiv
+{
+	width:4.4rem;
+    height: 5rem;
+    margin:auto;
+    position: absolute;
+    display:none;
+   	top:2rem;
+   	left:6rem;
+    z-index: 9999;
+}
+.result-teach-trueSelect
+{
+	width:0.2rem;
+	height:0.2rem;
+	margin-top:0.05rem;
+	margin-left:0.03rem;
+	text-align:center;
+	line-height:0.2rem;
+	color:#fefefe;
+	font-size:0.14rem;
+}
+
+.result-teach-header-left
+{
+    display: flex;
+}
+.result-teach-header-left-grey
+{
+    color: #fefefe;
+    float: left;
+    margin-left: 0.1rem;
+    line-height: 0.3rem;
+}
+.result-teach-content
+{
+    width:4.4rem;
+    background:#202C4A;
+    height: 4rem;
+    overflow:hidden;
+    position:relative;
+    border-top:1px solid black;
+}
+.result-teach-close
+{
+    width:0.3rem;
+	height:0.3rem;
+    line-height: 0.3rem;
+    margin-right: 0.05rem;
+    background-image:url('../img/phone/tools/timer_close_normal.png');
+    background-size: 100% 100%; 
+    color: grey;
+   
+}
+
+.detailDiv
+{
+        width: 1rem;
+        height: 0.3rem;
+        border-radius:0.15rem;
+        background: black;
+        color:grey; 
+        line-height: 0.3rem;
+        text-align: center;
+        float:right;
+        margin-right: 0.2rem;
+        margin-top: 0.2rem;
+}
+.result-teach-coordinate-div
+{
+    width: 80%;
+    float: left;
+    height:1.4rem;
+    margin-left: 10%;
+}
+.result-teach-heart-span
+{
+        float: left;
+        margin-top: 1.4rem;
+        color: #fefefe;
+}
+    .result-teach-staff-div
+    {
+        width: 90%;
+        height: 1.4rem;
+        border-left: 1px solid #fefefe;
+        border-bottom: 1px solid #fefefe;
+        float: left;
+    }
+    .result-teach-allResult
+    {
+        width: 90%;
+        height: 0.2rem;
+        float: left;
+        margin-left: 0.05rem;
+    }
+    .result-teach-allResult li
+    {
+
+        float: left;
+        margin-left: 0.27rem;
+        color: #fefefe;
+    }
+    .result-teach-accuracy-div
+    {
+        width: 80%;
+        float: left;
+        margin-left:10%;
+    }
+    .result-teach-accuracy-left
+    {
+        width: 100%;
+        height: 0.2rem;
+        border-radius: 0.1rem;
+        background: #5E5E5E;
+        display: inline-block;
+    }
+    .result-teach-accuracy-right
+    {
+      	width: 50%;
+        height: 0.2rem;
+        line-height: 0.2rem;
+        color: #fefefe;
+       	float: left;
+       	margin-left:0.08rem;
+        display: inline-block;
+        font-size: 0.14rem;
+       
+    }
+    .trueRelstu-div
+    {
+    	width: 26%;
+        height: 0.2rem;
+        float: right;
+        border-radius: 0.1rem;
+        background: #074496;
+        margin-top: 0.2rem;
+    }
+    .trueRelstu{
+    	color:red;
+    	line-height: 0.2rem;
+    	float:left ;
+    }
+    .trueRel
+    {
+    	color:red;
+    	line-height: 0.2rem;
+    	float:left ;
+    }
+    
+    .per-cent
+    {
+    	float:left ;
+    	display: inline-block;
+    	line-height: 0.2rem;
+    	color:red;
+    }
+    .result-teach-true-result
+    {
+        width: 80%;
+        height: 0.3rem;
+        float: left;
+        margin-left: 10%;
+        line-height: 0.3rem;
+        display: flex;
+         color: white;
+        justify-content: center;
+        border-radius: 0.15rem;
+        margin-top:0.4rem;
+        margin-bottom: 0.1rem;
+    }
+    .result-teach-end-question
+    {
+        width: 80%;
+        height: 0.4rem;
+        background: #074496;
+        color: white;
+        float: left;
+        margin-left: 10%;
+        margin-top:0.2rem;
+        margin-bottom: 0.2rem;
+        text-align: center;
+        line-height: 0.4rem;
+        border-radius: 0.03rem;
+    }
+    .result-teach-restart-question
+    {
+        width: 80%;
+        height: 0.4rem;
+        background: #074496;
+        color: white;
+        float: left;
+        margin-left: 10%;
+        margin-top:0.2rem;
+        margin-bottom: 0.2rem;
+        text-align: center;
+        line-height: 0.4rem;
+        border-radius: 0.03rem;
+        display: none;
+    }
+
+.spans
+{
+    display: inline-block;
+    width: 0.2rem;
+    height: 0.2rem;
+    color: #fefefe;
+    text-align:center;
+    line-height: 0.2rem;
+    margin-left: 0.05rem;
+}
+.activeUl
+{
+    background: red;
+}
+.answersPeople
+{
+    color: #fefefe;
+    position: absolute;
+    width:65%;
+    height:0.2rem;
+    font-size:0.14rem;
+}
+.answersPeople-div
+{
+	width:2rem;
+	height:0.2rem;
+	position: absolute;
+	left:0.2rem;
+    top:0.2rem; 
+}
+.roleNum{
+	color: #fefefe;
+	position: absolute;
+	left:65%;
+	line-height: 0.2rem;
+}
+.roleNums
+{
+	color: #fefefe;
+	position: absolute;
+	line-height: 0.2rem;
+	left: 65%;
+}
+.result-student-allResult
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.result-my-allResult
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+/*学生端页面*/
+.answer-student-wrapDiv
+{
+    width:4.4rem;
+    height: 3rem;
+    position: absolute;
+    top:2rem;
+    left: 0;
+    z-index: 9999;
+    left:5rem;
+   	display:none;
+    border-radius: 0.05rem;
+}
+.answer-teach-optionUl
+{ 
+    width: 4.4rem;
+    display: flex;
+    flex-flow: row wrap;
+}
+.answer-teach-optionUl li 
+{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    background:#1e2b48;
+    border:0.03rem solid #074496;
+    margin-top: 0.3rem;
+    margin-left: 0.45rem;
+    line-height:0.45rem;
+    text-align: center;
+    color: white;
+    font-size: 0.25rem;
+}
+.answer-teach-add
+{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    background: #368bcb;
+    border:0.03rem solid #074496;
+    float:left;
+    margin-left: 0.45rem;
+    margin-top:0.2rem;
+    line-height: 0.5rem;
+    text-align: center;
+    color: white;
+    font-size: 0.25rem;
+    color: white;
+    cursor: pointer;
+}
+
+.answer-teach-reduce
+{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    background: #368bcb;
+    border:0.03rem solid #074496;
+    float: left;
+     margin-top:0.2rem;
+    margin-left: 0.5rem;
+    line-height: 0.5rem;
+    text-align: center;
+    color: white;
+    font-size: 0.25rem;
+    color: white;
+    cursor: pointer;
+}
+
+.answer-teach-begin
+{
+    width: 80%;
+    height: 0.3rem;
+    background: #074496;
+    float: left;
+    margin-left: 10%;
+	margin-top:0.1rem;
+    line-height: 0.3rem;
+    border-radius: 0.05rem;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+.answer-student-lis
+{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    border:0.03rem solid black;
+    margin-left: 0.3rem;
+    margin-top: 0.3rem;
+    line-height: 0.5rem;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    font-size: 0.25rem;
+}
+.changeOneAnswer
+{
+    color: red;
+    font-size: 0.25rem;
+    width: 100%;
+    text-align:center;
+}
+#result-teach-mytime
+{
+    color: #2196f3;
+    line-height: 0.3rem;
+    margin-left: 0.1rem;
+}
+#result-teach-mytimes
+{
+    color:#2196f3;
+    line-height: 0.3rem;
+    margin-left: 0.1rem;
+}
+.result-teach-wrapDiv
+{
+    width:4.4rem;
+    height: 5rem;
+    margin:auto;
+    position: absolute;
+    display:none;
+   	top:4rem;
+   	left:5rem;
+    z-index: 9999;
+}
+
+.result-teach-headerImg
+{
+    
+    float: left;
+    margin-top: 0.05rem;
+}
+.result-teach-header
+{
+    width: 4.4rem;
+    height: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+ 	 background:#202C4A;
+}
+
+.detailDiv
+{
+        width: 1rem;
+        height: 0.3rem;
+        border-radius:0.15rem;
+        background: black;
+        color:grey; 
+        line-height: 0.3rem;
+        text-align: center;
+        float:right;
+        margin-right: 0.2rem;
+        margin-top: 0.2rem;
+}
+
+
+    .result-teach-accuracy-div
+    {
+        width: 80%;
+        float: left;
+        margin-left:10%;
+    }
+    .result-teach-accuracy-left
+    {
+        width: 100%;
+        height: 0.2rem;
+        border-radius: 0.1rem;
+        background: #5E5E5E;
+        display: inline-block;
+    }
+
+.activeUl
+{
+    background: red;
+}
+
+.reuslt-submit
+{
+	width: 80%;
+    height: 0.3rem;
+    background: #074496;
+    float: left;
+    margin-left: 10%;
+	margin-top:0.6rem;
+    line-height: 0.3rem;
+    border-radius: 0.05rem;
+    color: #fefefe;
+    text-align: center;
+}
+/*老师端转盘*/
+.dial-teachComponent-bg
+{
+	width:4rem;
+	height:4rem;
+	position:absolute;
+	display: none;
+	z-index: 666;
+	top:4rem;
+
+}
+.dial-studentComponent-bg
+{
+	width:4rem;
+	height:4rem;
+	position:absolute;
+	display: none;
+	z-index: 666;
+	top:4rem;
+	left:4rem;
+}
+.dialCloseP{
+	width: 0.8rem;
+    height: 2rem;
+    background: url("../img/phone/tools/dial_close_balloon.png") no-repeat center center;
+    background-size: 100% 100%;
+	position:absolute;
+	right: -0.7rem;
+	top:-0.7rem;
+}
+.dial-teachComponent-pointer-button{
+	width:0.5rem;
+	height:1rem;
+	background:url('../img/phone/tools/dial_pointer_component.png') no-repeat;
+	background-size:100% 100%;
+	border:none;
+	position:absolute;
+	z-index: 200;
+	left: 1.95rem;
+	top:1.4rem;
+}
+.dial-teachComponent-turntable{
+	width:4.2rem;
+	height:4.2rem;
+	background:url('../img/phone/tools/dial_bg_component.png') no-repeat;
+	background-size:100% 100%;
+	position:absolute;
+	border-radius:1.9rem;
+	z-index: 100;
+	left: 0.1rem;
+	top: 0.1rem;
+	-webkit-transition:all 4s ease-in-out;    
+}
+
+#dial-teachComponent-turnContent
+{
+	position: absolute;
+	width:3.8rem;
+	height:3.8rem;
+}
+.canvasWrap
+{
+	position: absolute;
+	left: 0.2rem;
+	top:0.2rem;
+	width:3.8rem;
+	height:3.8rem;
+	border-radius: 1.9rem;
+	overflow: hidden;
+	z-index: 666;
+}
+#dial-studentComponent-turnContent
+{
+	position: absolute;
+	left: 0.3rem;
+	top:0.3rem;
+	z-index: 221;
+}
+.wrapDiv{
+	width: 0.8rem;
+	height: 0.2rem;
+	position: absolute;
+	top: 0.8rem;
+	left:2rem;
+	color:black;
+	font-size: 0.16rem;
+	transform-origin: 0px 1.15rem;
+	z-index: 666;
+}
+/**/
+.tool-box li .eraser-tool{
+	 background: url(../img/phone/tools/btn_eraser_normal@2x.png) no-repeat;
+	 background-size: 100% auto;
+ }
+.tool-box li .tool-mouse{
+	background: url(../img/phone/tools/icon_mouse_normal.png) no-repeat;
+	background-size: 100% auto;
+}
+.tool-box li .tool-teacher{
+	background: url(../img/phone/tools/icon_box_normal.png) no-repeat;
+	background-size: 200% 200%;
+    background-position: -0.25rem -0.26rem;
+}
+/*激活状态：*/
+.tool-box li .tool-pencil.active{
+	background: url(../img/phone/tools/btn_pencil_pressed@2x.png) no-repeat;
+	background-size: 100% auto;
+}
+.tool-box li .tool-teacher.active{
+	background: url(../img/phone/tools/icon_box_pressed.png) no-repeat;
+	background-size: 200% 200%;
+    background-position: -0.25rem -0.26rem;
+}
+/*点击选择激活笔的类型：*/
+.tool-box li .eraser-tool.active{
+	background: url(../img/phone/tools/btn_eraser_pressed@2x.png) no-repeat;
+	background-size: 100% auto;
+}
+.tool-box li .tool-mouse.active{
+	background: url(../img/phone/tools/icon_mouse_pressed.png) no-repeat;
+	background-size: 100% auto;
+}
+
+
+/*.tool-box>li .color-tool{*/
+	/*width: 0.38rem;*/
+	/*height: 0.38rem;*/
+	/*box-sizing: border-box;*/
+/*}*/
+
+
+
+/*颜色*/
+.tool-color-extend{
+	width: 5.4rem;
+	height: 5.8rem;
+	color: #fff;
+	position: absolute;
+	right: 100%;
+	bottom: 0;
+	background: rgba(0,0,0,0.9);
+	display: none;
+	font-size: 0.25rem;
+}
+/*圆点*/
+.tool-color-top .tool-pencil-size{
+	width: 100%;
+	height: 0.6rem;
+}
+/*.tool-color-top .tool-pencil-size span{*/
+	/*width: 0.47rem;*/
+	/*height: 0.47rem;*/
+	/*margin-right: 1rem;*/
+	/*box-sizing: border-box;*/
+	/*position: relative;*/
+	/*display: block;*/
+	/*float: left;*/
+/*}*/
+/*.tool-color-top .tool-pencil-size span.active{*/
+	/*border: 0.03rem solid #fff;*/
+/*}*/
+.lc-container .pad-draw-tool li.active button.tool-pencil-size {
+	border: 0.03rem solid #fff;
+}
+.tool-color-top .tool-pencil-size span:after{
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	display: block;
+	background: #fff;
+	border-radius: 50%;
+}
+.tool-color-top .tool-pencil-size .small-size:after{
+	width: 0.08rem;
+	height: 0.08rem;
+}
+.tool-color-top .tool-pencil-size .middle-size:after{
+	width: 0.13rem;
+	height: 0.12rem;
+}
+.tool-color-top .tool-pencil-size .big-size:after{
+	width: 0.18rem;
+	height: 0.18rem;
+}
+
+/*翻页*/
+.ipad.header-left-page-time-container {
+	width: auto;
+	height: 0.8rem;
+	position: absolute;
+	bottom: 0.1rem;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	background-color: #3b3b3b;
+}
+.ipad.header-left-page-time-container .h-page-container .h-page-next-prev-container {
+	width: auto;
+	height: 0.8rem;
+	line-height: 0.8rem;
+	color: #fff;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0.1rem 0;
+}
+
+.ipad .h-page-next-prev-container button{
+	width: 0.6rem;
+	height: 0.6rem;
+	overflow: hidden;
+	cursor: pointer;
+	background: url(../img/phone/pages/btn_left_normal.png) no-repeat center center;
+	background-size: 100% 100%;
+}
+.ipad .h-page-next-prev-container .lc-tool-wrap{
+	width: 3.5rem;
+	height: 100%;
+	float: left;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 0.1rem;
+	box-sizing: border-box;
+}
+
+.ipad .h-page-next-prev-container .lc-full{
+	float: right;
+	margin-right: 0.1rem;
+}
+.ipad .h-page-next-prev-container button.pointer-events{
+	pointer-events: none;
+	cursor: default !important;
+}
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-prev-page{
+	background-image: url(../img/phone/pages/btn_left_normal.png) ;
+}
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-next-page{
+	background-image: url(../img/phone/pages/btn_right_normal.png) ;
+}
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-add-page{
+	background-image: url(../img/phone/pages/btn_right_normal.png) ;
+}
+
+.lc-container .ipad .h-page-next-prev-container button.lc-full.no{
+	background-image: url(../img/phone/pages/btn_full-screen_normal.png) ;
+}
+.lc-container .ipad .h-page-next-prev-container button.lc-full.yes{
+	background-image: url(../img/phone/pages/btn_small-screen_normal.png) ;
+}
+
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-prev-page.disabled , .lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-prev-page{
+	background-image: url(../img/phone/pages/btn_left_disabled.png)!important ;
+}
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-next-page.disabled , .lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-next-page{
+	background-image: url(../img/phone/pages/btn_right_disabled.png)!important ;
+}
+.lc-container .ipad .h-page-next-prev-container .lc-tool-wrap button.lc-add-page.disabled , .lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-add-page{
+	background-image: url(../img/phone/pages/btn_right_disabled.png)!important;
+}
+.ipad .h-page-next-prev-container .page-print {
+	width: 1rem;
+	height: 100%;
+	text-align: center;
+	font-size: 0.3rem;
+	margin: 0 0.4rem;
+	line-height: 0.6rem;
+}
+.ipad .page-print-content .h-page-print-oblique{
+	display: inline-block;
+	margin: 0 0.04rem;
+}
+.ipad .h-page-next-prev-container .page-print .curr-page {
+	color: #fff;
+}
+
+.pad-draw-tool.no-permission{
+	display: none;
+}
+.tool-font-extend li.active-color{
+	background: #3b3b3b;
+}
+/*h5课件iframe*/
+.h5-file-wrap,.student-disabled{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height:100%;
+	z-index: 100;
+}
+.h5-file-wrap iframe{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height:100%;
+	border: none;
+}
+.tk-filetype-h5document .background-canvas{
+	display: none!important;
+}
+.tk-filetype-h5document .literally , .tk-filetype-h5document .lc-drawing{
+	background-color: transparent!important;
+}
+.student-disabled{
+	width: 100%;
+	height:100%;
+	display: none;
+}
+.lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-prev-page , .lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-next-page ,
+.lc-container .ipad.no-permission .h-page-next-prev-container .lc-tool-wrap button.lc-add-page {
+	pointer-events: none!important;
+	cursor: default !important;
+}
+.result-A
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:0.28rem;
+   	
+    color: white; 
+    bottom:0;
+    text-align: center;
+}
+.result-B
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.4rem;
+   	left:0.6rem;
+    color: white; 
+    
+    bottom:0;
+    text-align: center;
+}.result-C
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:0.98rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-D
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:1.32rem;
+    color: white; 
+    
+    bottom:0;
+    text-align: center;
+}.result-E
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:1.7rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-F
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.05rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-G
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.4rem;
+    color: white; 
+
+    bottom:0;
+    text-align: center;
+}
+.result-H
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.75rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}
+.answer-stu-lis
+{
+	position: absolute;
+    width: 0.2rem;
+    left: 0;
+    bottom:0;
+    background:#2196f3;
+}
+.answer-stu-lis p
+{
+	position: absolute;
+    width: 0.2rem;
+    text-align: center;
+    top:-0.12rem;
+}
+.result-A-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:0.25rem;
+   	
+    color: white; 
+    bottom:0;
+    text-align: center;
+}
+.result-B-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:0.6rem;
+    color: white; 
+    
+    bottom:0;
+    text-align: center;
+}.result-C-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:1.0rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-D-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:1.36rem;
+    color: white; 
+    
+    bottom:0;
+    text-align: center;
+}.result-E-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:1.72rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-F-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.1rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}.result-G-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.47rem;
+    color: white; 
+
+    bottom:0;
+    text-align: center;
+}
+.result-H-stu
+{
+	position: absolute;
+    width: 0.2rem;
+    height:1.3rem;
+   	left:2.85rem;
+    color: white; 
+   
+    bottom:0;
+    text-align: center;
+}
+
+/*#tool_teacher_hide{
+	display: none!important;
+}*/
+.responder-circle
+{
+	width: 3rem;
+	height: 3rem;
+	border-radius: 1.5rem;
+	background: #5E5E5E;
+	margin: auto;
+	position: absolute;
+	z-index:121;
+	top:1rem;
+	left: 0.10rem;
+}
+#myCanvas
+{
+	width: 2.8rem;
+	height:2.8rem;
+	border-radius: 1.4rem;
+	position: absolute;
+	left: 0.10rem;
+	top:0.112rem;
+
+}
+.bgCanvas
+{
+	width: 2.8rem;
+	height:2.8rem;
+	border-radius: 1.4rem;
+	border:0.04rem solid grey;
+	position: absolute;
+	left: 0.10rem;
+	top:0.10rem;
+	z-index:0;
+}
+.responder-black-circle
+{
+	width: 2.4rem;
+	height: 2.4rem;
+	border-radius: 1.2rem;
+	border:0.04rem solid black;
+	position: absolute;
+	left: 0.245rem;
+	top: 0.265rem;
+}
+
+.responder-begin-circle
+{
+	width: 2.3rem;
+	height: 2.3rem;
+	border-radius: 1.15rem;
+	position: absolute;
+	top: 0.37rem;
+	left: 0.37rem;
+	line-height: 2.3rem;
+	text-align: center;
+	background: #4D4D4D;
+	color: white;
+	font-size: 0.18rem;
+}
+
+.responder-close-img
+{
+	width: 2.3rem;
+	height:0.48rem;
+	position: absolute;
+	left: 0.35rem;
+	bottom: 0.35rem;
+	background: url('../img/phone/tools/responder-move-close.png') no-repeat center center;
+	background-size: 100% 100%;
+    cursor: pointer;
+	line-height: 0.60rem;
+	color: white;
+	text-align: center;	
+}
+
+.responder-restart-img
+{
+	width: 1.9rem;
+	height: 0.42rem;
+	position: absolute;
+	line-height:  0.42rem;
+	text-align: center;
+	color: white;
+	left: 0.55rem;
+	bottom: 0.66rem;
+	background: url('../img/phone/tools/responder-move-ellipse.png') no-repeat center center;
+	background-size: 100% 100%;
+    cursor: pointer;
+	display: none;
+}
+
+.responder-circle-student
+{
+	width: 3rem;
+	height: 3rem;
+	border-radius: 1.5rem;
+	background: #5E5E5E;
+	position: absolute;
+	z-index:121;
+	display:none;
+}
+#top-circle
+{
+	width: 2.8rem;
+	height:2.8rem;
+	border-radius: 1.4rem;
+	position: absolute;
+	left: 0.10rem;
+	top:0.10rem;
+}
+
+.responder-black-circle-student
+{
+	width: 2.4rem;
+	height: 2.4rem;
+	border-radius: 1.2rem;
+	border:0.04rem solid black;
+	position: absolute;
+	left: 0.3rem;
+	top: 0.3rem;
+}
+
+.responder-begin-circle-student
+{
+	width: 2.3rem;
+	height: 2.3rem;
+	border-radius: 1.15rem;
+	position: absolute;
+	top: 0.36rem;
+	left: 0.35rem;
+	line-height: 2.3rem;
+	text-align: center;
+	background: #4D4D4D;
+	color: white;
+	font-size: 0.18rem;
+}

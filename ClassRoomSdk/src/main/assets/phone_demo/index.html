@@ -1,0 +1,682 @@
+<!--
+	@versions  v1.0.25
+	@updateTime:2017/11/03 23:18
+	@author:liu jian hang 
+-->
+<!DOCTYPE html>
+<html lang="en" style="font-size: 100px;" id="all_root">
+
+<head>
+    <title>TalkCloud</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="QGS,chengnuoyongcun@qq.com">
+    <!--强制让文档的宽度与设备的宽度为1：1 ， 并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
+    <meta name="viewport"
+          content="initial-scale=1,width=device-width,maxinum-scake=1,user-scalanle=no"/>
+    <!--WebApp全屏模式隐藏地址栏-->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!--苹果强制全屏显示-->
+    <meta name="apple-touch-fullscreen" content="yes"/>
+    <!--强制全屏显示-->
+    <meta name="full-screen" content="yes"/>
+    <!--制定iphone中safari顶端的状态条的样式，（default：白色 ;  black:黑色，black-translucent：半透明）-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <!--告诉设备忽略将页面中的数字识别为电话号码-->
+    <meta name="format-detection" content="telephone=no"/>
+    <!--告诉设备忽略将页面中的地址识别-->
+    <meta name="format-detection" content="address=no"/>
+    <!--百度禁止转码-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--如果安装了 Google Chrome Frame，则使用 GCF 来渲染页面，如果没有安装 GCF，则使用最高版本的 IE 内核进行渲染。-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <!-- Custom CSS styles -->
+    <link type="text/css" rel="stylesheet" href="./css/room_phone_custom.css?t=2017072803"/>
+
+    <!--Literally CSS style-->
+    <link type="text/css" rel="stylesheet" href="./plugs/literally/css/literallycanvas.css"
+          charset="UTF-8">
+
+    <script type="text/javascript">
+	var GLOBAL = GLOBAL || {} ;
+
+    </script>
+
+
+    <!-- Bower JavaScript dependencies -->
+    <script type="text/javascript" charset="UTF-8" src="js/jquery.min.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="js/angular.min.js"></script>
+
+    <!--Literally JavaScript dependencies-->
+    <!--<script  type="text/javascript"  charset="UTF-8" src="./plugs/literally/js/tklc_core.js?t=2017072803"></script>-->
+    <script type="text/javascript" charset="UTF-8"
+            src="./plugs/literally/js/tklc_core.min.js?t=2017072803"></script>
+
+    <!-- Custom JavaScript dependencies -->
+    <script type="text/javascript" charset="UTF-8" src="./js/tool.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8"
+            src="./plugs/literally/js/literally-custom.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8"
+            src="./plugs/newPpt/js/newPpt-custom.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8" src="./angular/app.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8"
+            src="./angular/services/serviceLiterally.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8"
+            src="./angular/services/serviceNewPptAynamicPPT.js?t=2017072803"></script>
+    <script type="text/javascript" charset="UTF-8"
+            src="./angular/services/serviceTool.js?t=2017072803"></script>
+
+</head>
+
+<body ng-app="tk_room" ng-controller="phoneController">
+<!--display the view (phone) with route system-->
+<section id="room">
+    <article class="all-wrap clear-float" id="all_wrap">
+        <!--白板区域-->
+        <!--倒计时-->
+        <div class="timer-teachTool-wrap">
+            <div class="timer-teachTool-header">
+                <span></span>
+                <span class="timer-header-text"></span>
+                <span class="timer-teachTool-closeSpan" ng-click="timerTeacherCloseHandel()"></span>
+            </div>
+            <div class="timer-teachTool-num-div"
+                 ng-repeat="minutesItem in minutesArry track by $index">
+                <div class="timer-teachTool-triangle-top" ng-click="minuteAddHandel($index)"></div>
+                <div class="timer-teachTool-num-content">
+                    {{minutesItem}}
+                </div>
+                <div class="timer-teachTool-triangle-down"
+                     ng-click="minuteReduceHandel($index)"></div>
+            </div>
+            <div class="timer-teachTool-colon">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="timer-teachTool-num-div"
+                 ng-repeat="secondsItem in secondsArry track by $index">
+                <div class="timer-teachTool-triangle-top" ng-click="secondAddHandel($index)"></div>
+                <div class="timer-teachTool-num-content">
+                    {{secondsItem}}
+                </div>
+                <div class="timer-teachTool-triangle-down"
+                     ng-click="secondReduceHandel($index)"></div>
+            </div>
+            <div class="timer-teachTool-startBtn" ng-click="startBtnTool()"></div>
+            <div class="timer-teachTool-stopBtn" ng-click="stopBtnHandel()"></div>
+            <div class="timer-teachTool-againBtn" ng-click="againBtnHandel()"></div>
+            <div class="timer-teachTool-againBtn-unclickable"></div>
+
+            <audio id="ring_audio" ng-src="{{data.url|trustUrl}}">
+                <!--<source  type="audio/mpeg"></source>-->
+            </audio>
+        </div>
+        <!--学生端倒计时-->
+        <div class="timer-studentTool-wrap">
+            <div class="timer-studentTool-header">
+                <span></span>
+                <span></span>
+                <span class="timer-studentTool-closeSpan"></span>
+            </div>
+            <div class="timer-studentTool-num-div">
+                <div class="timer-studentTool-triangle-top" style="visibility: hidden;"></div>
+                <div class="timer-studentTool-num-content">
+                    0
+                </div>
+                <div class="timer-studentTool-triangle-down" style="visibility: hidden;"></div>
+            </div>
+            <div class="timer-studentTool-num-div">
+                <div class="timer-studentTool-triangle-top" style="visibility: hidden;"></div>
+                <div class="timer-studentTool-num-content">
+                    5
+                </div>
+                <div class="timer-studentTool-triangle-down" style="visibility: hidden;"></div>
+            </div>
+            <div class="timer-studentTool-colon">
+                <div></div>
+                <div></div>
+            </div>
+            <div class="timer-studentTool-num-div">
+                <div class="timer-studentTool-triangle-top" style="visibility: hidden;"></div>
+                <div class="timer-studentTool-num-content">
+                    0
+                </div>
+                <div class="timer-studentTool-triangle-down" style="visibility: hidden;"></div>
+            </div>
+            <div class="timer-studentTool-num-div">
+                <div class="timer-studentTool-triangle-top" style="visibility: hidden;"></div>
+                <div class="timer-studentTool-num-content">
+                    0
+                </div>
+                <div class="timer-studentTool-triangle-down" style="visibility: hidden;"></div>
+            </div>
+            <div class="stop-btn-Img"></div>
+            <audio id="ring_audio_student" ng-src="{{data.url|trustUrl}}">
+            </audio>
+        </div>
+        <!--老师端答题卡-->
+        <div class="answer-teach-wrapDiv">
+            <div class="answer-teach-header">
+                <div class="answer-teach-header-left">
+                    <span class="answer-teach-headerImg"></span>
+                    <span class="answer-teach-header-left-grey"></span>
+                    <span class="answer-teach-header-left-green"></span>
+                </div>
+                <div class="answer-teach-header-right" ng-click="closeAnswer()"></div>
+            </div>
+            <div class="answer-teach-content">
+                <ul class="answer-teach-optionUl">
+                    <li class="answer-teach-lis" ng-repeat="selectItem in initArr track by $index"
+                        ng-click="changeColor($index)">{{selectItem.name}}
+                    </li>
+                </ul>
+                <div class="answer-teach-add" ng-click="addAnswerSelect()">+</div>
+                <div class="answer-teach-reduce" ng-click="reduceAnswerSelect()">-</div>
+                <div class="answer-teach-begin" ng-click="answerBegin()"></div>
+            </div>
+        </div>
+        <div class="result-teach-wrapDiv">
+            <div class="result-teach-header">
+                <div class='result-teach-header-left'>
+                    <span class="result-teach-headerImg"></span>
+                    <span class="result-teach-header-left-grey"></span>
+                    <span id="result-teach-mytime"></span>
+                </div>
+                <p class="result-teach-close" ng-click="closeResult()"></p>
+            </div>
+            <div class="result-teach-content">
+                <div class="answersPeople-div">
+                    <div class="answersPeople"></div>
+                    <p class="roleNums"></p>
+                </div>
+                <div class="trueRelstu-div">
+                    <div class="result-teach-accuracy-right"></div>
+                    <p class="trueRel"></p>
+                    <p class="per-cent">%</p>
+                </div>
+                <div class="result-teach-coordinate-div">
+                    <span class="result-teach-heart-span">0</span>
+                    <div class="result-teach-staff-div">
+                        <ul class="result-student-allResult">
+                            <li class="result-A"></li>
+                            <li class="result-B"></li>
+                            <li class="result-C"></li>
+                            <li class="result-D"></li>
+                            <li class="result-E"></li>
+                            <li class="result-F"></li>
+                            <li class="result-G"></li>
+                            <li class="result-H"></li>
+                        </ul>
+                    </div>
+                    <ul class="result-teach-allResult">
+                        <li ng-repeat="XValue in initArr track by $index">{{XValue.name}}</li>
+                    </ul>
+                </div>
+                <div class="result-teach-true-result">
+                    <span class="result-teach-text"></span>
+                    <span class="result-teach-trueSelect"
+                          ng-repeat="teacherSelectItem in trueSelectArry track by $index">{{teacherSelectItem}}</span>
+                </div>
+                <div class="result-teach-end-question" ng-click="answerEndFun()"></div>
+                <div class="result-teach-restart-question" ng-click="answerAgainFun()"></div>
+            </div>
+        </div>
+        <!--学生端答题卡-->
+        <div class="answer-student-wrapDiv" style="display: none;">
+            <div class="answer-teach-header">
+                <div class="answer-teach-header-left">
+                    <span class="answer-teach-headerImg"></span>
+                    <span class="answer-teach-header-left-grey"></span>
+                    <span class="answer-teach-header-left-green"></span>
+                </div>
+                <div></div>
+            </div>
+            <div class="answer-teach-content">
+                <ul class="answer-teach-optionUl">
+                    <li class="answer-student-lis"
+                        ng-repeat="selectItem in teacherResult track by $index"
+                        ng-click="changeColorStu($index)">{{selectItem.name}}
+                    </li>
+                </ul>
+
+                <div class="reuslt-submit" ng-click="resulSubmit()"></div>
+                <p class="changeOneAnswer"></div>
+        </div>
+        </div>
+        <div class="result-student-wrapDiv">
+            <div class="result-teach-header">
+                <div class='result-teach-header-left'>
+                    <span class="result-teach-headerImg"></span>
+                    <span class="result-teach-header-left-grey"></span>
+                    <span id="result-teach-mytimes"></span>
+                </div>
+                <p class="result-teach-close" style=" display:none"></p>
+            </div>
+            <div class="result-teach-content">
+                <div class="answersPeople-div">
+                    <div class="answersPeople"></div>
+                    <p class="roleNum"></p>
+                </div>
+                <div class="trueRelstu-div">
+                    <div class="result-teach-accuracy-right"></div>
+                    <p class="trueRelstu">
+                    <p>
+                    <p class="per-cent">%</p>
+                </div>
+
+                <div class="result-teach-coordinate-div">
+                    <span class="result-teach-heart-span">0</span>
+                    <div class="result-teach-staff-div">
+                        <ul class="result-my-allResult">
+                            <li class="result-A-stu"></li>
+                            <li class="result-B-stu"></li>
+                            <li class="result-C-stu"></li>
+                            <li class="result-D-stu"></li>
+                            <li class="result-E-stu"></li>
+                            <li class="result-F-stu"></li>
+                            <li class="result-G-stu"></li>
+                            <li class="result-H-stu"></li>
+                        </ul>
+                    </div>
+                    <ul class="result-teach-allResult">
+                        <li ng-repeat="XValue in teacherResult track by $index">{{XValue.name}}</li>
+                    </ul>
+                </div>
+                <div class="result-teach-true-result">
+                    <span class="result-teach-true-result-trueText"></span>
+                    <span class="result-teach-trueSelect"
+                          ng-repeat="teacherSelectItem in showTeacher track by $index">{{teacherSelectItem}}</span>
+                </div>
+                <div class="result-teach-true-result">
+                    <span class="result-teach-true-result-myText"></span>
+                    <span class="result-teach-trueSelect"
+                          ng-repeat="mySelectArryItem in mySelectArry track by $index">{{mySelectArryItem}}</span>
+                </div>
+            </div>
+        </div>
+        <!--老师端转盘-->
+        <div class="dial-teachComponent-bg">
+            <div class="dial-teachComponent-pointer-button" ng-click="dialTurnHandel()"></div>
+            <div class="dial-teachComponent-turntable"></div>
+            <p class="dialCloseP" ng-click="dialCloseFun()"></p>
+        </div>
+        <!--老师端抢答器-->
+        <div class="responder-circle" style="display: none;">
+            <canvas id="myCanvas"></canvas>
+
+            <div class="responder-black-circle"></div>
+            <div class="responder-begin-circle" ng-click="beginResponder()">
+
+            </div>
+            <div class="responder-close-img" ng-click="closeResponder()"></div>
+            <div class="responder-restart-img" ng-click="restartResponder()"></div>
+        </div>
+        <!--学生端抢答器-->
+        <div class="responder-circle-student" style="display: none;">
+            <div class="responder-black-circle-student"></div>
+            <div class="responder-begin-circle-student" ng-click="studentQiangDa()"></div>
+        </div>
+        <article id="content" class="lc-container add-position-relative add-fl phone">
+            <div id="lc-full-vessel" class="add-position-relative"
+                 style="width: 100%;height: 100%;">
+                <div style="display: none;" id="main-video"><!--big videos--></div>
+                <div id="white_board_outer_layout" class="white-board-outer-layout"> <!--白板最外层包裹-->
+
+                    <div id="big_literally_wrap" class="big-literally-wrap">  <!--白板内层包裹区域-->
+
+                        <div id="scroll_literally_container" class="overflow-hidden aaa"
+                             style="display: none;">
+                            <div id="big_literally_vessel"></div><!--白板区域-->
+                        </div>
+                        <!--动态PPT插件-is-->
+                        <div ng-show="!roomPage.flag.isShow.isCourseFile"
+                             class="aynamic-ppt-conwrap add-position-absolute-top0-left0"
+                             id="aynamic_ppt_newppt">
+                            <div class="ppt-vessel" id="ppt_vessel_newppt">
+                                <div class="ppt-zoom-container" id="ppt_zoom_container_newppt">
+                                    <div id="contentHolderNewppt" class="aynamic-ppt-container"
+                                         style="width: 100%;height: 100%;">
+                                        <video id="phone_video_play_newppt"
+                                               class="phone-video-play-newppt-container"
+                                               poster="./plugs/literally/lib/img/transparent_bg.png"></video>
+                                        <iframe id="newppt_frame" src="" name="myframe" width="100%"
+                                                height="100%"
+                                                style="width: 100%;height: 100%;"></iframe>
+                                        <div id="preloader_newppt"
+                                             class="ppt-loading-container add-position-absolute-top0-left0"
+                                             style="display: none;">
+                                        </div>
+                                        <div id="ppt_not_click_newppt"
+                                             class="add-position-absolute-top0-left0"
+                                             style="width: 100%;height: 100%;z-index: 99;display: none;"></div>
+                                        <div id="ppt_supernatant"
+                                             class="add-position-absolute-top0-left0"
+                                             style="width: 100%;height: 100%;z-index: 99;display: none;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--h5课件-->
+                        <div id="h5FileWrap" ng-show="roomPage.flag.isShow.isH5File"
+                             class="h5-file-wrap add-position-absolute-top0-left0">
+                            <iframe allowFullScreen="true" id="h5DocumentFrame" scrolling="no"
+                                    src="" name="h5FileFrame"></iframe>
+                            <div id="H5FileSupernatant" class="student-disabled"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--白板下面工具条-->
+                <div class="ipad header-left-page-time-container clear-float add-fr no-permission opacity-init role-student-hide"
+                     id="page_wrap" ng-show="roomPage.flag.isShow.isCourseFile"
+                     style="z-index: 102;">
+                    <div class="h-page-container">
+                        <div class="h-page-next-prev-container">
+	                			<span class="lc-tool-wrap">
+	                				<button class="lc-tool-icon-wrap page-ipad add-fl arrow-wrap lc-prev-page "
+                                            data-set-disabled="yes" ng-click="page.prevPage()"
+                                            disabled="disabled" id="prev_page">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+									<div class="lc-tool-icon-wrap  page-ipad add-fl page-print not-active">
+										<span class="page-print-content"><span id="curr_page"
+                                                                               class="curr-page">1</span><span
+                                                class="h-page-print-oblique">/</span><span
+                                                id="all_page">1</span></span>
+									</div>
+									<button class="lc-tool-icon-wrap page-ipad  page-ipad add-fl arrow-wrap lc-next-page  "
+                                            data-set-disabled="yes" disabled="disabled"
+                                            ng-click="page.nextPage()" id="next_page">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+									<button class=" lc-tool-icon-wrap   page-ipad add-fl add-page lc-add-page   "
+                                            data-set-disabled="yes" style="display: none;"
+                                            id="add_literally_page"
+                                            ng-click="page.literallyAddPage()">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+	                			</span>
+                            <button class=" lc-tool-icon-wrap  page-ipad lc-full no"
+                                    id="lc_full_btn" ng-click="lc.lcLaunchFullscreen()">
+                                <span class="lc-tool-icon-text add-nowrap"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--动态PPT下面的工具条-->
+                <div class="ipad header-left-page-time-container clear-float add-fr no-permission opacity-init role-student-hide"
+                     id="ppt_page_wrap" ng-show="!roomPage.flag.isShow.isCourseFile"
+                     style="z-index: 102;">
+                    <div class="h-page-container">
+                        <div class="h-page-next-prev-container">
+	                			<span class="lc-tool-wrap">
+	                				<button class="lc-tool-icon-wrap page-ipad add-fl arrow-wrap lc-prev-page "
+                                            id="ppt_prev_page_slide" data-plugs="newppt"
+                                            data-set-disabled="yes" ng-click="page.prevPptPage()"
+                                            disabled="disabled">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+									<div class="lc-tool-icon-wrap  page-ipad add-fl page-print not-active">
+										<span class="page-print-content"><span id="curr_ppt_page"
+                                                                               class="curr-page">1</span><span
+                                                class="h-page-print-oblique">/</span><span
+                                                id="all_ppt_page">1</span></span>
+									</div>
+									<button class="lc-tool-icon-wrap page-ipad  page-ipad add-fl arrow-wrap lc-next-page  "
+                                            data-plugs="newppt" data-set-disabled="yes"
+                                            disabled="disabled" ng-click="page.nextPptPage()"
+                                            id="ppt_next_page_slide">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+	                			</span>
+                            <button class=" lc-tool-icon-wrap  page-ipad lc-full no"
+                                    id="ppt_lc_full_btn" data-plugs="newppt"
+                                    ng-click="lc.lcLaunchFullscreen()">
+                                <span class="lc-tool-icon-text add-nowrap"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--h5课件下面的工具条-->
+                <div class="ipad header-left-page-time-container clear-float add-fr no-permission opacity-init role-student-hide"
+                     id="h5_page_wrap" ng-show="roomPage.flag.isShow.isH5File"
+                     style="z-index: 102;">
+                    <div class="h-page-container">
+                        <div class="h-page-next-prev-container">
+	                			<span class="lc-tool-wrap">
+	                				<button class="lc-tool-icon-wrap page-ipad add-fl arrow-wrap lc-prev-page "
+                                            id="h5_prev_page" data-plugs="newppt"
+                                            data-set-disabled="yes" ng-click="page.prevPptPage()"
+                                            disabled="disabled">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+									<div class="lc-tool-icon-wrap  page-ipad add-fl page-print not-active">
+										<span class="page-print-content"><span id="curr_h5_page"
+                                                                               class="curr-page">1</span><span
+                                                class="h-page-print-oblique">/</span><span
+                                                id="all_h5_page">1</span></span>
+									</div>
+									<button class="lc-tool-icon-wrap page-ipad  page-ipad add-fl arrow-wrap lc-next-page  "
+                                            data-plugs="newppt" data-set-disabled="yes"
+                                            disabled="disabled" ng-click="page.nextPptPage()"
+                                            id="h5_next_page">
+										<span class="lc-tool-icon-text add-nowrap"></span>
+									</button>
+	                			</span>
+                            <button class=" lc-tool-icon-wrap  page-ipad lc-full no"
+                                    id="h5_lc_full_btn" data-plugs="newppt"
+                                    ng-click="lc.lcLaunchFullscreen()">
+                                <span class="lc-tool-icon-text add-nowrap"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--白板工具-->
+                <div id="pad-draw-tool" class="pad-draw-tool no-permission">
+                    <!--<ul class="tool-box">
+
+                    </ul>-->
+                    <ul class="tool-box" id="header_tool_vessel">
+                        <!--			<li class="role-student-hide" style="display: none;">
+                                        <button class="btn-tool laser-tool" id="tool_laser"></button>
+                                    </li>-->
+                        <li class="tl-tool tl-tool-teacher">
+                            <button class="btn-tool tool-teacher " data-tool="teacherTool"
+                                    data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_mouse_phone" id="tool_teacher"
+                                    ng-click="teacherToolChoose()">
+                                <ul class="teach-box-left">
+                                    <li class="answer-implement-bg"
+                                        ng-click="answerShowHandel()"></li>
+                                    <li class="turnplate-implement-bg"
+                                        ng-click="turnplateShowHandel()"></li>
+                                    <li class="timer-implement-bg"
+                                        ng-click="timerShowHandel()"></li>
+                                    <li class="responder-implement-bg"
+                                        ng-click="responderShowHandel()"
+                                        style="display: none;"></li>
+                                </ul>
+                            </button>
+                        </li>
+                        <li class="tl-tool">
+                            <button class="btn-tool tool-mouse active" data-tool="mousePhone"
+                                    data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_mouse_phone" id="tool_mouse">
+                                <span class="tool-img-wrap tool-mouse-icon"></span>
+                            </button>
+                        </li>
+
+                        <li class="tl-tool">
+                            <button class="btn-tool tool-pencil  " data-tool="pencilPhone"
+                                    data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_pencil_phone" id="tool_pencil">
+                                <span class="tool-img-wrap tool-pencil-icon"></span>
+                            </button>
+                        </li>
+
+                        <li class="tl-tool">
+                            <button class="btn-tool eraser-tool" id="tool_eraser"></button>
+                        </li>
+                        <li class="t1-color">
+                            <button class="btn-tool color-tool black" data-color="000000"
+                                    data-open="false">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+                        <li class="t1-color">
+                            <button class="btn-tool color-tool red" data-color="ff0000"
+                                    data-open="false">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+                        <li class="t1-color">
+                            <button class="btn-tool color-tool yellow" data-color="fcd000"
+                                    data-open="false">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+                        <li class="t1-color">
+                            <button class="btn-tool color-tool blue" data-color="0488f8"
+                                    data-open="false">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+                        <li class="tool-color-top">
+                            <button class="tool-pencil-size pencil-size-small " data-pencil-size="5"
+                                    data-text-size="12" data-eraser-size="50" data-shape-size="5">
+                                <span class="small-size"></span>
+                            </button>
+                        </li>
+                        <li class="tool-color-top">
+                            <button class="tool-pencil-size pencil-size-middle"
+                                    data-pencil-size="15" data-text-size="28" data-eraser-size="100"
+                                    data-shape-size="15">
+                                <span class="middle-size"></span>
+                            </button>
+                        </li>
+                        <li class="tool-color-top">
+                            <button class="tool-pencil-size pencil-size-big" data-pencil-size="30"
+                                    data-text-size="45" data-eraser-size="150" data-shape-size="30">
+                                <span class="big-size"></span>
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!--手机端翻页按钮-->
+                <button class="lc-tool-icon-wrap page-phone no-permission  arrow-wrap lc-prev-page opacity-init page-phone-none"
+                        data-set-disabled="yes" style=" z-index: 101;" ng-click="page.prevPage()"
+                        disabled="disabled" id="prev_page_phone">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+                <button class="lc-tool-icon-wrap page-phone  no-permission  arrow-wrap lc-next-page opacity-init page-phone-none"
+                        data-set-disabled="yes" style=" z-index: 101;" ng-click="page.nextPage()"
+                        disabled="disabled" id="next_page_phone">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+                <button class=" lc-tool-icon-wrap page-phone  no-permission   add-page lc-add-page opacity-init page-phone-none"
+                        data-set-disabled="yes" style="display: none; z-index: 101;"
+                        id="add_literally_page_phone" ng-click="page.literallyAddPage()">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+
+                <!--手机端动态ppt翻页按钮-->
+                <button class="lc-tool-icon-wrap page-phone no-permission  arrow-wrap lc-prev-page opacity-init page-phone-none"
+                        data-set-disabled="yes" data-plugs="newppt" disabled="disabled"
+                        style=" z-index: 110;" id="prev_page_phone_slide">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+                <button class="lc-tool-icon-wrap page-phone  no-permission  arrow-wrap lc-next-page opacity-init page-phone-none"
+                        data-set-disabled="yes" data-plugs="newppt" disabled="disabled"
+                        style=" z-index: 110;" id="next_page_phone_slide">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+
+                <!--手机端h5课件翻页按钮-->
+                <button class="lc-tool-icon-wrap page-phone no-permission  arrow-wrap lc-prev-page opacity-init page-phone-none"
+                        data-set-disabled="yes" disabled="disabled" style=" z-index: 110;"
+                        id="prev_page_phone_h5">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+                <button class="lc-tool-icon-wrap page-phone  no-permission  arrow-wrap lc-next-page opacity-init page-phone-none"
+                        data-set-disabled="yes" disabled="disabled" style=" z-index: 110;"
+                        id="next_page_phone_h5">
+                    <span class="lc-tool-icon-text add-nowrap"></span>
+                </button>
+
+
+                <!--手机端工具-->
+                <div id="lc_tool_container"
+                     class="lc-tool-container clear-float add-position-absolute-top0-left0 no-permission opacity-init"
+                     style="z-index: 200;">
+                    <ul class="add-fl clear-float h-tool">
+                        <li class="tl-tool">
+                            <button class="header-tool tool-mouse active" data-tool="mousePhone"
+                                    data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_mouse_phone" id="tool_mouse_phone">
+                                <span class="tool-img-wrap tool-mouse-icon"></span>
+                            </button>
+                        </li>
+                        <li class="tl-color">
+                            <button class="header-tool tool-color black" data-open="false"
+                                    data-color="000000">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+                        <li class="tl-color">
+                            <button class="header-tool tool-color red" data-open="false"
+                                    data-color="ff0000">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+
+                        <li class="tl-color">
+                            <button class="header-tool tool-color yellow" data-open="false"
+                                    data-color="fcd000">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+
+                        <li class="tl-color">
+                            <button class="header-tool tool-color blue" data-open="false"
+                                    data-color="0488f8">
+                                <span class="color"></span>
+                            </button>
+                        </li>
+
+
+                        <li class="tl-tool active">
+                            <button class="header-tool tool-pencil  tool-more"
+                                    data-tool="pencilPhone" data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_pencil_phone" id="tool_pencil_phone">
+                                <span class="tool-img-wrap tool-pencil-icon"></span>
+                            </button>
+                        </li>
+
+                        <li class="tl-tool">
+                            <button class="header-tool tool-eraser" data-tool="eraserPhone"
+                                    data-open="false" data-change-ico="true"
+                                    data-lc-event="tool_eraser_phone" id="tool_eraser_phone">
+                                <span class="tool-img-wrap tool-eraser-icon"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+    </article>
+</section>
+
+
+<script type="text/javascript" charset="UTF-8"
+        src="./angular/phone/phoneController.js?t=2017072803"></script>
+
+</body>
+</html>

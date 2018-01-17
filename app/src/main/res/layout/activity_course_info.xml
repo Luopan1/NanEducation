@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="www.test720.com.naneducation.activity.CourseInfoActivity">
+
+    <RelativeLayout
+        android:id="@+id/TitleRelative"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/fanhuiRelative"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:src="@mipmap/fanhui"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            tools:text="标题"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/shareImage"
+            android:layout_width="16dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="51dp"
+            android:src="@drawable/fenxiang"/>
+
+        <ImageView
+            android:id="@+id/juBaoImage"
+            android:layout_width="16dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:src="@drawable/xuanxaing"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_line"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/TitleRelative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_10"
+                        >
+
+                        <ImageView
+                            android:id="@+id/descriptionImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="158dp"
+                            android:scaleType="centerCrop"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp">
+
+                            <www.test720.com.naneducation.view.CircleImageView
+                                android:id="@+id/teacherPhoto"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"/>
+
+                            <TextView
+                                android:id="@+id/teacherName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_toRightOf="@+id/teacherPhoto"
+                                android:maxLength="20"
+                                android:textColor="@color/black"
+                                tools:text="范美忠"/>
+
+                            <TextView
+                                android:id="@+id/cousePrices"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/teacherName"
+                                android:layout_below="@+id/teacherName"
+                                android:layout_marginTop="5dp"
+                                android:layout_toRightOf="@+id/teacherPhoto"
+                                android:drawableLeft="@drawable/qian"
+                                tools:text="10:00"/>
+
+                            <TextView
+                                android:id="@+id/BaoMingCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:drawableLeft="@drawable/baomingren"
+                                android:drawablePadding="3dp"
+                                tools:text="报名人数：108人"/>
+
+                            <TextView
+                                android:id="@+id/courseDonation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/BaoMingCount"
+                                android:layout_marginTop="5dp"
+                                android:textColor="@color/base_color"
+                                tools:text="蒙牛赞助1元   伊利赞助0.5元"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:background="@color/gray_line"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="课程描述"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/courseDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            tools:text="鲲鹏展翅九万里。扶摇直上九重天。庄子的这句话九重天。庄子的这句九重天。庄子的这句九重天。庄子的这句九重天。庄子的这句九重天。庄子的这句九重天。庄子的这句，一万人读就有一万种理解."/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="讲师介绍"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/teacherDescripition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            tools:text="范美忠，毕业于北京师范大学历史系，长期任职于基础教育领域，对中文科教育有独到的简见解和研究。"/>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@color/system_color"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="开课时间"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/courseOnTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            tools:text="2018-09-28 20:00"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="课程时长"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/courseTimeLength"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            tools:text="1小时"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="课程分类"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/coureSortKind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            tools:text="语文"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="适应人群"
+                            android:textColor="@color/base_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/CourseCanStudyMan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            tools:text="5-12岁"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@color/system_color"/>
+
+                    <RelativeLayout
+                        android:id="@+id/titleRelative"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x35"
+                        android:layout_marginRight="@dimen/x35"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:id="@+id/titleLinear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/x15"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/base_color_circle"/>
+
+                            <TextView
+                                android:id="@+id/about_recmond"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/x50"
+                                android:layout_marginRight="@dimen/x50"
+                                android:text="相关推荐"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/base_color_circle"/>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recommendRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="70dp"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:id="@+id/already_not_on"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/system_color"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="已报名"
+                android:textColor="@color/white"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/already_yes_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/colocationRelative"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/colocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/btn_compassion_pre"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="收藏"
+                    android:textColor="#FE5F52"
+                    android:textSize="17sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/enterLiveBroadCastRelative"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/base_color"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/intoLiveBroadCastTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="进入直播课堂"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

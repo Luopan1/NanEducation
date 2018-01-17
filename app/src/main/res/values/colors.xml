@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="system_color">#E6E6E6</color>
+    <color name="base_color">#009CFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF2626</color>
+    <color name="gray_line">#C2C2C2</color>
+    <color name="black">#000000</color>
+    <color name="blue">#0310FE</color>
+    <color name="textcolor">#626262</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="deep_back">#636D82</color>
+    <color name="black_gray">#F4F4F4</color>
+    <color name="balck">#000000</color>
+    <color name="cl_default">#424242</color>
+    <color name="cl_error">#ffffff</color>
+
+    <color name="huifang">#FEC839</color>
+    <color name="yugao">#7CC2F4</color>
+    <color name="mianfei">#F37877</color>
+    <color name="taoke">#5B7BE0</color>
+    <color name="text_color_thin">#414141</color>
+    <color name="yijieshu">#ff666666</color>
+
+
+    <color name="color_unit">#F0F0F0</color>
+    <color name="color_item_bg">#FFFFFF</color>
+    <color name="color_text_unselected">#B0B0B0</color>
+    <color name="color_desc">#666666</color>
+    <color name="color_result">#57C5E8</color>
+    <color name="color_bg">#b0000000</color>
+    <color name="color_gold">#ffda53</color>
+    <color name="deep_orange">#EF9153</color>
+    <color name="translucent_background">#00000000</color>
+
+    <color name="wujie">#2b2b2b</color>
+    <color name="color_black_666666">#666666</color>
+    <color name="color_message_default_bg">#e9ecf0</color>
+    <color name="im_list_select_hover">#dbdbdb</color>
+
+    <!-- 调色盘 -->
+    <color name="color_red_d1021c">#d1021c</color>
+    <color name="color_yellow_fddc01">#fddc01</color>
+    <color name="color_green_7dd21f">#7dd21f</color>
+    <color name="color_blue_228bf7">#228bf7</color>
+    <color name="color_purple_9b0df5">#9b0df5</color>
+    <color name="color_white_cccccc">#cccccc</color>
+    <color name="navigationBarColor">#2196F3</color>
+    <color name="color_blue_1081ea">#1081ea</color>
+    <color name="color_activity_blue_bg">#389fff</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_white_alpha">#ccffffff</color>
+    <color name="grey">#333333</color>
+
+    <color name="color_white_66ffffff">#66ffffff</color>
+    <color name="color_black_ff666666">#ff666666</color>
+    <color name="color_blue_0888ff">#0888ff</color>
+    <color name="color_gray_d9d9d9">#d9d9d9</color>
+    <color name="color_b3b3b3">#b3b3b3</color>
+    <color name="color_black_b3000000">#b3000000</color>
+    <color name="color_black_333333">#333333</color>
+    <color name="color_black_ff999999">#ff999999</color>
+    <color name="color_black_999999">#999999</color>
+    <color name="color_grey_eaeaea">#eaeaea</color>
+    <color name="color_grey_555555">#555555</color>
+    <color name="color_red_ccfa3c55">#ccfa3c55</color>
+    <color name="color_split_line_d9d9d9">#d9d9d9</color>
+    <color name="grey_white_has_alpha">#66FAFAFA</color>
+    <color name="split_line_grey_color_d9d9d9">#D9D9D9</color>
+    <color name="input_panel_text_color_757572">#757572</color>
+    <color name="color_gray_666666">#666666</color>
+    <color name="action_bar_tittle_color_555555">#555555</color>
+    <color name="color_blue_238efa">#238efa</color>
+    <color name="color_background">#ECF1F5</color>
+    <color name="color_gray_bfc2c5">#bfc2c5</color>
+</resources>

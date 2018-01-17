@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="classroomsdk-release-">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/jars/libs/android-async-http-1.4.8.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/jars/libs/audio_device_java.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/jars/libs/base_java.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c4d4c5e55cc73d9dcd7f3690d64de106a919b771/output/jars/libs/libjingle_peerconnection_java.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

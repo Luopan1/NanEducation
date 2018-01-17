@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:paddingBottom="50dp"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/conpanyImage"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/conpanyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/conpanyImage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:text="助学"
+                android:textColor="@color/black"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:textColor="@color/text_color_thin"
+                android:id="@+id/Edition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/conpanyName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="当前版本1.0.0"/>
+
+            <TextView
+                android:lineSpacingExtra="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/text_color_thin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Edition"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="25dp"
+                android:text="\t\t助学APP是由成都鼎乐购商贸有限公司原创开发的教育信息综合平台，在互联网+教育的大环境下，公司专注做助学平台。你学习它（他、她）赞助，降低学习成本，降低择校择学路费。城市与乡村教育资源、特色互补，交换教育差距。
+\n\t\t线上直播、录播、套课，线下学校、教育机构让你一站找到所有学习问题，出门在外的家长可以线上为学子报名，放假外出的学子可以找到自己老师直播学习，为学生减负缩短学习时间。
+\n\t\t公司非常重视学子的童年，特推出团体活动让有爱心企业、个人、机构为学子创建、创新有益身心健康、有益教育的活动。让学习娱乐两不误。
+\n\t\t公司创新的赞助模式，让赞助商的赞助更加有意义，让教育从业者多元收入，让学子学习更有效，让家长真正减负。
+为了让大家真正喜欢这个平台，公司会不断完善服务，提高服务质量。我们的目标是花的更少学的更好。"/>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

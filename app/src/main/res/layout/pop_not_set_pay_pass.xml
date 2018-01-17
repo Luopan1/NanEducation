@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/x508"
+        android:layout_height="@dimen/x431"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/corner5_gray_frame"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x212"
+            android:background="@color/base_color">
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_margin="@dimen/x20"
+                android:src="@drawable/guanbi"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="您还未设置支付密码"
+                android:textColor="@color/white"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/gotoCZ"
+                android:layout_width="@dimen/x280"
+                android:layout_height="@dimen/x70"
+                android:background="@drawable/no_corners_base_color"
+                android:text="去设置"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

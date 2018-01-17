@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/x600"
+        android:layout_centerInParent="true"
+        android:background="@drawable/all_corners_white8_color">
+
+        <RelativeLayout
+            android:id="@+id/imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/x10"
+                android:src="@drawable/xiuxi"/>
+
+            <ImageView
+                android:id="@+id/guanbi"
+                android:layout_margin="@dimen/x10"
+                android:scaleType="centerInside"
+                android:src="@drawable/guanbi"
+                android:layout_width="35dp"
+                android:layout_height="35dp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/x57"
+            android:text=" 你已经持续上了90分钟的课程\n\t\t\t\t\t\t\t\t请注意休息！"
+            android:textColor="#666666"
+            android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/x67"
+            android:layout_below="@+id/text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/x50"
+            android:background="@drawable/all_corners_base_color"
+            android:text="我知道了"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+</RelativeLayout>

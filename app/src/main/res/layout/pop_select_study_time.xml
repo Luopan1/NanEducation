@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/all"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:text="全部"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/commit"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40dp"
+                android:gravity="center"
+                android:text="确定"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="22dp"
+            android:background="@color/gray_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/firstLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/xingqi1"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期一"/>
+
+                <TextView
+                    android:id="@+id/xingqi2"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期二"/>
+
+                <TextView
+                    android:id="@+id/xingqi3"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期三"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/xingqi4"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期四"/>
+
+                <TextView
+                    android:id="@+id/xingqi5"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期五"/>
+
+                <TextView
+                    android:id="@+id/xingqi6"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期六"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/xingqi7"
+                    android:layout_width="80dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/all_corners_system_color"
+                    android:gravity="center"
+                    android:text="星期日"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/gray_line"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <RelativeLayout
+                android:id="@+id/start_relatvie"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="22dp"
+                android:background="@drawable/fram_base_color">
+
+                <TextView
+                    android:id="@+id/start_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="-10dp"
+                    android:drawableRight="@android:drawable/arrow_down_float"
+                    android:gravity="center"
+                    android:paddingRight="15dp"
+                    android:text="00:00"
+                    android:textColor="@color/base_color"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/zhi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="至"
+                android:textColor="@color/textcolor"/>
+
+            <RelativeLayout
+                android:id="@+id/end_Relative"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/fram_base_color">
+
+                <TextView
+                    android:id="@+id/end_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="-10dp"
+                    android:drawableRight="@android:drawable/arrow_down_float"
+                    android:gravity="center"
+                    android:paddingRight="15dp"
+                    android:text="23:59"
+                    android:textColor="@color/base_color"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/spaceRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"></RelativeLayout>
+
+</LinearLayout>

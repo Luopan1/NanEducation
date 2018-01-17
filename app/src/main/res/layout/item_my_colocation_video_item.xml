@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/couseImage"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:src="@color/base_color"/>
+
+        <TextView
+            android:id="@+id/courseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/couseImage"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="18dp"
+            android:layout_toRightOf="@+id/couseImage"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="范美忠将庄周子之无用之用"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+
+        <www.test720.com.naneducation.view.CircleImageView
+            android:id="@+id/course_teacher_image"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_below="@+id/courseTitle"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/couseImage"
+            android:src="@color/base_color"/>
+
+        <TextView
+            android:id="@+id/course_teacher_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/courseTitle"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@+id/course_teacher_image"
+            android:text="杨子建"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/couseImage"
+            android:layout_alignLeft="@+id/courseTitle"
+            android:layout_toRightOf="@+id/couseImage"
+            android:text="2017.08.30  10:00"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

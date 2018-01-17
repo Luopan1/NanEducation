@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white"
+                android:minWidth="@dimen/x330"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/x25">
+
+    <RelativeLayout
+        android:id="@+id/imageRelative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/courseImage"
+            android:layout_width="@dimen/x330"
+            android:layout_height="@dimen/x215"
+            android:scaleType="centerCrop"
+            android:src="@color/base_color"/>
+
+        <TextView
+            android:id="@+id/courseKind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#7FC1F3"
+            android:gravity="center"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="预告"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <TextView
+        android:maxEms="9"
+        android:id="@+id/studyCourseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageRelative"
+        android:layout_marginTop="@dimen/dp_10"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        tools:text="重庆市合川区合阳街道办"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/imageRelative"
+        android:layout_below="@+id/studyCourseName"
+        android:layout_marginTop="5dp">
+
+        <www.test720.com.naneducation.view.CircleImageView
+            android:id="@+id/teacherPhoto"
+            android:layout_width="@dimen/x60"
+            android:layout_height="@dimen/x60"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/teacherName"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x45"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_toRightOf="@+id/teacherPhoto"
+            android:textColor="#2F2F2F"
+            android:textSize="@dimen/sp_16"
+            tools:text="杨子建建建"/>
+
+        <RelativeLayout
+            android:layout_toRightOf="@+id/teacherName"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/x30"
+                android:id="@+id/free"
+                android:layout_centerVertical="true"
+                android:src="@drawable/huiqian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:marqueeRepeatLimit="3"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4295CB"
+                tools:text="3100.00"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

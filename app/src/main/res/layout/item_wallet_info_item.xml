@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minWidth="65dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="15dp"
+            android:text="充值"
+            android:textColor="@color/black"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/costTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="2017-09-08  08:30"/>
+
+        <TextView
+            android:id="@+id/costMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/title"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18dp"
+            android:text="+100.00元"
+            android:textColor="@color/base_color"
+            android:textSize="17sp"
+            />
+
+        <TextView
+            android:id="@+id/statue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/costMoney"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/text_color_thin"
+            android:textSize="16sp"
+            tools:text="冻结中"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_line"/>
+</LinearLayout>

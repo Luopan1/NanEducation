@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:minHeight="85dp"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
+
+    <ImageView
+        android:id="@+id/schoolImage"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="18dp"
+        />
+
+    <TextView
+        android:maxEms="8"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:id="@+id/schoolName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/schoolImage"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="12dp"
+        android:layout_toRightOf="@+id/schoolImage"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:text="爱宝贝教育"
+        />
+
+    <TextView
+        android:id="@+id/schoolDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/schoolName"
+        android:layout_below="@+id/schoolName"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/textcolor"
+        android:textSize="15sp"
+        tools:text="全心全意全心全意全心全意全心全意全心全意全心全意全心全意全心全意全心全意全心全意"/>
+
+    <RelativeLayout
+        android:id="@+id/schoolDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/schoolName"
+        android:layout_marginRight="18dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/juli"
+            android:drawablePadding="3dp"
+            android:text="1.1Km"
+            android:textColor="#FFCD40"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

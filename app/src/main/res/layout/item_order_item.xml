@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <TextView
+                android:maxLength="8"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:id="@+id/orderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:text="学大教育"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/orderKind"
+                android:layout_width="60dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/orderTitle"
+                android:background="@drawable/all_corners_pink_color"
+                android:gravity="center"
+                android:text="培训机构"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/orderStatue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="18dp"
+                android:text="已付款"
+                android:textColor="#FF9773"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_line"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="85dp">
+
+            <ImageView
+                android:id="@+id/orderImage"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:scaleType="centerCrop"
+                android:src="@color/base_color"/>
+
+            <TextView
+                android:id="@+id/orderThem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/orderImage"
+                android:text="一对一辅导"
+                android:textColor="@color/black"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/orderSignUpName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/orderThem"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/orderImage"
+                android:text="报名人:向夏义 王思文"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/orderSignUpName"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/orderDelete"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="18dp"
+                    android:background="@drawable/all_corners_yellow_color"
+                    android:gravity="center"
+                    android:text="删除"
+                    android:textColor="@color/white"
+                    />
+
+
+                <TextView
+                    android:id="@+id/orderRefund"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="18dp"
+                    android:background="@drawable/all_corners_3_yellow_color"
+                    android:gravity="center"
+                    android:text="退款"
+                    android:textColor="@color/white"/>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

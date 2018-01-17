@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dp_10"
+              android:minWidth="@dimen/x330"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/x25">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/courseImage"
+            android:layout_width="@dimen/x330"
+            android:layout_height="@dimen/x215"
+            android:scaleType="fitCenter"
+            app:riv_border_color="@android:color/transparent"
+            app:riv_border_width="2dip"
+            app:riv_corner_radius="10dip"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+            />
+
+        <TextView
+            android:id="@+id/courseKind"
+            android:layout_width="@dimen/x90"
+            android:layout_height="@dimen/x40"
+            android:background="#7FC1F3"
+            android:gravity="center"
+            android:text="预告"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <TextView
+        android:maxEms="9"
+        android:id="@+id/studyCourseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        tools:text="1111111"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <www.test720.com.naneducation.view.CircleImageView
+            android:id="@+id/teacherPhoto"
+            android:layout_width="@dimen/x60"
+            android:layout_height="@dimen/x60"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/teacherName"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x45"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/teacherPhoto"
+            android:textColor="#2F2F2F"
+            android:textSize="@dimen/sp_16"
+            tools:text="建杨养样"/>
+
+        <TextView
+            android:drawablePadding="5dp"
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#F05855"
+            tools:text="10.00"/>
+    </RelativeLayout>
+</LinearLayout>

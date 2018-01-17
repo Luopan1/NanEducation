@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/system_color"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/activityImage"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:src="@color/base_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:maxEms="10"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:id="@+id/activityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="成都同城单身聚会交友趴成都"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/statue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="审核中..."
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="17dp"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/activityAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:drawableLeft="@drawable/huodongdingwei"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:maxLength="8"
+                android:text="成都兰桂坊"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/activityDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:drawableLeft="@drawable/juli2"
+                android:drawablePadding="5dp"
+                android:text="1.5Km"
+                android:textSize="@dimen/sp_14"/>
+
+            <TextView
+                android:id="@+id/activityStatue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:drawableLeft="@drawable/shitai"
+                android:drawablePadding="5dp"
+                android:text="进行中"
+                android:textSize="@dimen/sp_14"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/all_corners_yellwo_color"
+            android:gravity="center"
+            android:text="修改信息"
+            android:textColor="@color/text_color_thin"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>

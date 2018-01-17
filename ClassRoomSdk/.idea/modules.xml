@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ClassRoomSdk.iml" filepath="$PROJECT_DIR$/ClassRoomSdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../EDUDemo.iml" filepath="$PROJECT_DIR$/../EDUDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../edudemo2/edudemo2.iml" filepath="$PROJECT_DIR$/../edudemo2/edudemo2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../edusdk/edusdk.iml" filepath="$PROJECT_DIR$/../edusdk/edusdk.iml" />
+    </modules>
+  </component>
+</project>

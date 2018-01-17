@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin_input_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#2C2C2C"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_grey_back"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edt_input_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="8"
+                android:background="@null"
+                android:hint="@string/say_something"
+                android:imeOptions="flagNoExtractUi"
+                android:lines="1"
+                android:paddingLeft="3dp"
+                android:textColor="#AAAAAA"
+                android:textColorHint="#AAAAAA"
+                android:textSize="24sp"/>
+
+            <ImageView
+                android:id="@+id/iv_chat"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/chat_normal"/>
+
+            <ImageView
+                android:id="@+id/iv_broad"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/keybraod"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/txt_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/send"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+        <!-- <TextView
+             android:id="@+id/txt_hand_up"
+             android:layout_width="80dp"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="10dp"
+             android:background="@drawable/round_back_red"
+             android:gravity="center"
+             android:padding="10dp"
+             android:text="@string/raise"
+             android:textColor="#FFFFFF" />-->
+
+        <GridView
+            android:id="@+id/chart_face_gv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:numColumns="14"
+            android:padding="10dp"
+            android:verticalSpacing="5dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">助学</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_start_page_">StartPage_Activity</string>
+    <string name="checkmeeting_error_3001">Server has expired!</string>
+    <string name="checkmeeting_error_3002">Account of the company has expired.</string>
+    <string name="checkmeeting_error_3003">The class has expired</string>
+    <string name="checkmeeting_error_4007" tools:ignore="StringEscaping">The classroom doesn\'t exist.</string>
+    <string name="checkmeeting_error_4008">Wrong Password.</string>
+    <string name="checkmeeting_error_4110">You need to be authenticated.Please enter password.</string>
+    <string name="checkroom_error_5006">Please use student address to enter the classroom</string>
+    <string name="checkmeeting_error_5001">直播被删除或过期</string>
+    <string name="checkmeeting_error_5002">直播不存在</string>
+    <string name="checkmeeting_error_5003">直播密码错误</string>
+    <string name="checkmeeting_error_5004">该直播需要密码，请输入密码</string>
+    <string name="checkmeeting_error_4109">Authentication Failed"</string>
+    <string name="checkmeeting_error_4103">The number of students has exceeded limit.</string>
+    <string name="checkmeeting_error_5005">协议格式不正确</string>
+    <string name="WaitingForNetwork">WaitingForNetwork</string>
+    <string name="meeting_password">password</string>
+    <string name="OK">Ok</string>
+    <string name="link_tip">链接</string>
+    <string name="remind">Remind</string>
+    <string name="logouts">Are you sure you want to exit?</string>
+    <string name="address">Please choose your country or region</string>
+    <string name="loading">Loading</string>
+    <string name="system">system</string>
+    <string name="teacher">teacher</string>
+    <string name="sure">sure</string>
+    <string name="cancel">cancel</string>
+    <string name="share_pad">share_pad</string>
+    <string name="join">Enter Classroom</string>
+    <string name="leave">Leave Classroom</string>
+    <string name="me">me</string>
+    <string name="joining_classroom">Entering class</string>
+    <string name="background">student pressed home button</string>
+    <string name="open_audio">Audio On</string>
+    <string name="close_audio">Audio Off</string>
+    <string name="candraw">Operation</string>
+    <string name="no_candraw">No Operation</string>
+    <string name="up_std">Video on</string>
+    <string name="down_std">Video off</string>
+    <string name="video_on">Video On</string>
+    <string name="video_off">Video Off</string>
+    <string name="raise">Raise Hand</string>
+    <string name="no_raise">Cancel your hands</string>
+    <string name="photograph">Take Photo</string>
+    <string name="selectphoto">Choose Photo</string>
+    <string name="ploadphoto">Upload Photo</string>
+    <string name="connected">Connecting to classroom</string>
+    <string name="userlist">Students List</string>
+    <string name="doclist">Teaching Material List</string>
+    <string name="medialist">Media List</string>
+    <string name="classdismiss">End of Class</string>
+    <string name="classroom_part_01">You are </string>
+    <string name="classroom_part_02"> minute late already. Time for Class!</string>
+    <string name="classbegin">Time for Class</string>
+    <string name="mute_all">Mute All</string>
+    <string name="send_gift_all">Reward All</string>
+    <string name="say_something">Say something</string>
+    <string name="send">send</string>
+    <string name="chat">chat</string>
+    <string name="close">close</string>
+    <string name="send_gift">Grant Trophy</string>
+    <string name="i_konw">I got it.</string>
+    <string name="make_sure_class_dissmiss">Are you sure you want to finish class？</string>
+    <string name="camera_hint">Please allow talkcloud camera to access your camera in the "Settings" option of your mobile phone.</string>
+    <string name="mic_hint">Please allow talkcloud access to your microphone in the "Settings" option of the mobile phone.</string>
+    <string name="fire_wall_alert">Network exception. Please close the antivirus software or firewall and re-enter</string>
+    <string name="udp_alert">Network exception, check the network environment and re-enter</string>
+    <string name="back_hint">TalkCloud executes in the background and clicks back to the classroom</string>
+    <string name="select_country">Please choose your country or region</string>
+    <string name="country_default">(Auto)</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

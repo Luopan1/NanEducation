@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="www.test720.com.naneducation.activity.ChangePassworldActivity">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x100">
+
+        <TextView
+            android:id="@+id/pwd"
+            android:layout_width="@dimen/x111"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="密码"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/pwdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_toLeftOf="@+id/seePassworld"
+            android:layout_toRightOf="@+id/pwd"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:inputType="textPassword"/>
+
+        <CheckBox
+            android:id="@+id/seePassworld"
+            android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/x53"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:button="@drawable/passworld_see_nosee"
+            android:inputType="textPassword"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x100">
+
+        <TextView
+            android:id="@+id/pwd1"
+            android:layout_width="@dimen/x111"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="密码"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/pwdEditText1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_toLeftOf="@+id/seePassworld1"
+            android:layout_toRightOf="@+id/pwd1"
+            android:background="@null"
+            android:hint="请确认密码"
+            android:inputType="textPassword"/>
+
+        <CheckBox
+            android:id="@+id/seePassworld1"
+            android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/x53"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:button="@drawable/passworld_see_nosee"
+            android:inputType="textPassword"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/comfirm"
+        android:text="确认"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:background="@drawable/all_corners_base_color"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+</LinearLayout>

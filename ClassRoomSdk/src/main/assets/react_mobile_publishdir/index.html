@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 100px;" id="all_root" data-appVersions="2.1.0">
+<head>
+    <title>TalkCloud</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="talk,http://www.talk-cloud.com">
+    <!--强制让文档的宽度与设备的宽度为1：1 ， 并且文档最大的宽度比例是1.0，且不允许用户点击屏幕放大浏览-->
+    <meta name="viewport"
+          content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <!--WebApp全屏模式隐藏地址栏-->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!--苹果强制全屏显示-->
+    <meta name="apple-touch-fullscreen" content="yes"/>
+    <!--强制全屏显示-->
+    <meta name="full-screen" content="yes"/>
+    <!--制定iphone中safari顶端的状态条的样式，（default：白色 ;  black:黑色，black-translucent：半透明）-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <!--告诉设备忽略将页面中的数字识别为电话号码-->
+    <meta name="format-detection" content="telephone=no"/>
+    <!--告诉设备忽略将页面中的地址识别-->
+    <meta name="format-detection" content="address=no"/>
+    <!--百度禁止转码-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!--如果安装了 Google Chrome Frame，则使用 GCF 来渲染页面，如果没有安装 GCF，则使用最高版本的 IE 内核进行渲染。-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <link href="./js/plugs/literally/css/tklc_core.min.css?versions=2017090411" rel="stylesheet">
+    <link href="./css/tkMain-1a2abf56.css" rel="stylesheet">
+</head>
+</head>
+<body class="normal" style="overflow: hidden; position: absolute;width: 100%;height: 100%;">
+<section id="tk_app" class="add-position-absolute-top0-left0" style="width: 100%;height: 100%;">
+</section>
+<div id="loadJs" style="display:none;"></div>
+<script>
+    ;(function () {
+        var sdkDevStr =  "false" ;
+        var appVersions =  "2.1.0" ;
+        var appVersionsTime =  "2017120622" ;
+        var sdkVersions =  "2.1.0" ;
+        var sdkVersionsTime =  "2017120622" ;
+        window.__SDKDEV__  = ( sdkDevStr === 'true' );
+        window.__APPVERSIONS__  = appVersions ;
+        window.__APPVERSIONSTIME__  = appVersionsTime ;
+        window.__SDKVERSIONS__  = appVersions ;
+        window.__SDKVERSIONSTIME__  = appVersionsTime ;
+    })();
+
+    //ios 延时加载
+ /*   window.GLOBAL = window.GLOBAL || {};
+    window.GLOBAL.loadScript =  window.GLOBAL.loadScript || function (url, callback) {
+            console.info('loadjs url:'+url);
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            if( typeof(callback) != "undefined"  && typeof callback === 'function' ){
+                if (script.readyState) {
+                    script.onreadystatechange = function () {
+                        if (script.readyState == "loaded" || script.readyState == "complete") {
+                            script.onreadystatechange = null;
+                            callback();
+                        }
+                    };
+                } else {
+                    script.onload = function () {
+                        callback();
+                    };
+                }
+            }
+            script.src = url;
+            var loadJs = document.getElementById('loadJs') || document.body ;
+            loadJs.appendChild(script);
+        }
+    var tksdkdebug_mobile = './libs/js/tk/tksdkdebug_mobile.js?versions=2.0.7&ts='+new Date().getTime() ;
+    var tklc_core = './js/plugs/literally/js/tklc_core.js?versions=2017090411&ts='+new Date().getTime() ;
+    var webpackAssets = './js/webpackAssets-baa889c2.js?ts='+new Date().getTime() ;
+    var common = './js/common-6cbf3a9a.js?ts='+new Date().getTime() ;
+    var tkMain = './js/tkMain-13745b3b.js?ts='+new Date().getTime() ;
+
+    setTimeout(  function(){
+        //window.GLOBAL.loadScript(tksdkdebug_mobile);
+        //window.GLOBAL.loadScript(tklc_core);
+        window.GLOBAL.loadScript(tkMain);
+    } , 10000);*/
+
+</script>
+<script type="text/javascript" charset="UTF-8"
+        src="./libs/js/tk/tksdk_mobile.js?versions=2.1.01001"></script>
+<script type="text/javascript" charset="UTF-8"
+        src="./js/plugs/literally/js/tklc_core.min.js?versions=20170904111001"></script>
+<script type="text/javascript" src="./js/webpackAssets-f3f86a13.js"></script>
+<script type="text/javascript" src="./js/common-4d7be95d.js"></script>
+<script type="text/javascript" src="./js/tkMain-1a2abf56.js"></script>
+</body>
+</html>

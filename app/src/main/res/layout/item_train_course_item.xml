@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/schoolImage"
+            android:layout_width="80dp"
+            android:layout_height="65dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@color/base_color"/>
+
+        <TextView
+
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_marginRight="15dp"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/schoolImage"
+            android:text="一对一辅导。小学1年级语文"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:background="@drawable/free_line"
+            android:id="@+id/oldPriece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/schoolImage"
+            android:text="￥20元"/>
+
+        <TextView
+            android:layout_toRightOf="@id/schoolImage"
+            android:layout_below="@+id/oldPriece"
+            android:id="@+id/newPriece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="￥15元"
+            android:layout_marginTop="5dp"
+            android:textColor="#FF7140"/>
+
+        <TextView
+            android:layout_below="@+id/schoolImage"
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/schoolImage"
+            android:layout_marginTop="25dp"
+            android:text="开课时间："
+            android:textColor="@color/base_color"/>
+
+        <TextView
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/schoolStudyTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text"
+            android:layout_toRightOf="@+id/text"
+            android:text="每周一、三、五  10:00"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:background="@color/system_color"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+
+</LinearLayout>
