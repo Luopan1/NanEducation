@@ -32,18 +32,10 @@ public class TrainCoursePlanFragment extends BaseFragment {
 
     public TrainCoursePlanFragment(TrainCourse.DataBean.DetailBean.PlanBean data) {
         this.data = data;
-        setData();
-    }
-
-    private void setData() {
-
     }
 
     public static TrainCoursePlanFragment getInstance(TrainCourse.DataBean.DetailBean.PlanBean data) {
-
-        if (fragment == null) {
-            fragment = new TrainCoursePlanFragment(data);
-        }
+        fragment = new TrainCoursePlanFragment(data);
         return fragment;
     }
 

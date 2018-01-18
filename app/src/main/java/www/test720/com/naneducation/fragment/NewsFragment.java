@@ -59,49 +59,44 @@ public class NewsFragment extends BaseFragment {
     }
 
     public static NewsFragment getNewsFragment(String i, boolean isshow) {
-        if (mNewsFragment == null) {
-            synchronized (NewsFragment.class) {
-                if (mNewsFragment == null) {
-                    mNewsFragment = new NewsFragment(i, isshow);
-                }
-            }
-        }
+        mNewsFragment = new NewsFragment(i, isshow);
         return mNewsFragment;
     }
 
     public static NewsFragment getNewsFragment(String i, boolean isshow, List<TrainCourse.DataBean.DetailBean.UserlistBean> userlists) {
-        if (mNewsFragment == null) {
-            synchronized (NewsFragment.class) {
-                if (mNewsFragment == null) {
-                    mNewsFragment = new NewsFragment(i, isshow, userlists);
-                }
-            }
-        }
+
+        mNewsFragment = new NewsFragment(i, isshow, userlists);
+
         return mNewsFragment;
     }
 
 
     @Override
     protected void initView() {
-
         mWebView.loadUrl(index);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        setAdapter();
+       /*
         if (iShowRecyclerView) {
-            mRecyclerView.setVisibility(View.VISIBLE);
+
         } else {
             mRecyclerView.setVisibility(View.GONE);
-        }
-
+        }*/
     }
 
     @Override
     protected void initData() {
-        setAdapter();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setAdapter();
     }
 
     private void setAdapter() {
-        if (mSignUpAdapter == null) {
-            mSignUpAdapter = new BaseRecyclerAdapter<TrainCourse.DataBean.DetailBean.UserlistBean>(getActivity(), userlists, R.layout.item_order_sign_up_item) {
+
+        mSignUpAdapter = new BaseRecyclerAdapter<TrainCourse.DataBean.DetailBean.UserlistBean>(getActivity(), userlists, R.layout.item_order_sign_up_item) {
                 @Override
                 public void convert(BaseRecyclerHolder holder, TrainCourse.DataBean.DetailBean.UserlistBean item, int position, boolean isScrolling) {
                     holder.setText(R.id.oderSignUpName, item.getUsername());
@@ -116,11 +111,6 @@ public class NewsFragment extends BaseFragment {
             });
             mRecyclerView.setNestedScrollingEnabled(false);
             mRecyclerView.setAdapter(mSignUpAdapter);
-        } else {
-            mSignUpAdapter.notifyDataSetChanged();
-        }
-
-
     }
 
     @Override

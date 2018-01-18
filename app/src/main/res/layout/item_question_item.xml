@@ -7,7 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:minHeight="38dp"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <TextView
@@ -27,7 +28,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:minHeight="42dp"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <TextView

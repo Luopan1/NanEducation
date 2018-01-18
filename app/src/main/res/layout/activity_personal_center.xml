@@ -105,7 +105,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/shouc"/>
+                android:src="@drawable/souc"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -264,7 +264,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/jif"/>
+                android:src="@drawable/jifen"/>
 
             <TextView
                 android:layout_width="wrap_content"

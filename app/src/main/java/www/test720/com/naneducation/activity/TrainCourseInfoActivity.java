@@ -83,7 +83,8 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
     private String mCourseId;
     private TrainCourse mTrainCourse;
     private PopupWindow mPopupWindow;
-
+    private PagerAdapter mAdapter;
+    int count = 0;
     @Override
     protected int getContentView() {
         return R.layout.activity_train_course_info;
@@ -91,6 +92,7 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
 
     @Override
     protected void initData() {
+        count++;
         HttpParams params = new HttpParams();
         params.put("cid", mCourseId);
         params.put("uid", Constans.uid);
@@ -139,20 +141,24 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
                         mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.system_color));
                     } else {
                         mImmediatelySignUp.setText("去评价");
+                        mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.base_color));
                     }
 
                 }
 
-                // TODO: 2017/11/9 不显示报名人列表
-                if (mTrainCourse.getData().getDetail().getIs_signup() == 1)
-                    mFragments.add(NewsFragment.getNewsFragment(UrlFactory.courseDetail + "/detailId/" + mCourseId, true, mTrainCourse.getData().getDetail().getUserlist()));
-                else
-                    mFragments.add(new NewsFragment(UrlFactory.courseDetail + "/detailId/" + mCourseId, false));
+                if (count == 1) {
+                    // TODO: 2017/11/9 不显示报名人列表
+                    if (mTrainCourse.getData().getDetail().getIs_signup() == 1) {
+                        mFragments.add(NewsFragment.getNewsFragment(UrlFactory.courseDetail + "/detailId/" + mCourseId, true, mTrainCourse.getData().getDetail().getUserlist()));
+                    } else {
+                        mFragments.add(new NewsFragment(UrlFactory.courseDetail + "/detailId/" + mCourseId, false));
+                    }
+                    mFragments.add(TrainCoursePlanFragment.getInstance(mTrainCourse.getData().getDetail().getPlan()));
+                    mFragments.add(TrainCourseEvaluateFragment.getInstance(mTrainCourse.getData().getDetail().getC_grade(), mTrainCourse.getData().getDetail().getIs_take()));
+                    mAdapter = new PagerAdapter(getSupportFragmentManager(), mFragments);
+                    mViewPager.setAdapter(mAdapter);
 
-
-                mFragments.add(TrainCoursePlanFragment.getInstance(mTrainCourse.getData().getDetail().getPlan()));
-                mFragments.add(TrainCourseEvaluateFragment.getInstance(mTrainCourse.getData().getDetail().getC_grade(), mTrainCourse.getData().getDetail().getIs_take()));
-                mViewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), mFragments));
+                }
 
             }
         });
@@ -354,9 +360,9 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
     protected void onResume() {
         super.onResume();
         if (EvalateCourseActivity.index == 1 && mTrainCourse != null) {
-            mTrainCourse.getData().getDetail().setIs_take(1);
+         /*   mTrainCourse.getData().getDetail().setIs_take(1);
             mImmediatelySignUp.setText("已评价");
-            mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.system_color));
+            mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.system_color));*/
         }
         if (SchoolBuyCourseActivity.isBuySuccess) {
             initData();

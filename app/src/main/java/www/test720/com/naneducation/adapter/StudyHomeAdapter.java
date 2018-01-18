@@ -201,6 +201,7 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onItemClick(RecyclerView parent, View view, int position) {
                     Intent intent = new Intent(context, GroupActivityInfoActivity.class);
                     intent.putExtra("id", studyActivityTypeList.get(position).getAct_id());
+                    intent.putExtra("isShow", true);
                     context.startActivity(intent);
                 }
             });

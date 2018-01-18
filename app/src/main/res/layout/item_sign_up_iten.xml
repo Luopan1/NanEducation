@@ -33,19 +33,21 @@
             android:background="@drawable/all_corners_black"
             android:gravity="right"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:gravity="right"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:id="@+id/signUpName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/x30"
-                android:textColor="@color/white"
-                android:textSize="17sp"
-                tools:text="名师堂·专注中小名师堂·专注中小名师堂·专注中名师堂·专注中小"/>
+            android:layout_height="@dimen/x50">
         </RelativeLayout>
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:gravity="right"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:id="@+id/signUpName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/x30"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            tools:text="名师堂·专注中小名师堂·专注中小名师堂·专注中名师堂·专注中小"/>
+
     </RelativeLayout>
 </LinearLayout>

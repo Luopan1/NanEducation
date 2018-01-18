@@ -34,9 +34,8 @@ public class TrainCourseEvaluateFragment extends BaseFragment {
 
     public static TrainCourseEvaluateFragment getInstance(String grade, int isEvaluate) {
 
-        if (fragment == null) {
-            fragment = new TrainCourseEvaluateFragment(grade, isEvaluate);
-        }
+        fragment = new TrainCourseEvaluateFragment(grade, isEvaluate);
+
         return fragment;
     }
 
