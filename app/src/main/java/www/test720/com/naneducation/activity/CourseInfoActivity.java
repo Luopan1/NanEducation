@@ -126,6 +126,7 @@ public class CourseInfoActivity extends BaseToolbarActivity {
     private LiveCourseDetail mDetail;
     private PopupWindow mPopupWindow;
     private AllCourseDetail mAllCourseDetail;
+    private String mTitle1;
 
     @Override
     protected int getContentView() {
@@ -516,11 +517,11 @@ public class CourseInfoActivity extends BaseToolbarActivity {
             mAboutRecmond.setText("套课视频");
 
         }
-        String title = intent.getStringExtra("title");
-        if (title.length() > 8) {
-            title = title.substring(0, 9) + "...";
+        mTitle1 = intent.getStringExtra("title");
+        if (mTitle1.length() > 8) {
+            mTitle1 = mTitle1.substring(0, 9) + "...";
         }
-        mTitle.setText(title);
+        mTitle.setText(mTitle1);
         mRecommendRecyclerView.setNestedScrollingEnabled(false);
 
 
@@ -778,7 +779,7 @@ public class CourseInfoActivity extends BaseToolbarActivity {
                 } else if (mLiveType == 2) {
                     web.setDescription("我在学海app中学习" + mDetail.getData().getDetail().getName() + "的" + mDetail.getData().getDetail().getLive_title() + "的录播");
                 } else if (mLiveType == 3) {
-                    web.setDescription("我在学海app中学习" + mAllCourseDetail.getData().getDetail().getC_name() + "的" + mDetail.getData().getDetail().getLive_title() + "的套课");
+                    web.setDescription("我在学海app中学习" + mAllCourseDetail.getData().getDetail().getTc_name() + "的" + mTitle1 + "的套课");
                 }
                 new ShareAction(CourseInfoActivity.this)
                         .withMedia(web)

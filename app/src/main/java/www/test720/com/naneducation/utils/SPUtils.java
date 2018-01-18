@@ -79,6 +79,16 @@ public class SPUtils {
         return sharedPreferences.getBoolean("isfirstChange", true);
     }
 
+    public static void setHasInstall(boolean isInstall) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putBoolean("isInstall", isInstall);
+        editor.commit();
+    }
+
+    public static boolean getIsInstall() {
+        return sharedPreferences.getBoolean("isInstall", false);
+    }
+
     public static boolean isFirstIn() {
         return sharedPreferences.getBoolean("isfirstin", true);
     }

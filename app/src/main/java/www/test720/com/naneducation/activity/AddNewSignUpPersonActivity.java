@@ -61,11 +61,14 @@ public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
     public void onClick() {
         if (mEditName.getText().toString().trim().isEmpty()) {
             ShowToast("姓名不能为空");
+        } else if (mEditPhoneNumber.getText().toString().trim().length() != 11) {
+            ShowToast("请输入正确的电话号码");
         } else {
             HttpParams params = new HttpParams();
             params.put("uid", Constans.uid);
             params.put("type", 2);
             params.put("username", mEditName.getText().toString().trim());
+            params.put("phone", mEditPhoneNumber.getText().toString().trim());
             mSubscription = mHttpUtils.getData(UrlFactory.bindUsername, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
                 @Override
                 public void onStart() {

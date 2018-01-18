@@ -101,4 +101,6 @@ public class UrlFactory {
     public static String bannerDetail = baseUrl + "index/bannerDetail";
     public static String downLoadUrl = baseUrl + "User/register";
     public static String agreement = baseUrl + "index/agreement";
+    public static String actSignDetail = baseUrl + "index/actSignDetail";
+    public static String startPage = baseUrl + "index/startPage";
 }

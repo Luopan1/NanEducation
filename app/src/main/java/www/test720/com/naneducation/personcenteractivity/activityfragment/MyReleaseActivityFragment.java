@@ -28,6 +28,7 @@ import www.test720.com.naneducation.baseui.BaseFragment;
 import www.test720.com.naneducation.bean.ReleaseAcivity;
 import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
+import www.test720.com.naneducation.personcenteractivity.MyReleaseActivityInfoActivity;
 
 /**
  * @author LuoPan on 2017/10/25 14:32.
@@ -126,8 +127,7 @@ public class MyReleaseActivityFragment extends BaseFragment {
                 public void onItemClick(RecyclerView parent, View view, int position) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", mLists.get(position).getAct_id());
-                    bundle.putBoolean("isShow", false);
-                    jumpToActivity(GroupActivityInfoActivity.class, bundle, false);
+                    jumpToActivity(MyReleaseActivityInfoActivity.class, bundle, false);
                 }
             });
         } else {

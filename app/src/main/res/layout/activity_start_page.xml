@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="www.test720.com.naneducation.StartPageActivity">
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:src="@color/white"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <www.test720.com.naneducation.view.CountDownProgressView
+        android:layout_margin="25dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/countdownProgressView"
+        app:circSolidColor="@color/base_color"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+</RelativeLayout>

@@ -61,11 +61,6 @@
             android:value="@integer/google_play_services_version"/>
 
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".login.LoginActivity"
@@ -317,6 +312,19 @@
         <activity android:name=".activity.H5Activity">
         </activity>
         <activity android:name=".activity.AgreeMentActivity">
+        </activity>
+        <activity android:name=".personcenteractivity.MyReleaseActivityInfoActivity">
+        </activity>
+        <activity android:name=".personcenteractivity.SignMembersActivity">
+        </activity>
+        <activity android:name=".StartPageActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".SplashActivity">
         </activity>
     </application>
 
