@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,10 +44,8 @@ import www.test720.com.naneducation.MapActivity;
 import www.test720.com.naneducation.R;
 import www.test720.com.naneducation.adapter.BaseRecyclerAdapter;
 import www.test720.com.naneducation.adapter.BaseRecyclerHolder;
-import www.test720.com.naneducation.adapter.CommonAdaper;
 import www.test720.com.naneducation.adapter.SearchResultAdapter;
 import www.test720.com.naneducation.adapter.TrainAdapter;
-import www.test720.com.naneducation.adapter.ViewHolder;
 import www.test720.com.naneducation.baseui.BaseToolbarActivity;
 import www.test720.com.naneducation.bean.Classfication;
 import www.test720.com.naneducation.bean.SchoolSelect;
@@ -742,7 +739,10 @@ public class TrainSignUpActivity extends BaseToolbarActivity {
             RelativeLayout selectdown = (RelativeLayout) selectSort.findViewById(R.id.sort_down);
             RelativeLayout selectfree = (RelativeLayout) selectSort.findViewById(R.id.sort_free);
             RelativeLayout sortDistance = (RelativeLayout) selectSort.findViewById(R.id.sort_distance);
-
+            RelativeLayout sort_fast = (RelativeLayout) selectSort.findViewById(R.id.sort_fast);
+            RelativeLayout sort_much = (RelativeLayout) selectSort.findViewById(R.id.sort_much);
+            sort_fast.setVisibility(View.GONE);
+            sort_much.setVisibility(View.GONE);
             RelativeLayout spaceRelative = (RelativeLayout) selectSort.findViewById(R.id.spaceRelative);
             spaceRelative.setOnClickListener(new View.OnClickListener() {
                 @Override

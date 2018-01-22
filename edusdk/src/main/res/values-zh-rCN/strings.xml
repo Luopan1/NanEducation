@@ -67,11 +67,11 @@
     <string name="send_gift">发送奖杯</string>
     <string name="i_konw">我知道了</string>
     <string name="make_sure_class_dissmiss">您确定要下课吗？</string>
-    <string name="camera_hint">请在手机的“设置”选项中，允许拓课云访问你的摄像头。</string>
-    <string name="mic_hint">请在手机的“设置”选项中，允许拓课云访问你的麦克风。</string>
+    <string name="camera_hint">请在手机的“设置”选项中，允许助学访问你的摄像头。</string>
+    <string name="mic_hint">请在手机的“设置”选项中，允许助学访问你的麦克风。</string>
     <string name="fire_wall_alert">网络出现异常，请关闭杀毒软件或防火墙后，重新进入</string>
     <string name="udp_alert">网络出现异常，请检查网络环境，重新进入</string>
-    <string name="back_hint">拓课云在后台执行，点击回到课堂</string>
+    <string name="back_hint">助学在后台执行，点击回到课堂</string>
     <string name="select_country">请选择您所在的国家或地区</string>
     <string name="country_default">(默认)</string>
     <!-- TODO: Remove or change this placeholder text -->

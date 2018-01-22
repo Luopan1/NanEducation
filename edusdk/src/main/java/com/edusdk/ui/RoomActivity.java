@@ -334,7 +334,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setTicker(getString(R.string.app_name));
-        mBuilder.setSmallIcon(R.drawable.logo);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setContentTitle(getString(R.string.app_name));
         mBuilder.setContentText(getString(R.string.back_hint));
 

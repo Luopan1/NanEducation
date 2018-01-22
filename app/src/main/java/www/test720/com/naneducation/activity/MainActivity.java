@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,8 +30,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.edusdk.Constans_VIdeo;
-import com.edusdk.interfaces.JoinmeetingCallBack;
-import com.edusdk.interfaces.MeetingNotify;
 import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -59,7 +57,7 @@ import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.SPUtils;
 
 
-public class MainActivity extends BaseToolbarActivity implements JoinmeetingCallBack, MeetingNotify {
+public class MainActivity extends BaseToolbarActivity {
 
 
     @BindView(R.id.HomeRecyclerView)
@@ -341,10 +339,10 @@ public class MainActivity extends BaseToolbarActivity implements JoinmeetingCall
 
         if (Constans.uid.isEmpty() && !SPUtils.getCount().isEmpty()) {
             autoLogin();
-        } else if (Constans.uid.isEmpty() && !SPUtils.getWeiXinId().isEmpty()) {
+        } else if (Constans.uid.isEmpty() && !SPUtils.getWeiXinId().trim().isEmpty()) {
             QQOrWeiXinLogin(SPUtils.getWeiXinId());
 
-        } else if (Constans.uid.isEmpty() && !SPUtils.getQQId().isEmpty()) {
+        } else if (Constans.uid.isEmpty() && !SPUtils.getQQId().trim().isEmpty()) {
             QQOrWeiXinLogin(SPUtils.getQQId());
         }
 
@@ -650,28 +648,5 @@ public class MainActivity extends BaseToolbarActivity implements JoinmeetingCall
         }
     }
 
-    @Override
-    public void callBack(int code) {
 
-    }
-
-    @Override
-    public void onKickOut(int res) {
-
-    }
-
-    @Override
-    public void onWarning(int code) {
-
-    }
-
-    @Override
-    public void onClassBegin() {
-
-    }
-
-    @Override
-    public boolean onClassDismiss() {
-        return false;
-    }
 }

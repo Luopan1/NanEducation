@@ -76,7 +76,7 @@ public class PasswordView extends RelativeLayout {
         mOriginalprice.setText("¥" + originaPrice);
         mSponor.setText(sponnor);
         mGetBackIntegar.setText("上课成功即返回" + getBackInteger + "积分");
-        mPayMentMoney.setText("¥" + pay_price);
+        mPayMentMoney.setText(pay_price);
 
     }
 

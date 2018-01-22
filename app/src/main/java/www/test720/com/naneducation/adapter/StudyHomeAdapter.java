@@ -296,7 +296,14 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     if (item.getTc_name().length() > 3) {
                         item.setTc_name(item.getTc_name().substring(0, 3) + "...");
                     }
+                    if (item.getTypename().equals("免费")) {
 
+                        holder.setText(R.id.courseKind, "免费");
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.mianfei));
+                    } else if (item.getTypename().equals("套课")) {
+                        holder.setText(R.id.courseKind, "套课");
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.taoke));
+                    }
 
                     TextView money = holder.getView(R.id.money);
 

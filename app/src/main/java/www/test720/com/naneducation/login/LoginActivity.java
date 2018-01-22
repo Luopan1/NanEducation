@@ -300,6 +300,7 @@ public class LoginActivity extends BaseToolbarActivity {
 
                 } else if (obj.getInteger("code") == 1) {
                     SPUtils.saveQQ(unionid);
+
                     Constans.head = obj.getJSONObject("data").getString("head");
                     if (obj.getJSONObject("data").getInteger("is_bindbank") == 0) {
                         Constans.isBindbank = false;

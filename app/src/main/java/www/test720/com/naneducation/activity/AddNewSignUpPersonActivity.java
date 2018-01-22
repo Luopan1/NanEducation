@@ -1,5 +1,6 @@
 package www.test720.com.naneducation.activity;
 
+import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +19,8 @@ import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.personcenteractivity.MyBindInfoActivity;
 
+import static www.test720.com.naneducation.http.UrlFactory.bindUserEdit;
+
 public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
 
 
@@ -27,7 +30,10 @@ public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
     EditText mEditPhoneNumber;
     @BindView(R.id.addNewSignUpPeoPle)
     Button mAddNewSignUpPeoPle;
-
+    private String mUrl;
+    private String KID;
+    String name = "";
+    String phone = "";
     @Override
     protected int getContentView() {
         return R.layout.activity_add_new_sign_up_person;
@@ -51,7 +57,28 @@ public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
 
     @Override
     protected void initView() {
-        initToobar("添加报名人");
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        phone = intent.getStringExtra("phone");
+        if (name != null && !name.isEmpty()) {
+            mEditName.setText(name);
+            mUrl = UrlFactory.bindUserEdit;
+            initToobar("修改报名人");
+            mAddNewSignUpPeoPle.setText("确认修改");
+        } else {
+            mUrl = UrlFactory.bindUsername;
+            initToobar("添加报名人");
+            mAddNewSignUpPeoPle.setText("添加报名人");
+        }
+
+
+        if (phone != null && !phone.isEmpty()) {
+            mEditPhoneNumber.setText(phone);
+        }
+
+        KID = intent.getStringExtra("id");
+
+
         setTitleColor(R.color.black);
         setToolbarColor(R.color.white);
     }
@@ -67,9 +94,11 @@ public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
             HttpParams params = new HttpParams();
             params.put("uid", Constans.uid);
             params.put("type", 2);
+            params.put("name", mEditName.getText().toString().trim());
+            params.put("kid", KID);
             params.put("username", mEditName.getText().toString().trim());
             params.put("phone", mEditPhoneNumber.getText().toString().trim());
-            mSubscription = mHttpUtils.getData(UrlFactory.bindUsername, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            mSubscription = mHttpUtils.getData(mUrl, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
                 @Override
                 public void onStart() {
                     showLoadingDialog();

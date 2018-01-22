@@ -1,5 +1,8 @@
 package www.test720.com.naneducation.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,12 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
+import com.edusdk.interfaces.JoinmeetingCallBack;
+import com.edusdk.interfaces.MeetingNotify;
 import com.edusdk.message.RoomClient;
+import com.edusdk.tools.Tools;
 import com.google.gson.Gson;
 import com.lzy.okgo.model.HttpParams;
 import com.umeng.socialize.ShareAction;
@@ -51,6 +58,7 @@ import www.test720.com.naneducation.model.PayMentCallBack;
 import www.test720.com.naneducation.utils.DensityUtil;
 import www.test720.com.naneducation.utils.ImageLoader;
 import www.test720.com.naneducation.utils.ItemAnimatorFactory;
+import www.test720.com.naneducation.video.StartPage_Activity;
 import www.test720.com.naneducation.video.VideoActivity;
 import www.test720.com.naneducation.video.VideoWebViewActivity;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
@@ -59,7 +67,7 @@ import www.test720.com.naneducation.view.SpaceItemDecoration;
  * mType : 判断是相关推荐（0,1）还是套课视屏
  * type ：1,2判断是直播还是套课（3）
  */
-public class CourseInfoActivity extends BaseToolbarActivity {
+public class CourseInfoActivity extends BaseToolbarActivity implements JoinmeetingCallBack, MeetingNotify {
 
     @BindView(R.id.descriptionImage)
     ImageView mDescriptionImage;
@@ -851,6 +859,91 @@ public class CourseInfoActivity extends BaseToolbarActivity {
             finish();
         }
     }
+
+
+    @Override
+    public void onKickOut(int res) {
+        if (res == RoomClient.Kickout_Repeat) {
+            Toast.makeText(this, "有相同的身份进入  你已被踢出房间", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onWarning(int code) {
+        if (code == 1) {
+            ShowToast("打开失败 请稍候再试");
+        }
+        if (code == 2) {
+            ShowToast("打开失败");
+        }
+    }
+
+    @Override
+    public void onClassBegin() {
+        LogUtils.e("TAG++++++++++", "已经上课了");
+        Toast.makeText(this, getString(R.string.class_started), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onClassDismiss() {
+        LogUtils.e("TAG++++++++++", "课堂不存在");
+        Toast.makeText(this, getString(R.string.class_closeed), Toast.LENGTH_LONG).show();
+        return true;
+    }
+
+    @Override
+    public void callBack(int nRet) {
+        LogUtils.e("TAG++++++++++", nRet);
+        Tools.HideProgressDialog();
+        if (nRet == 0) {
+
+        } else if (nRet == 100) {
+        } else if (nRet == 101) {
+            ShowToast("协议格式不正确");
+        } else if (nRet == 4008) {
+            ShowToast("进入失败");
+        } else if (nRet == 4110) {
+            ShowToast("课堂需要密码 创建错误");
+        } else if (nRet == 4007) {
+            ShowToast("课堂不存在");
+        } else if (nRet == 3001) {
+            ShowToast("服务器过期");
+        } else if (nRet == 3002) {
+            ShowToast("公司被冻结");
+        } else if (nRet == 3003) {
+            ShowToast("课堂被删除或过期");
+        } else if (nRet == 4109) {
+            ShowToast("Auth不正确");
+        } else if (nRet == 4103) {
+            ShowToast("课堂人数超限");
+        } else if (nRet == 5006) {
+            ShowToast("请您使用学员地址进入课堂");
+        } else if (nRet == 4012) {
+            ShowToast("该课堂需要密码，请输入密码");
+        } else {
+            errorTipDialog(this,
+                    R.string.WaitingForNetwork);
+        }
+    }
+
+    public void errorTipDialog(final Activity activity, int errorTipID) {
+
+        AlertDialog.Builder build = new AlertDialog.Builder(activity);
+        build.setTitle(getString(R.string.link_tip));
+        build.setMessage(getString(errorTipID));
+        build.setPositiveButton(getString(R.string.OK),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        arg0.dismiss();
+
+                    }
+
+                });
+        build.show();
+    }
+
+
 
 
 }

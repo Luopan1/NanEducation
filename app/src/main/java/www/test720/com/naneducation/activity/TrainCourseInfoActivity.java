@@ -85,6 +85,7 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
     private PopupWindow mPopupWindow;
     private PagerAdapter mAdapter;
     int count = 0;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_train_course_info;
@@ -219,8 +220,8 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
     @Override
     public void RightOnClick() {
         UMWeb web = new UMWeb(UrlFactory.downLoadUrl);
-        web.setTitle("学海");//标题
-        web.setDescription("我在学海app里学习" + mTrainCourse.getData().getDetail().getTrain_name() + "的" + mTrainCourse.getData().getDetail().getPlan().getCourse_type());
+        web.setTitle("助学");//标题
+        web.setDescription("我在助学app里学习" + mTrainCourse.getData().getDetail().getTrain_name() + "的" + mTrainCourse.getData().getDetail().getPlan().getCourse_type());
         new ShareAction(this)
                 .withMedia(web)
                 .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)

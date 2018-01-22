@@ -64,13 +64,13 @@ public class SPUtils {
     }
 
     public static String getQQId() {
-        String unionid = sharedPreferences.getString("qqId", "null");
+        String unionid = sharedPreferences.getString("qqId", "");
 
         return unionid;
     }
 
     public static String getWeiXinId() {
-        String unionid = sharedPreferences.getString("weixinId", "null");
+        String unionid = sharedPreferences.getString("weixinId", "");
 
         return unionid;
     }
@@ -106,7 +106,7 @@ public class SPUtils {
     }
 
     public static String getUnionid() {
-        String unionid = sharedPreferences.getString("unionid", "null");
+        String unionid = sharedPreferences.getString("unionid", "");
 
         return unionid;
     }

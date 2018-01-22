@@ -109,15 +109,16 @@
             </LinearLayout>
 
             <TextView
+                android:drawablePadding="5dp"
                 android:id="@+id/payMentMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:drawableLeft="@drawable/hands_up_icon"
-                android:text="￥398.50"
+                android:drawableLeft="@drawable/jiage"
+                android:text="398.50"
                 android:textColor="#FF5B53"
-                android:textSize="30sp"/>
+                android:textSize="28sp"/>
 
             <View
                 android:layout_width="match_parent"

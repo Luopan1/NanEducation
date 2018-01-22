@@ -93,14 +93,15 @@ public class UrlFactory {
     public static String appQqLogin = baseUrl + "User/appQqLogin";
     public static String weChatBindPhone = baseUrl + "User/weChatBindPhone";
     public static String bindGetCode = baseUrl + "User/bindGetCode";
+
     public static String Syntony = "http://116.62.210.125/ncjy/index.php/Myapi/User/Syntony";
     public static String userRegOrder = baseUrl + "User/userRegOrder";
     public static String appWeChatLogin = baseUrl + "User/appWeChatLogin";
     public static String mapTypeList = baseUrl + "school/mapTypeList";
     public static String bindUserEdit = baseUrl + "user/bindUserEdit";
     public static String bannerDetail = baseUrl + "index/bannerDetail";
-    public static String downLoadUrl = baseUrl + "User/register";
     public static String agreement = baseUrl + "index/agreement";
     public static String actSignDetail = baseUrl + "index/actSignDetail";
     public static String startPage = baseUrl + "index/startPage";
+    public static String downLoadUrl = baseUrl + "index/down";
 }

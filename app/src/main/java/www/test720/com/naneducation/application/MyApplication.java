@@ -40,7 +40,6 @@ public class MyApplication extends MultiDexApplication {
     public static String cityName;
     public static IWXAPI api;
 
-
     {
         PlatformConfig.setWeixin("wx69ca9f37e8c96143", "dbf528a66e68f98f97edf0695797f570");
         PlatformConfig.setQQZone("1106664430", "MrCwDClfvk2AaRu2");
@@ -93,9 +92,9 @@ public class MyApplication extends MultiDexApplication {
 
 
         LogUtils.getLogConfig()
-                .configAllowLog(true)
+                .configAllowLog(false)
                 .configTagPrefix("CityGuestSociety")
-                .configShowBorders(true)
+                .configShowBorders(false)
                 .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}");
         preinitX5WebCore();
 

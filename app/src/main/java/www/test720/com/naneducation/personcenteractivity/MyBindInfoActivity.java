@@ -2,6 +2,7 @@ package www.test720.com.naneducation.personcenteractivity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
@@ -116,7 +117,11 @@ public class MyBindInfoActivity extends BaseToolbarActivity {
                     holder.getView(R.id.more).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            changerUserNickName(mPersonLists.get(position).getKid(), mPersonLists.get(position).getUsername());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("name", mPersonLists.get(position).getUsername());
+                            bundle.putString("phone", mPersonLists.get(position).getUser_phone());
+                            bundle.putString("id", mPersonLists.get(position).getKid());
+                            jumpToActivity(AddNewSignUpPersonActivity.class, bundle, false);
                         }
                     });
                 }

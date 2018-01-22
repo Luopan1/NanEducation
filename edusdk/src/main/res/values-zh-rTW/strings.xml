@@ -67,11 +67,11 @@
     <string name="send_gift">發送獎杯</string>
     <string name="i_konw">我知道了</string>
     <string name="make_sure_class_dissmiss">您確定要下課嗎？</string>
-    <string name="camera_hint">請在手機的“設定”選項中，允許拓課雲訪問你的監視器。</string>
-    <string name="mic_hint">請在手機的“設定”選項中，允許拓課雲訪問你的麥克風。</string>
+    <string name="camera_hint">請在手機的“設定”選項中，允許助学訪問你的監視器。</string>
+    <string name="mic_hint">請在手機的“設定”選項中，允許助学訪問你的麥克風。</string>
     <string name="fire_wall_alert">網絡出現異常，請關閉殺毒軟體或防火牆後，重新進入</string>
     <string name="udp_alert">網絡出現異常，請檢查網路環境，重新進入</string>
-    <string name="back_hint">拓課雲在後臺執行，點擊回到課堂</string>
+    <string name="back_hint">助学在後臺執行，點擊回到課堂</string>
     <string name="select_country">請選擇您所在的國家或地區</string>
     <string name="country_default">(默认)</string>
     <!-- TODO: Remove or change this placeholder text -->

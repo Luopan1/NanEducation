@@ -167,7 +167,7 @@ public class LiveBroadcastActivity extends BaseToolbarActivity {
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.mianfei));
                     else if (item.getLivetype().equals("预告"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.yugao));
-                    else if (item.getLivetype().equals("直播中"))
+                    else if (item.getLivetype().equals("进行中"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
                     else if (item.getLivetype().equals("已结束"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.color_black_ff666666));
@@ -374,9 +374,9 @@ public class LiveBroadcastActivity extends BaseToolbarActivity {
             integerList.add(2);
             integerList.add(3);
         } else if (mLiveType == 2) {
-            integerList.add(3);
-            integerList.add(1);
             integerList.add(2);
+            integerList.add(1);
+            integerList.add(3);
         }
 
 

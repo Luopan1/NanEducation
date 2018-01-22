@@ -5,7 +5,7 @@ package com.edusdk.http;
  */
 
 public class UrlFactoty_Video {
-    public static String IPaddress = "http://120.26.141.238/";
+    public static String IPaddress = "http://116.62.210.125/";
     public static String baseUrl = IPaddress + "ncjy/index.php/Myapi/";
     public static String baseImageUrl = IPaddress + "ncjy/";
     public static String userReport = baseUrl + "User/userReport";
