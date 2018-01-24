@@ -4,10 +4,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 android {
     signingConfigs {
         config {
-            keyAlias 'tieshikeji'
-            keyPassword 'tieshikeji888'
-            storeFile file('D:/sign/tieshikeji.jks')
-            storePassword 'tieshikeji888'
+            
         }
     }
     compileSdkVersion 25
