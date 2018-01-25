@@ -89,10 +89,13 @@ public class EvalateCourseActivity extends BaseToolbarActivity {
 
             @Override
             public void onNext(String s) {
-                index = 1;
+
                 JSONObject obj = JSON.parseObject(s);
                 ShowToast(obj.getString("msg"));
-                finish();
+                if (obj.getInteger("code") == 1) {
+                    index = 1;
+                    finish();
+                }
             }
         });
     }

@@ -127,6 +127,7 @@ public class ActivityFragment extends BaseFragment {
                 public void onItemClick(RecyclerView parent, View view, int position) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", mLists.get(position).getAct_id());
+                    bundle.putBoolean("isShow", true);
                     jumpToActivity(GroupActivityInfoActivity.class, bundle, false);
                 }
             });

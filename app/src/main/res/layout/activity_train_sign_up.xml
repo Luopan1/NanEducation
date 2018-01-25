@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="机构分类"
+                android:text="课程分类"
                 android:textColor="@color/textcolor"
                 android:textSize="15sp"/>
 

@@ -2,6 +2,8 @@ package www.test720.com.naneducation.bean;
 
 import java.util.List;
 
+import static www.test720.com.naneducation.R.id.grade;
+
 /**
  * Created by LuoPan on 2017/11/7.
  */
@@ -80,8 +82,8 @@ public class SchoolSelect {
              */
 
             private double distance;
-            private int grade;
-            private int price;
+            private double grade;
+            private double price;
             private String train_id;
             private String train_logo;
             private String train_name;
@@ -95,7 +97,7 @@ public class SchoolSelect {
                 this.distance = distance;
             }
 
-            public int getGrade() {
+            public double getGrade() {
                 return grade;
             }
 
@@ -103,7 +105,7 @@ public class SchoolSelect {
                 this.grade = grade;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 

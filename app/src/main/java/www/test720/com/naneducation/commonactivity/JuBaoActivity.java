@@ -3,8 +3,10 @@ package www.test720.com.naneducation.commonactivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.apkfuns.logutils.LogUtils;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -31,6 +34,8 @@ import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 import www.test720.com.naneducation.R;
 import www.test720.com.naneducation.adapter.CommonAdaper;
 import www.test720.com.naneducation.adapter.MyGirdAdapter;
@@ -39,7 +44,10 @@ import www.test720.com.naneducation.baseui.BaseToolbarActivity;
 import www.test720.com.naneducation.bean.Grade;
 import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
+import www.test720.com.naneducation.utils.DataCleanManager;
 import www.test720.com.naneducation.utils.GlideLoader;
+import www.test720.com.naneducation.utils.Luban_Self;
+import www.test720.com.naneducation.utils.SystemUtil;
 import www.test720.com.naneducation.utils.Utility;
 
 public class JuBaoActivity extends BaseToolbarActivity {
@@ -213,11 +221,11 @@ public class JuBaoActivity extends BaseToolbarActivity {
                 }
             }
             final List<File> files = new ArrayList<>();
-            for (int i = 0; i < mImageItemLists.size(); i++) {
+           /* for (int i = 0; i < mImageItemLists.size(); i++) {
                 files.add(new File(mImageItemLists.get(i).path));
-            }
+            }*/
 
-            HttpParams params = new HttpParams();
+            final HttpParams params = new HttpParams();
             params.put("uid", Constans.uid);
             params.put("type", mTYPE);
             params.put("bindId", id);
@@ -225,33 +233,76 @@ public class JuBaoActivity extends BaseToolbarActivity {
             params.put("content", mContent.getText().toString().trim());
             params.put("phone", mContactNumber.getText().toString().trim());
             params.put("cityId", Constans.city_id);
-            params.putFileParams("file[]", files);
-            mSubscription = mHttpUtils.getData(UrlFactory.userReport, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
 
+            final List<String> filePath = new ArrayList<>();
+            for (ImageItem file : mImageItemLists) {
+
+                filePath.add(file.path);
+            }
+
+            File DatalDir = Environment.getExternalStorageDirectory();
+            File myDir = new File(DatalDir, "/DCIM/助学");
+            myDir.mkdirs();
+
+            Luban.with(JuBaoActivity.this).load(filePath).ignoreBy(100).setTargetDir(myDir.getPath()).setCompressListener(new OnCompressListener() {
                 @Override
                 public void onStart() {
                     showLoadingDialog();
                 }
 
                 @Override
-                public void onCompleted() {
-                    cancleLoadingDialog();
+                public void onSuccess(File file) {
+                    files.add(file);
+                    LogUtils.e(files.size() + "__________" + filePath.size());
+
+                    if (files.size() == filePath.size()) {
+                        params.putFileParams("file[]", files);
+                        upLoadReport(params);
+                    }
+
+
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     ShowToast(e.getMessage());
-                    cancleLoadingDialog();
                 }
+            }).launch();
 
-                @Override
-                public void onNext(String s) {
-                    JSONObject obj = JSON.parseObject(s);
-                    ShowToast(obj.getString("msg"));
-                    finish();
-                }
-            });
         }
+
+    }
+
+    private void upLoadReport(HttpParams params) {
+        mSubscription = mHttpUtils.getData(UrlFactory.userReport, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onCompleted() {
+                cancleLoadingDialog();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ShowToast(e.getMessage());
+                File DatalDir = Environment.getExternalStorageDirectory();
+                File myDir = new File(DatalDir, "/DCIM/助学");
+                DataCleanManager.deleteDir(myDir);
+                cancleLoadingDialog();
+            }
+
+            @Override
+            public void onNext(String s) {
+                cancleLoadingDialog();
+                JSONObject obj = JSON.parseObject(s);
+                ShowToast(obj.getString("msg"));
+                finish();
+            }
+        });
 
     }
 

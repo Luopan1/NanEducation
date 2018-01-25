@@ -188,7 +188,9 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     else if (item.getLivetype().equals("回放"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     else if (item.getLivetype().equals("套课"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.taoke));
+                    else if (item.getLivetype().equals("进行中"))
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
 
                     if (item.getTc_name().length() > 3) {
                         item.setTc_name(item.getTc_name().substring(0, 3) + "...");
@@ -208,7 +210,6 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         money.setCompoundDrawables(drawable, null, null, null);
                     }
 
-                    holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     holder.setImageByUrl(R.id.courseImage, UrlFactory.baseImageUrl + item.getLogo());
                     holder.setImageByUrl(R.id.teacherPhoto, UrlFactory.baseImageUrl + item.getTc_head());
                     holder.setText(R.id.teacherName, item.getTc_name());
@@ -269,6 +270,8 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     else if (item.getLivetype().equals("套课"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
+                    else if (item.getLivetype().equals("进行中"))
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
 
                     if (item.getTc_name().length() > 3) {
                         item.setTc_name(item.getTc_name().substring(0, 3) + "...");

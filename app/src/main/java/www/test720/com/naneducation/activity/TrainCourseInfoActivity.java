@@ -361,9 +361,10 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
     protected void onResume() {
         super.onResume();
         if (EvalateCourseActivity.index == 1 && mTrainCourse != null) {
-         /*   mTrainCourse.getData().getDetail().setIs_take(1);
+            mTrainCourse.getData().getDetail().setIs_take(1);
             mImmediatelySignUp.setText("已评价");
-            mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.system_color));*/
+            mImmediatelySignUpRelative.setBackgroundColor(getResources().getColor(R.color.system_color));
+            EvalateCourseActivity.index = 0;
         }
         if (SchoolBuyCourseActivity.isBuySuccess) {
             initData();

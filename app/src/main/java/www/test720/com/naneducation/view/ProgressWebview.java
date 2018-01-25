@@ -112,6 +112,7 @@ public class ProgressWebview extends WebView {
         @Override
         public void onPageFinished(WebView view, String url) {
 
+
             progressbar.setVisibility(GONE);
             if (mListener != null) {
                 mListener.onPageFinish(view);

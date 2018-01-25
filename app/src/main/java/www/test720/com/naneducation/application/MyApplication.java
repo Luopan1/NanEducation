@@ -92,9 +92,9 @@ public class MyApplication extends MultiDexApplication {
 
 
         LogUtils.getLogConfig()
-                .configAllowLog(false)
+                .configAllowLog(true)
                 .configTagPrefix("CityGuestSociety")
-                .configShowBorders(false)
+                .configShowBorders(true)
                 .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}");
         preinitX5WebCore();
 

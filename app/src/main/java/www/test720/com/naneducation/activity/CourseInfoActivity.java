@@ -28,6 +28,7 @@ import com.edusdk.message.RoomClient;
 import com.edusdk.tools.Tools;
 import com.google.gson.Gson;
 import com.lzy.okgo.model.HttpParams;
+import com.talkcloud.roomsdk.RoomManager;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -58,7 +59,6 @@ import www.test720.com.naneducation.model.PayMentCallBack;
 import www.test720.com.naneducation.utils.DensityUtil;
 import www.test720.com.naneducation.utils.ImageLoader;
 import www.test720.com.naneducation.utils.ItemAnimatorFactory;
-import www.test720.com.naneducation.video.StartPage_Activity;
 import www.test720.com.naneducation.video.VideoActivity;
 import www.test720.com.naneducation.video.VideoWebViewActivity;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
@@ -531,8 +531,7 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
         }
         mTitle.setText(mTitle1);
         mRecommendRecyclerView.setNestedScrollingEnabled(false);
-
-
+        RoomClient.getInstance().regiestInterface(this, this);
     }
 
 
@@ -936,9 +935,7 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         arg0.dismiss();
-
                     }
-
                 });
         build.show();
     }

@@ -13,6 +13,7 @@
         android:background="@color/white">
 
         <RatingBar
+            android:rating="5"
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

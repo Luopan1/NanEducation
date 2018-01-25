@@ -115,6 +115,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     else if (item.getLivetype().equals("套课"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
+                    else if (item.getLivetype().equals("进行中"))
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
+
 
                     TextView money = holder.getView(R.id.money);
                     if (item.getLivetype().equals("免费")) {
@@ -180,19 +183,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     sizeUtils.setLayoutSize(holder.getView(R.id.courseImage), 325, 210);
 
                     holder.setText(R.id.courseKind, item.getLivetype());
-                    if (item.getLivetype().equals("预告"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.yugao));
-                    else if (item.getLivetype().equals("直播中"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
-                    else if (item.getLivetype().equals("已结束"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.color_white_66ffffff));
-                    else if (item.getLivetype().equals("免费"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.mianfei));
-                    else if (item.getLivetype().equals("回放"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
-                    else if (item.getLivetype().equals("套课"))
-                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
 
+                    TextView textView = holder.getView(R.id.courseKind);
+                    if (item.getLivetype().equals("免费")) {
+                        textView.setBackgroundColor(context.getResources().getColor(R.color.mianfei));
+                    } else if (item.getLivetype().equals("回放")) {
+                        textView.setBackgroundColor(context.getResources().getColor(R.color.huifang));
+                    }
 
                     if (item.getTc_name().length() > 3) {
                         item.setTc_name(item.getTc_name().substring(0, 3) + "...");
@@ -212,8 +209,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         money.setCompoundDrawables(drawable, null, null, null);
                     }
 
-
-                    holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     holder.setImageByUrl(R.id.courseImage, UrlFactory.baseImageUrl + item.getLogo());
                     holder.setImageByUrl(R.id.teacherPhoto, UrlFactory.baseImageUrl + item.getTc_head());
                     holder.setText(R.id.teacherName, item.getTc_name());
@@ -274,6 +269,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
                     else if (item.getLivetype().equals("套课"))
                         holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.huifang));
+                    else if (item.getLivetype().equals("进行中"))
+                        holder.getView(R.id.courseKind).setBackgroundColor(context.getResources().getColor(R.color.base_color));
 
                     TextView money = holder.getView(R.id.money);
                     if (item.getLivetype().equals("免费")) {

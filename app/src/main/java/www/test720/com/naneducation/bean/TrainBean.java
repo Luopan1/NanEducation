@@ -45,9 +45,19 @@ public class TrainBean {
 
     public static class DataBean {
         /**
-         * list : [{"distance":9.7,"train_id":"6","train_logo":"Uploads/Img/2018-01-10/5a561306ebb17.jpg","train_name":"邹机构","train_title":"哈哈哈哈"},{"distance":48.3,"train_id":"3","train_logo":"Uploads/Img/ceshi.jpg","train_name":"宝贝教育","train_title":"全心全意为孩子服务"},{"distance":47.7,"train_id":"2","train_logo":"Uploads/Img/ceshi.jpg","train_name":"美博教育","train_title":"全心全意为孩子服务"},{"distance":7149.7,"train_id":"1","train_logo":"Uploads/Img/ceshi.jpg","train_name":"爱心教育","train_title":"全心全意为孩子服务"}]
+         * list : [{"distance":9.7,"train_id":"6","train_logo":"Uploads/Img/2018-01-10/5a561306ebb17.jpg",
+         * "train_name":"邹机构","train_title":"哈哈哈哈"},{"distance":48.3,"train_id":"3","train_logo":"Uploads/Img/ceshi.jpg",
+         * "train_name":"宝贝教育","train_title":"全心全意为孩子服务"},{"distance":47.7,"train_id":"2","train_logo":"Uploads/Img/ceshi.jpg",
+         * "train_name":"美博教育","train_title":"全心全意为孩子服务"},{"distance":7149.7,"train_id":"1","train_logo":"Uploads/Img/ceshi.jpg","train_name":"爱心教育","train_title":"全心全意为孩子服务"}]
          * total : 1
-         * typelist : [{"name":"语文","t_id":"1","zi":[{"name":"一年级","t_id":"7"},{"name":"二年级","t_id":"8"},{"name":"三年级","t_id":"9"},{"name":"四年级","t_id":"24"}]},{"name":"数学","t_id":"2","zi":[{"name":"一年级","t_id":"10"},{"name":"二年级","t_id":"11"},{"name":"三年级","t_id":"12"}]},{"name":"体育","t_id":"3","zi":[{"name":"一年级","t_id":"13"},{"name":"二年级","t_id":"14"},{"name":"三年级","t_id":"15"}]},{"name":"历史","t_id":"4","zi":[{"name":"一年级","t_id":"16"},{"name":"二年级","t_id":"17"},{"name":"三年级","t_id":"18"}]},{"name":"英语","t_id":"6","zi":[{"name":"一年级","t_id":"19"},{"name":"二年级","t_id":"20"},{"name":"三年级","t_id":"21"}]},{"name":"化学","t_id":"23","zi":[]},{"name":"金牛语文","t_id":"25","zi":[{"name":"一年级","t_id":"26"}]}]
+         * typelist : [{"name":"语文","t_id":"1","zi":[{"name":"一年级","t_id":"7"},
+         * {"name":"二年级","t_id":"8"},{"name":"三年级","t_id":"9"},{"name":"四年级","t_id":"24"}]},
+         * {"name":"数学","t_id":"2","zi":[{"name":"一年级","t_id":"10"},{"name":"二年级","t_id":"11"},
+         * {"name":"三年级","t_id":"12"}]},{"name":"体育","t_id":"3","zi":[{"name":"一年级","t_id":"13"},
+         * {"name":"二年级","t_id":"14"},{"name":"三年级","t_id":"15"}]},{"name":"历史","t_id":"4",
+         * "zi":[{"name":"一年级","t_id":"16"},{"name":"二年级","t_id":"17"},{"name":"三年级","t_id":"18"}]}
+         * ,{"name":"英语","t_id":"6","zi":[{"name":"一年级","t_id":"19"},{"name":"二年级","t_id":"20"},
+         * {"name":"三年级","t_id":"21"}]},{"name":"化学","t_id":"23","zi":[]},{"name":"金牛语文","t_id":"25","zi":[{"name":"一年级","t_id":"26"}]}]
          */
 
         private int total;

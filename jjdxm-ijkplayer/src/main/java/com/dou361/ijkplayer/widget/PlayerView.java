@@ -417,11 +417,17 @@ public class PlayerView {
                     }
                 } else {
                     startPlay();
-                    if (videoView.isPlaying()) {
-                        /**ijkplayer内部的监听没有回调，只能手动修改状态*/
-                        status = PlayStateParams.STATE_PREPARING;
-                        hideStatusUI();
-                    }
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (videoView.isPlaying()) {
+                                /**ijkplayer内部的监听没有回调，只能手动修改状态*/
+                                status = PlayStateParams.STATE_PREPARING;
+                                hideStatusUI();
+                            }
+                        }
+                    }, 500);
+
                 }
                 updatePausePlay();
             } else if (v.getId() == R.id.app_video_finish) {

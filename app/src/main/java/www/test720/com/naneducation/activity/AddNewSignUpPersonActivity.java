@@ -75,7 +75,6 @@ public class AddNewSignUpPersonActivity extends BaseToolbarActivity {
         if (phone != null && !phone.isEmpty()) {
             mEditPhoneNumber.setText(phone);
         }
-
         KID = intent.getStringExtra("id");
 
 

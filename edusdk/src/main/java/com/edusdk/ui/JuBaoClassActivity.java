@@ -218,7 +218,7 @@ public class JuBaoClassActivity extends AppCompatActivity implements View.OnClic
                 params.put("reportId", reportId);
                 params.put("content", mContent.getText().toString().trim());
                 params.put("phone", mContactNumber.getText().toString().trim());
-                params.putFileParams("file", files);
+                params.putFileParams("file[]", files);
                 HttpUtils_Video http = new HttpUtils_Video();
                 http.getData(UrlFactoty_Video.userReport, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
 
