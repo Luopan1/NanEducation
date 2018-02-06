@@ -1,13 +1,11 @@
 package www.test720.com.naneducation.application;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.apkfuns.logutils.LogUtils;
 import com.baidu.mapapi.SDKInitializer;
@@ -24,8 +22,12 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.common.QueuedWork;
 
+import java.util.List;
 import java.util.logging.Level;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.push.RongPushClient;
+import io.rong.push.common.RongException;
 import okhttp3.OkHttpClient;
 import www.test720.com.naneducation.http.Constans;
 
@@ -55,13 +57,19 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         context = this;
+       /* try {
+            RongPushClient.registerFCM(this);
+        } catch (RongException e) {
+            LogUtils.e("TAG+++++++++++", e.getMessage());
+        }*/
+
         SDKInitializer.initialize(this);
-
-
         /**友盟*/
         Config.DEBUG = true;
         QueuedWork.isUseThreadPool = true;
         UMShareAPI.get(this);
+
+        RongIMClient.init(this, "pwe86ga5pi6j6");
 
         OkHttpClient.Builder okBuilder = new OkHttpClient.Builder();
 
@@ -103,6 +111,23 @@ public class MyApplication extends MultiDexApplication {
         api.registerApp(Constans.WxId);
 
     }
+
+    private String getProcessName(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo proInfo : runningApps) {
+            if (proInfo.pid == android.os.Process.myPid()) {
+                if (proInfo.processName != null) {
+                    return proInfo.processName;
+                }
+            }
+        }
+        return null;
+    }
+
 
     private void preinitX5WebCore() {
 

@@ -1,0 +1,275 @@
+[
+    {
+        "outputFile": "H:\\space\\NanEducation\\IMLib\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 13,
+                    "endColumn": 20,
+                    "endOffset": 359
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 1149,
+                        "endLine": 39,
+                        "endColumn": 20,
+                        "endOffset": 1453
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 364,
+                    "endColumn": 50,
+                    "endOffset": 410
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 490,
+                        "endColumn": 50,
+                        "endOffset": 536
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 415,
+                    "endColumn": 46,
+                    "endOffset": 457
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 305,
+                        "endColumn": 46,
+                        "endOffset": 347
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 462,
+                    "endColumn": 61,
+                    "endOffset": 519
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 85,
+                        "endColumn": 61,
+                        "endOffset": 142
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 524,
+                    "endColumn": 49,
+                    "endOffset": 569
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 166,
+                        "endColumn": 49,
+                        "endOffset": 211
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 574,
+                    "endColumn": 47,
+                    "endOffset": 617
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 235,
+                        "endColumn": 47,
+                        "endOffset": 278
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 622,
+                    "endColumn": 53,
+                    "endOffset": 671
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 606,
+                        "endColumn": 53,
+                        "endOffset": 655
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 676,
+                    "endColumn": 49,
+                    "endOffset": 721
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 113,
+                        "endColumn": 49,
+                        "endOffset": 158
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 726,
+                    "endColumn": 61,
+                    "endOffset": 783
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 163,
+                        "endColumn": 61,
+                        "endOffset": 220
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 788,
+                    "endColumn": 80,
+                    "endOffset": 864
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_configuration.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 376,
+                        "endColumn": 80,
+                        "endOffset": 452
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 869,
+                    "endColumn": 66,
+                    "endOffset": 931
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 291,
+                        "endColumn": 66,
+                        "endOffset": 353
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 936,
+                    "endColumn": 77,
+                    "endOffset": 1009
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 358,
+                        "endColumn": 77,
+                        "endOffset": 431
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 1014,
+                    "endColumn": 64,
+                    "endOffset": 1074
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 226,
+                        "endColumn": 64,
+                        "endOffset": 286
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 1079,
+                    "endColumn": 56,
+                    "endOffset": 1131
+                },
+                "from": {
+                    "file": "H:\\space\\NanEducation\\IMLib\\res\\values\\rc_lib_string.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 56,
+                        "endColumn": 56,
+                        "endOffset": 108
+                    }
+                }
+            }
+        ]
+    }
+]

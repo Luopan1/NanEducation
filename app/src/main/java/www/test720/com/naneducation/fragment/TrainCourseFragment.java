@@ -46,7 +46,6 @@ public class TrainCourseFragment extends BaseFragment {
     public TrainCourseFragment() {
 
     }
-
     List<TrainList.DataBean.MuenBean> mainLists = new ArrayList<>();
     List<TrainList.DataBean.ListBean> dataList = new ArrayList<>();
     public List<TrainList.DataBean.MuenBean.ZiBean> spinnerLists = new ArrayList<>();

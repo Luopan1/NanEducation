@@ -28,10 +28,10 @@ import com.edusdk.message.RoomClient;
 import com.edusdk.tools.Tools;
 import com.google.gson.Gson;
 import com.lzy.okgo.model.HttpParams;
-import com.talkcloud.roomsdk.RoomManager;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
@@ -58,7 +58,6 @@ import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.model.PayMentCallBack;
 import www.test720.com.naneducation.utils.DensityUtil;
 import www.test720.com.naneducation.utils.ImageLoader;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.video.VideoActivity;
 import www.test720.com.naneducation.video.VideoWebViewActivity;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
@@ -363,7 +362,6 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                 };
 
                 mRecommendRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-                mRecommendRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
                 mRecommendRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
                 mRecommendRecyclerView.setAdapter(recommandAdapter);
 
@@ -426,7 +424,6 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                 };
             }
             mRecommendRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-            mRecommendRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mRecommendRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             mRecommendRecyclerView.setAdapter(allCourseRecommandAdapter);
 
@@ -683,15 +680,16 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
 
                             } else if (mDetail.getData().getDetail().getIs_canup() == 1 && mDetail.getData().getDetail().getIs_signup() == 1) {
                                 if (mLiveType == 1) {
+                                    Tools.ShowProgressDialog(this, "进入中");
                                     // TODO: 2017/11/15 进入直播课堂
                                     HashMap<String, Object> map = new HashMap<>();
-
                                     map.put("userrole", 2); //
                                     //                map.put("host", "192.168.1.17"); // 内网地址
                                     map.put("host", "global.talk-cloud.net"); //公网地址
                                     map.put("port", 80);  //端口
                                     map.put("serial", getIntent().getStringExtra("room")); //课堂号
                                     map.put("nickname", Constans.name); // 昵称
+                                    map.put("userid", Constans.uid);
                                     RoomClient.getInstance().joinRoom(CourseInfoActivity.this, map);
                                 } else {
                                     Bundle bundle = new Bundle();
@@ -779,8 +777,11 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                 finish();
                 break;
             case R.id.shareImage:
+                UMImage thumb = new UMImage(this, R.drawable.zuxuelogo);
+                thumb.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
                 UMWeb web = new UMWeb(UrlFactory.downLoadUrl);
                 web.setTitle("助学");//标题
+                web.setThumb(thumb);
                 if (mLiveType == 1) {
                     web.setDescription("我在学海app中学习" + mDetail.getData().getDetail().getName() + "的" + mDetail.getData().getDetail().getLive_title() + "的直播");
                 } else if (mLiveType == 2) {
@@ -879,20 +880,17 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
 
     @Override
     public void onClassBegin() {
-        LogUtils.e("TAG++++++++++", "已经上课了");
         Toast.makeText(this, getString(R.string.class_started), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public boolean onClassDismiss() {
-        LogUtils.e("TAG++++++++++", "课堂不存在");
         Toast.makeText(this, getString(R.string.class_closeed), Toast.LENGTH_LONG).show();
         return true;
     }
 
     @Override
     public void callBack(int nRet) {
-        LogUtils.e("TAG++++++++++", nRet);
         Tools.HideProgressDialog();
         if (nRet == 0) {
 
@@ -939,8 +937,6 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                 });
         build.show();
     }
-
-
 
 
 }

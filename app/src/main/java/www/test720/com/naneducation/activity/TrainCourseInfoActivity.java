@@ -22,6 +22,7 @@ import com.lzy.okgo.model.HttpParams;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
@@ -219,8 +220,11 @@ public class TrainCourseInfoActivity extends BaseToolbarActivity {
 
     @Override
     public void RightOnClick() {
+        UMImage thumb = new UMImage(this, R.drawable.zuxuelogo);
+        thumb.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         UMWeb web = new UMWeb(UrlFactory.downLoadUrl);
         web.setTitle("助学");//标题
+        web.setThumb(thumb);
         web.setDescription("我在助学app里学习" + mTrainCourse.getData().getDetail().getTrain_name() + "的" + mTrainCourse.getData().getDetail().getPlan().getCourse_type());
         new ShareAction(this)
                 .withMedia(web)

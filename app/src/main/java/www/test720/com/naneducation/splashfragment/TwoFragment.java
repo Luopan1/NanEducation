@@ -19,7 +19,7 @@ public class TwoFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        Glide.with(getActivity()).load(R.drawable.p2).into(mImageview);
+        Glide.with(getActivity()).load(R.drawable.taoke2222).into(mImageview);
     }
 
     @Override

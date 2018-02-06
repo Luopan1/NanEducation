@@ -73,6 +73,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import static android.os.Build.VERSION_CODES.M;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -147,7 +149,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
     public static boolean isBackApp = false;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -342,7 +344,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         mBuilder.setAutoCancel(true);
 
         //点击通知之后需要跳转的页面
-        Intent resultIntent = new Intent(this, RoomActivity.class);
+        Intent resultIntent = new Intent();
 
         //使用TaskStackBuilder为“通知页面”设置返回关系
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -806,18 +808,18 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         dialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = M)
     @Override
     public void onPageFinished() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= M) {
             String[] pers = new String[2];
             if (!(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= M) {
                     pers[0] = Manifest.permission.CAMERA;
                 }
             }
             if (!(checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= M) {
 
                     for (int i = 0; i < pers.length; i++) {
                         if (pers[i] == null) {

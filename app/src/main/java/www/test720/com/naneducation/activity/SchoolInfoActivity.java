@@ -1,7 +1,11 @@
 package www.test720.com.naneducation.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -10,15 +14,20 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.google.gson.Gson;
 import com.lzy.okgo.model.HttpParams;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.util.ArrayList;
@@ -167,7 +176,10 @@ public class SchoolInfoActivity extends BaseToolbarActivity {
     @Override
     public void RightOnClick() {
         UMWeb web = new UMWeb(UrlFactory.downLoadUrl);
+        UMImage thumb = new UMImage(this, R.drawable.zuxuelogo);
+        thumb.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         web.setTitle("助学");//标题
+        web.setThumb(thumb);
         web.setDescription("我在学海app里报名了" + mTitle + "的学校");
 
         new ShareAction(this)
@@ -238,6 +250,29 @@ public class SchoolInfoActivity extends BaseToolbarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.schoolPhoneNumber:
+                final MaterialDialog dialog = new MaterialDialog(SchoolInfoActivity.this);
+                dialog.content("是否拨打客服电话" + mSchoolPhoneNumber.getText().toString().trim())//
+                        .contentTextSize(14)
+                        .titleTextSize(16)
+                        .btnText("拨打电话", "取消")//
+                        .showAnim(new BounceTopEnter())//
+                        .show();
+                dialog.setOnBtnClickL(new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        if (ActivityCompat.checkSelfPermission(SchoolInfoActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(SchoolInfoActivity.this, "拨打电话权限已关闭，请打开权限", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        SchoolInfoActivity.this.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mSchoolPhoneNumber.getText().toString().trim())));
+                    }
+                }, new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                });
                 break;
             case R.id.toTheSchool:
                 mPopupWindow = ShowPopwindows.showChooseMapPop(this, "", mSchoolInfo.getData().getDetail().getS_long() + "," + mSchoolInfo.getData().getDetail().getS_lat(), "", "");

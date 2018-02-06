@@ -38,6 +38,7 @@ import com.lzy.okgo.model.HttpParams;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
 import java.net.URISyntaxException;
@@ -419,6 +420,9 @@ public class GroupActivityInfoActivity extends BaseToolbarActivity {
                 UMWeb web = new UMWeb(UrlFactory.downLoadUrl);
                 web.setTitle("助学");//标题
                 web.setDescription("我在学海app里面报名参加了" + mGroupActivityInfo.getData().getDetail().getAct_name() + "的活动");
+                UMImage thumb = new UMImage(this, R.mipmap.ic_launcher);
+                thumb.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+                web.setThumb(thumb);
                 new ShareAction(this)
                         .withMedia(web)
                         .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)

@@ -31,6 +31,7 @@ public class Constans {
     public static String lat = "";
     public static String WxId = "wx69ca9f37e8c96143";
     public static String unionid = "";
+    public static String token = "";
 
 
     public static void clearData() {
@@ -39,12 +40,13 @@ public class Constans {
         isBindbank = false;
         isPass = false;
         name = "";
-        City = "";
+      /*  City = "";
         district = "定位中...";
-        city_id = "0";
+        city_id = "0";*/
         longitude = "";
         lat = "";
         unionid = "";
+        token = "";
     }
 
     public static String genAppSign(List<NameValuePair> params) {

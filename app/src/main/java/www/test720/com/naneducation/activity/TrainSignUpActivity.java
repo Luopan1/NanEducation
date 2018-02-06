@@ -54,7 +54,6 @@ import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.AnimUtil;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.view.ClassFicationItemDecortion;
 import www.test720.com.naneducation.view.CustomDatePicker;
 
@@ -243,7 +242,6 @@ public class TrainSignUpActivity extends BaseToolbarActivity {
                 }
             };
             mTrainSingUpRecylcerView.setLayoutManager(new LinearLayoutManager(this));
-            mTrainSingUpRecylcerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mTrainSingUpRecylcerView.setAdapter(mSelectSignup);
 
             mSelectSignup.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -282,7 +280,6 @@ public class TrainSignUpActivity extends BaseToolbarActivity {
                 }
             };
             mTrainSingUpRecylcerView.setLayoutManager(new LinearLayoutManager(this));
-            mTrainSingUpRecylcerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mTrainSingUpRecylcerView.setAdapter(tranSignUpAdapter);
 
             tranSignUpAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {

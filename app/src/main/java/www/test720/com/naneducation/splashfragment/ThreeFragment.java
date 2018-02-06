@@ -25,7 +25,7 @@ public class ThreeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        Glide.with(getActivity()).load(R.drawable.p3).into(mImageview);
+        Glide.with(getActivity()).load(R.drawable.peixunjigou333).into(mImageview);
     }
 
     @Override

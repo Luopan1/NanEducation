@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,12 +48,10 @@ import www.test720.com.naneducation.baseui.BaseToolbarActivity;
 import www.test720.com.naneducation.bean.AllCourse;
 import www.test720.com.naneducation.bean.AllCourseSearch;
 import www.test720.com.naneducation.bean.Grade;
-import www.test720.com.naneducation.bean.LiveBroad;
 import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.AnimUtil;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.view.ClassFicationItemDecortion;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
 
@@ -213,7 +210,6 @@ public class AllCourseActivity extends BaseToolbarActivity {
                 }
             };
             mLiveBroadCastRecylcerView.setLayoutManager(new GridLayoutManager(this, 2));
-            mLiveBroadCastRecylcerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mLiveBroadCastRecylcerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             mLiveBroadCastRecylcerView.setAdapter(liveCastAdapter);
 

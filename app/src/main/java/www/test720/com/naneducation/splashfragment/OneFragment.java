@@ -19,7 +19,7 @@ public class OneFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        Glide.with(getActivity()).load(R.drawable.p1).into(mImageview);
+        Glide.with(getActivity()).load(R.drawable.zhibo111).into(mImageview);
     }
 
     @Override

@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/conpanyName"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginTop="10dp"
                 android:text="当前版本1.0.0"/>
 
             <TextView

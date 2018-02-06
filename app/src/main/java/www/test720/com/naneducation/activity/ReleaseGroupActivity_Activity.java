@@ -2,7 +2,6 @@ package www.test720.com.naneducation.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,8 +10,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -59,9 +56,6 @@ import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.GlideLoader;
 import www.test720.com.naneducation.utils.ImageLoader;
 import www.test720.com.naneducation.utils.Luban_Self;
-import www.test720.com.naneducation.view.PasswordView;
-
-import static com.edusdk.tools.Tools.alertDialog;
 
 public class ReleaseGroupActivity_Activity extends BaseToolbarActivity {
 
@@ -183,7 +177,7 @@ public class ReleaseGroupActivity_Activity extends BaseToolbarActivity {
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);  //显示拍照按钮
-        imagePicker.setCrop(true);        //允许裁剪（单选才有效）
+        imagePicker.setCrop(false);        //允许裁剪（单选才有效）
         imagePicker.setSaveRectangle(true); //是否按矩形区域保存
         imagePicker.setSelectLimit(size);    //选中数量限制
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
@@ -201,7 +195,7 @@ public class ReleaseGroupActivity_Activity extends BaseToolbarActivity {
     @SuppressWarnings("unchecked")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0x0005 && resultCode == 0x0004) {
+        if (requestCode == 0x0005 && resultCode == 0x0005) {
             mCityBean = (LocatedCity.DataBean.ListBean) data.getSerializableExtra("cityBean");
             mActivityArea.setText(data.getStringExtra("city") + data.getStringExtra("district"));
         } else if (requestCode == 0x0006 && resultCode == 0x0007) {
@@ -271,7 +265,7 @@ public class ReleaseGroupActivity_Activity extends BaseToolbarActivity {
                 jumpToActivity(AgreeMentActivity.class, bundle, false);
                 break;
             case R.id.selectActivityArea:
-                Intent intent = new Intent(this, ChooseAreaActivity.class);
+                Intent intent = new Intent(this, ChooseAReleaseAreActivity.class);
                 startActivityForResult(intent, 0x0005);
                 break;
             case R.id.selectActivityKind:
@@ -320,7 +314,13 @@ public class ReleaseGroupActivity_Activity extends BaseToolbarActivity {
                     @Override
                     public void onTimeSelect(Date date, View v) {//选中事件回调
                         endTime = date.getTime();
-                        mActivityEndTime.setText(getTime(date));
+                        if ((endTime - startTime) < 0) {
+                            ShowToast("开始时间不能大于结束时间");
+                        } else if ((endTime - startTime) / 1000 < 30 * 60) {
+                            ShowToast("活动时间必须半小时以上");
+                        } else {
+                            mActivityEndTime.setText(getTime(date));
+                        }
                     }
                 })
                         .build();

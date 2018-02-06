@@ -22,6 +22,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,8 +33,6 @@ import www.test720.com.naneducation.baseui.BaseToolbarActivity;
 import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.SPUtils;
-
-import static www.test720.com.naneducation.http.Constans.unionid;
 
 
 public class LoginActivity extends BaseToolbarActivity {
@@ -54,6 +53,7 @@ public class LoginActivity extends BaseToolbarActivity {
     @BindView(R.id.weixinLogin)
     RelativeLayout mWeixinLogin;
     private int mType;
+    private boolean mMCanGoBack;
 
     @Override
     protected int getContentView() {
@@ -80,6 +80,16 @@ public class LoginActivity extends BaseToolbarActivity {
         initToobar("登录");
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", 0);
+        mMCanGoBack = intent.getBooleanExtra("canGoBack", true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mMCanGoBack) {
+            finish();
+        } else {
+            moveTaskToBack(false);
+        }
     }
 
     @OnClick({R.id.Login, R.id.QQLogin, R.id.weixinLogin, R.id.regiest, R.id.forgetPwd})
@@ -121,6 +131,8 @@ public class LoginActivity extends BaseToolbarActivity {
                         JSONObject jsonObject = JSON.parseObject(s);
                         ShowToast(jsonObject.getString("msg"));
                         Constans.head = jsonObject.getJSONObject("data").getString("head");
+                        Constans.token = jsonObject.getJSONObject("data").getString("rong_cloud_token");
+
                         if (jsonObject.getJSONObject("data").getInteger("is_bindbank") == 0) {
                             Constans.isBindbank = false;
                         } else {
@@ -134,8 +146,24 @@ public class LoginActivity extends BaseToolbarActivity {
                         }
                         Constans.name = jsonObject.getJSONObject("data").getString("name");
                         Constans.uid = jsonObject.getJSONObject("data").getString("uid");
-
                         SPUtils.saveUserInfo(mPhoneNumber.getText().toString().trim(), mPassword.getText().toString().trim());
+
+                        RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
+
+                            @Override
+                            public void onTokenIncorrect() {
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+
+                            }
+                        });
                     }
                 });
 
@@ -234,7 +262,22 @@ public class LoginActivity extends BaseToolbarActivity {
                     }
                     Constans.name = obj.getJSONObject("data").getString("name");
                     Constans.uid = obj.getJSONObject("data").getString("uid");
+                    Constans.token = obj.getJSONObject("data").getString("rong_cloud_token");
+                    RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
 
+                        @Override
+                        public void onTokenIncorrect() {
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+
+                        }
+                    });
                     jumpToActivity(MainActivity.class, true);
                 }
             }
@@ -300,7 +343,6 @@ public class LoginActivity extends BaseToolbarActivity {
 
                 } else if (obj.getInteger("code") == 1) {
                     SPUtils.saveQQ(unionid);
-
                     Constans.head = obj.getJSONObject("data").getString("head");
                     if (obj.getJSONObject("data").getInteger("is_bindbank") == 0) {
                         Constans.isBindbank = false;
@@ -315,7 +357,21 @@ public class LoginActivity extends BaseToolbarActivity {
                     }
                     Constans.name = obj.getJSONObject("data").getString("name");
                     Constans.uid = obj.getJSONObject("data").getString("uid");
+                    Constans.token = obj.getJSONObject("data").getString("rong_cloud_token");
+                    RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
 
+                        @Override
+                        public void onTokenIncorrect() {
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
                     jumpToActivity(MainActivity.class, true);
                 }
 

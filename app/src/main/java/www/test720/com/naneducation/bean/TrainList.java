@@ -152,7 +152,11 @@ public class TrainList {
             /**
              * name : 语文
              * t_id : 27
-             * zi : [{"name":"一年级","t_id":"30"},{"name":"二年级","t_id":"31"}]
+             * zi : [
+             * {"name":"一年级",
+             * "t_id":"30"},
+             * {"name":"二年级",
+             * "t_id":"31"}]
              */
 
             private String name;

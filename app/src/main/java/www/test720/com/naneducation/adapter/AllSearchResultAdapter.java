@@ -20,10 +20,8 @@ import www.test720.com.naneducation.R;
 import www.test720.com.naneducation.activity.CourseInfoActivity;
 import www.test720.com.naneducation.activity.LiveBroadcastActivity;
 import www.test720.com.naneducation.bean.AllCourseSearch;
-import www.test720.com.naneducation.bean.LiveSearchResult;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.utils.SizeUtils;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
 
@@ -137,7 +135,6 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(allCourseeAdapter);
 
@@ -218,7 +215,6 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(vedioAdapter);
 
@@ -300,7 +296,6 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(liveCastAdapter);
             liveCastAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {

@@ -2,16 +2,18 @@ package www.test720.com.naneducation.activity;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -173,7 +176,6 @@ public class MainActivity extends BaseToolbarActivity {
         window.setGravity(Gravity.CENTER);
         window.setWindowAnimations(R.style.myDialogAnim);
         window.setContentView(contentView);
-        WindowManager windowManager = getWindowManager();
         WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
         lp.width = ViewGroup.LayoutParams.WRAP_CONTENT; //设置宽度
         lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -216,7 +218,6 @@ public class MainActivity extends BaseToolbarActivity {
         mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                LogUtils.e("isSuccess:" + isSuccess);
                 if (isSuccess) {
                     LogUtils.e(isSuccess);
                     comfirmIsOpnen(Constans.City, Constans.district);
@@ -238,6 +239,47 @@ public class MainActivity extends BaseToolbarActivity {
             }
         });
 
+        RongIMClient.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
+
+            @Override
+            public void onChanged(ConnectionStatus connectionStatus) {
+                if (connectionStatus.getValue() == 3) {
+                    isCanAutoLogin = false;
+
+                    Constans.uid = "";
+                    Constans.head = "";
+                    Constans.isBindbank = false;
+                    Constans.token = "";
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ShowToast("您的账号在其他设备登录");
+                            if (isTopaAtivity(MainActivity.this)) {
+
+                            } else {
+                                jumpToActivity(MainActivity.class, true);
+                            }
+                           /* Constans.clearData();
+                            Bundle bundle = new Bundle();
+                            bundle.putBoolean("canGoBack", false);
+                            jumpToActivity(MainActivity.class, bundle, true);*/
+
+                        }
+                    });
+
+
+                }
+            }
+        });
+    }
+
+    private static boolean isCanAutoLogin = true;
+
+    private boolean isTopaAtivity(Context activity) {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        return cn.getClassName().equals(activity.getClass().getName());
     }
 
     @Override
@@ -334,15 +376,16 @@ public class MainActivity extends BaseToolbarActivity {
 
     @Override
     protected void initView() {
+
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDistrict.setText(Constans.district);
 
-        if (Constans.uid.isEmpty() && !SPUtils.getCount().isEmpty()) {
+        if (Constans.uid.isEmpty() && !SPUtils.getCount().isEmpty() && isCanAutoLogin) {
             autoLogin();
-        } else if (Constans.uid.isEmpty() && !SPUtils.getWeiXinId().trim().isEmpty()) {
-            QQOrWeiXinLogin(SPUtils.getWeiXinId());
+        } else if (Constans.uid.isEmpty() && !SPUtils.getWeiXinId().trim().isEmpty() && isCanAutoLogin) {
+            WeiChatLogin(SPUtils.getWeiXinId());
 
-        } else if (Constans.uid.isEmpty() && !SPUtils.getQQId().trim().isEmpty()) {
+        } else if (Constans.uid.isEmpty() && !SPUtils.getQQId().trim().isEmpty() && isCanAutoLogin) {
             QQOrWeiXinLogin(SPUtils.getQQId());
         }
 
@@ -360,6 +403,65 @@ public class MainActivity extends BaseToolbarActivity {
         }, 200);
 
     }
+
+
+    private void WeiChatLogin(final String openid) {
+        HttpParams params = new HttpParams();
+        params.put("unionid", openid);
+        mSubscription = mHttpUtils.getData(UrlFactory.appWeChatLogin, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                cancleLoadingDialog();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                cancleLoadingDialog();
+                ShowToast(e.getMessage());
+            }
+
+            @Override
+            public void onNext(String s) {
+
+                cancleLoadingDialog();
+                JSONObject obj = JSON.parseObject(s);
+                if (obj.getInteger("code") == 1) {
+                    Constans.head = obj.getJSONObject("data").getString("head");
+                    if (obj.getJSONObject("data").getInteger("is_bindbank") == 0) {
+                        Constans.isBindbank = false;
+                    } else {
+                        Constans.isBindbank = true;
+                    }
+
+                    if (obj.getJSONObject("data").getInteger("is_pass") == 0) {
+                        Constans.isPass = false;
+                    } else {
+                        Constans.isPass = true;
+                    }
+                    Constans.name = obj.getJSONObject("data").getString("name");
+                    Constans.uid = obj.getJSONObject("data").getString("uid");
+                    Constans.token = obj.getJSONObject("data").getString("rong_cloud_token");
+                    RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
+
+                        @Override
+                        public void onTokenIncorrect() {
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
+                } else {
+                    ShowToast(obj.getString("msg"));
+                }
+            }
+        });
+    }
+
 
     private void QQOrWeiXinLogin(String weiXinId) {
         HttpParams params = new HttpParams();
@@ -397,6 +499,27 @@ public class MainActivity extends BaseToolbarActivity {
                     }
                     Constans.name = obj.getJSONObject("data").getString("name");
                     Constans.uid = obj.getJSONObject("data").getString("uid");
+                    Constans.token = obj.getJSONObject("data").getString("rong_cloud_token");
+
+                    RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
+
+                        @Override
+                        public void onTokenIncorrect() {
+                            ShowToast("onTokenIncorrect");
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                            Log.e("TAG+++++onSuccess", s);
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                            Log.e("TAG+++++onError", errorCode + "");
+                        }
+                    });
+
+
                 } else {
                     ShowToast(obj.getString("msg"));
                 }
@@ -537,15 +660,19 @@ public class MainActivity extends BaseToolbarActivity {
 
     }
 
-    @Override
+   /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             moveTaskToBack(false);
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
     public void autoLogin() {
         HttpParams params = new HttpParams();
@@ -590,6 +717,24 @@ public class MainActivity extends BaseToolbarActivity {
                 Constans.name = jsonObject.getJSONObject("data").getString("name");
                 Constans.uid = jsonObject.getJSONObject("data").getString("uid");
                 Constans_VIdeo.uid = Constans.uid;
+                Constans.token = jsonObject.getJSONObject("data").getString("rong_cloud_token");
+                RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
+                    @Override
+                    public void onTokenIncorrect() {
+                        ShowToast("onTokenIncorrect");
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        Log.e("TAG++++", Constans.token);
+                        Log.e("TAG+++++onSuccess", s);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        Log.e("TAG+++++onError", errorCode + "");
+                    }
+                });
             }
         });
 
@@ -647,6 +792,5 @@ public class MainActivity extends BaseToolbarActivity {
 
         }
     }
-
 
 }

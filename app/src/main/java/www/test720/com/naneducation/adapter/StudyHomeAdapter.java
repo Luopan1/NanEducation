@@ -41,7 +41,6 @@ import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.login.LoginActivity;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.utils.NetImageLoaderHolder;
 import www.test720.com.naneducation.utils.SizeUtils;
 import www.test720.com.naneducation.view.DividerGridItemDecoration;
@@ -193,7 +192,6 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(activityAdapter);
             activityAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -344,7 +342,6 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(studyAllCourseAdapter);
             studyAllCourseAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -416,7 +413,6 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(studyVideoAdapter);
             studyVideoAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -490,7 +486,6 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             };
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             holder.myRecyclerView.setAdapter(selectStudyAdapter);
             selectStudyAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -530,7 +525,6 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             };
 
             holder.myRecyclerView.setLayoutManager(new GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, false));
-            holder.myRecyclerView.setItemAnimator(ItemAnimatorFactory.slidein());
             holder.myRecyclerView.addItemDecoration(new DividerGridItemDecoration(context));
             holder.myRecyclerView.setAdapter(adapter);
 
@@ -574,6 +568,7 @@ public class StudyHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         context.startActivity(new Intent(context, NewsActivity.class));
                         break;
                     case 7:
+                        Log.e("TAG+++uid", Constans.uid);
                         if (Constans.uid.equals("")) {
                             intent = new Intent(context, LoginActivity.class);
                             intent.putExtra("type", 1);

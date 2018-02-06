@@ -8,7 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/CallLib" />
             <option value="$PROJECT_DIR$/ClassRoomSdk" />
+            <option value="$PROJECT_DIR$/IMLib" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/edusdk" />
             <option value="$PROJECT_DIR$/jjdxm-ijkplayer" />

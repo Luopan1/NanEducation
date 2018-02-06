@@ -127,8 +127,6 @@ public abstract class BaseToolbarActivity extends AppCompatActivity {
         initView();
         initData();
         setListener();
-
-
     }
 
     public void setFullScreen() {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,7 +45,6 @@ import www.test720.com.naneducation.activity.MainActivity;
 import www.test720.com.naneducation.baseui.BaseToolbarActivity;
 import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
-import www.test720.com.naneducation.login.LoginActivity;
 import www.test720.com.naneducation.utils.DataCleanManager;
 import www.test720.com.naneducation.utils.GlideLoader;
 import www.test720.com.naneducation.utils.ImageLoader;
@@ -214,7 +215,6 @@ public class PersonSettingAcitivty extends BaseToolbarActivity {
 
     @Override
     protected void setListener() {
-
     }
 
     @Override
@@ -239,7 +239,7 @@ public class PersonSettingAcitivty extends BaseToolbarActivity {
     }
 
 
-    @OnClick({R.id.user_head_relative, R.id.userPhone, R.id.customNumber, R.id.aboutUs, R.id.clearCache, R.id.loginOut, R.id.userNickName})
+    @OnClick({R.id.user_head_relative, R.id.userPhone, R.id.customNumber, R.id.aboutUs, R.id.clearCache, R.id.loginOut, R.id.userNickName, R.id.switchButton})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_head_relative:
@@ -283,12 +283,50 @@ public class PersonSettingAcitivty extends BaseToolbarActivity {
                 SPUtils.saveWeixin("");
                 MainActivity.currentIndex = 2;
                 MainActivity.isSuccess = false;
+                RongIMClient.getInstance().logout();
                 jumpToActivity(MainActivity.class, true);
                 break;
             case R.id.userNickName:
                 showChangeNickNamePop();
                 break;
+            case R.id.switchButton:
+                HttpParams params = new HttpParams();
+                params.put("uid", Constans.uid);
+                if (mSwitchButton.isChecked()) {
+                    params.put("is_remind", 1);
+                } else {
+                    params.put("is_remind", 0);
+                }
+                changeSwitchButton(params);
+                break;
         }
+    }
+
+    private void changeSwitchButton(HttpParams params) {
+        mSubscription = mHttpUtils.getData(UrlFactory.editUserInfo, params, 1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ShowToast(e.getMessage());
+
+            }
+
+            @Override
+            public void onNext(String s) {
+                cancleLoadingDialog();
+                JSONObject obj = JSON.parseObject(s);
+                ShowToast(obj.getString("msg"));
+            }
+        });
     }
 
     private void clearDataCache() {
@@ -383,6 +421,8 @@ public class PersonSettingAcitivty extends BaseToolbarActivity {
                 mName = et_nickName.getText().toString().trim();
                 if (mName.isEmpty()) {
                     ShowToast("昵称不能为空");
+                } else if (mName.length() >= 6) {
+                    ShowToast("昵称不能超过6个字");
                 } else {
                     HttpParams params = new HttpParams();
                     params.put("name", mName);

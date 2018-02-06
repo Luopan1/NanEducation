@@ -56,7 +56,6 @@ import www.test720.com.naneducation.http.Constans;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.AnimUtil;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.utils.SizeUtils;
 import www.test720.com.naneducation.view.CustomDatePicker;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
@@ -201,7 +200,6 @@ public class LiveBroadcastActivity extends BaseToolbarActivity {
                 }
             };
             mLiveBroadCastRecylcerView.setLayoutManager(new GridLayoutManager(this, 2));
-            mLiveBroadCastRecylcerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mLiveBroadCastRecylcerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             mLiveBroadCastRecylcerView.setAdapter(liveCastAdapter);
 

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.model.HttpParams;
 
@@ -61,6 +62,7 @@ public class StartPageActivity extends BaseToolbarActivity {
             @Override
             public void onProgress(int progress) {
                 if (progress == 0) {
+                    LogUtils.e("TAG++++++++", "progress");
                     if (!SPUtils.getIsInstall()) {
                         jumpToActivity(SplashActivity.class, true);
                     } else {
@@ -72,11 +74,12 @@ public class StartPageActivity extends BaseToolbarActivity {
         mCountdownProgressView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogUtils.e("TAG++++++++", "点击");
+                mCountdownProgressView.stop();
                 if (!SPUtils.getIsInstall()) {
                     jumpToActivity(SplashActivity.class, true);
                 } else {
                     jumpToActivity(MainActivity.class, true);
-                    mCountdownProgressView.stop();
                 }
             }
         });

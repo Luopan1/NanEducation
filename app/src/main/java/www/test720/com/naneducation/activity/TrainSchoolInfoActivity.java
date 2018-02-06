@@ -1,8 +1,12 @@
 package www.test720.com.naneducation.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -15,10 +19,14 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.MaterialDialog;
 import com.lzy.okgo.model.HttpParams;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -41,6 +49,8 @@ import www.test720.com.naneducation.fragment.NewsFragment;
 import www.test720.com.naneducation.fragment.TrainCourseFragment;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.DensityUtil;
+
+import static android.R.attr.id;
 
 public class TrainSchoolInfoActivity extends BaseToolbarActivity {
 
@@ -110,8 +120,6 @@ public class TrainSchoolInfoActivity extends BaseToolbarActivity {
                 mTrain_long = Double.parseDouble(obj.getJSONObject("data").getJSONObject("detail").getString("train_long"));
 
                 mGrades.setText(obj.getJSONObject("data").getJSONObject("detail").getString("grade") + "分");
-
-
             }
         });
 
@@ -166,7 +174,7 @@ public class TrainSchoolInfoActivity extends BaseToolbarActivity {
     }
 
 
-    @OnClick({R.id.toTheSchool, R.id.button1, R.id.button2})
+    @OnClick({R.id.toTheSchool, R.id.button1, R.id.button2, R.id.schoolPhone})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toTheSchool:
@@ -177,6 +185,31 @@ public class TrainSchoolInfoActivity extends BaseToolbarActivity {
                 break;
             case R.id.button2:
                 mViewPager.setCurrentItem(1);
+                break;
+            case R.id.schoolPhone:
+                final MaterialDialog dialog = new MaterialDialog(TrainSchoolInfoActivity.this);
+                dialog.content("是否拨打客服电话" + mSchoolPhone.getText().toString().trim())//
+                        .contentTextSize(14)
+                        .titleTextSize(16)
+                        .btnText("拨打电话", "取消")//
+                        .showAnim(new BounceTopEnter())//
+                        .show();
+                dialog.setOnBtnClickL(new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                        if (ActivityCompat.checkSelfPermission(TrainSchoolInfoActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(TrainSchoolInfoActivity.this, "拨打电话权限已关闭，请打开权限", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        TrainSchoolInfoActivity.this.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mSchoolPhone.getText().toString().trim())));
+                    }
+                }, new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                });
                 break;
         }
     }

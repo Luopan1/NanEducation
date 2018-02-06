@@ -51,7 +51,7 @@
             android:drawableLeft="@drawable/shouckong"
             android:drawablePadding="-5dp"
             android:gravity="center"
-            android:paddingLeft="@dimen/dp_10"
+            android:paddingLeft="10dp"
             android:text="收藏"
             android:textColor="#F7736E"/>
     </RelativeLayout>
@@ -82,10 +82,10 @@
             android:textColor="@color/text_color_thin"/>
 
         <TextView
+            android:gravity="center"
             android:id="@+id/schoolPhoneNumber"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
+            android:layout_height="@dimen/x40"
             android:drawableLeft="@drawable/dainhua2"
             android:drawablePadding="5dp"
             tools:text="023-4281688"

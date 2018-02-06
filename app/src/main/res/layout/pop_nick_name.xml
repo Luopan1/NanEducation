@@ -28,7 +28,7 @@
             android:layout_marginTop="108dp"
             android:background="@null"
             android:hint="昵称不能超过6个字"
-            android:maxLength="6"/>
+            />
 
         <TextView
             android:layout_width="match_parent"

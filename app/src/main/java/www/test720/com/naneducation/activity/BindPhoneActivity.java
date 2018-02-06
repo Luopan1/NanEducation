@@ -2,6 +2,7 @@ package www.test720.com.naneducation.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import com.lzy.okgo.model.HttpParams;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -175,6 +177,22 @@ public class BindPhoneActivity extends BaseToolbarActivity {
                     }
                     Constans.name = obj.getJSONObject("data").getString("name");
                     Constans.uid = obj.getJSONObject("data").getString("uid");
+                    Constans.token = obj.getJSONObject("data").getString("rong_cloud_token");
+                    RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
+
+                        @Override
+                        public void onTokenIncorrect() {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                        }
+                    });
                     jumpToActivity(MainActivity.class, true);
 
                 } else if (obj.getInteger("code") == 1) {

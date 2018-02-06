@@ -2,7 +2,6 @@ package www.test720.com.naneducation.activity;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,7 +42,6 @@ import www.test720.com.naneducation.bean.StudyHomeBanner;
 import www.test720.com.naneducation.http.UrlFactory;
 import www.test720.com.naneducation.utils.AnimUtil;
 import www.test720.com.naneducation.utils.DensityUtil;
-import www.test720.com.naneducation.utils.ItemAnimatorFactory;
 import www.test720.com.naneducation.view.ClassFicationItemDecortion;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
 
@@ -174,7 +172,6 @@ public class VideoCacheActivity extends BaseToolbarActivity {
                 }
             };
             mLiveBroadCastRecylcerView.setLayoutManager(new GridLayoutManager(this, 2));
-            mLiveBroadCastRecylcerView.setItemAnimator(ItemAnimatorFactory.slidein());
             mLiveBroadCastRecylcerView.addItemDecoration(new SpaceItemDecoration(0, DensityUtil.dip2px(context, 15), DensityUtil.dip2px(context, 15)));
             mLiveBroadCastRecylcerView.setAdapter(liveCastAdapter);
         } else {
