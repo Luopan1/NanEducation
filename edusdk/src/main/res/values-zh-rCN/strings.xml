@@ -7,22 +7,23 @@
     <string name="title_activity_start_page_">StartPage_Activity</string>
     <string name="checkmeeting_error_3001">服务器过期</string>
     <string name="checkmeeting_error_3002">公司被冻结</string>
-    <string name="checkmeeting_error_3003">课堂被删除或过期</string>
-    <string name="checkmeeting_error_4007">课堂不存在</string>
-    <string name="checkmeeting_error_4008">课堂密码错误</string>
-    <string name="checkmeeting_error_4110">该课堂需要密码，请输入密码</string>
+    <string name="checkmeeting_error_3003">教室被删除或过期</string>
+    <string name="checkmeeting_error_4007">教室不存在</string>
+    <string name="checkmeeting_error_4008">教室密码错误</string>
+    <string name="checkmeeting_error_4110">该教室需要密码，请输入密码</string>
     <string name="checkmeeting_error_5001">直播被删除或过期</string>
     <string name="checkmeeting_error_5002">直播不存在</string>
     <string name="checkmeeting_error_5003">直播密码错误</string>
     <string name="checkmeeting_error_5004">该直播需要密码，请输入密码</string>
     <string name="checkmeeting_error_4109">Auth不正确</string>
-    <string name="checkmeeting_error_4103">课堂人数超限</string>
+    <string name="checkmeeting_error_4103">教室人数超限</string>
     <string name="checkmeeting_error_5005">协议格式不正确</string>
-    <string name="checkroom_error_5006">请您使用学员地址进入课堂</string>
+    <string name="checkroom_error_5006">请您使用学员地址进入教室</string>
     <string name="WaitingForNetwork">您的网络暂时不可用,请稍后重试</string>
     <string name="address">请选择您所在的国家或地区</string>
     <string name="background">该学生按home键啦</string>
-    <string name="meeting_password">课堂密码</string>
+    <string name="tea_background">该用户按home键啦</string>
+    <string name="meeting_password">教室密码</string>
     <string name="OK">确定</string>
     <string name="link_tip">链接</string>
     <string name="remind">提示</string>
@@ -33,10 +34,10 @@
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
     <string name="share_pad">白板</string>
-    <string name="join">加入课堂！</string>
-    <string name="leave">离开课堂！</string>
+    <string name="join">加入教室！</string>
+    <string name="leave">离开教室！</string>
     <string name="me">我</string>
-    <string name="joining_classroom">正在进入课堂</string>
+    <string name="joining_classroom">正在进入教室</string>
     <string name="open_audio">打开音频</string>
     <string name="close_audio">打开音频</string>
     <string name="candraw">授权涂鸦</string>
@@ -50,7 +51,7 @@
     <string name="selectphoto">选择图片</string>
     <string name="ploadphoto">拍照上传</string>
     <string name="no_raise">取消举手</string>
-    <string name="connected">正在连接课堂</string>
+    <string name="connected">正在连接教室</string>
     <string name="userlist">花名册</string>
     <string name="doclist">课件列表</string>
     <string name="medialist">媒体列表</string>
@@ -71,9 +72,12 @@
     <string name="mic_hint">请在手机的“设置”选项中，允许助学访问你的麦克风。</string>
     <string name="fire_wall_alert">网络出现异常，请关闭杀毒软件或防火墙后，重新进入</string>
     <string name="udp_alert">网络出现异常，请检查网络环境，重新进入</string>
-    <string name="back_hint">助学在后台执行，点击回到课堂</string>
+    <string name="back_hint">助学在后台执行，点击回到教室</string>
     <string name="select_country">请选择您所在的国家或地区</string>
     <string name="country_default">(默认)</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="updateing">更新中...</string>
+    <string name="find_new_version">为了达到最佳使用体验，建议您立即完成版本升级</string>
+    <string name="find_new_version_fouce">为了获得完整的学习体验，请您立即完成版本升级</string>
 </resources>

@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin:'com.android.library'
 
 android {
     compileSdkVersion 25
@@ -25,9 +25,9 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
+repositories{
+    flatDir{
+        dirs'libs'
     }
 }
 dependencies {
@@ -44,10 +44,15 @@ dependencies {
     compile 'com.thetransactioncompany:jsonrpc2-base:1.38'
     compile files('libs/android-async-http-1.4.8.jar')
     compile(name: 'xwalk_core_library-release', ext: 'aar')
-    /* compile('io.socket:socket.io-client:1.0.0') {
-         // excluding org.json which is provided by Android
-         exclude group: 'org.json', module: 'json'
-     }*/
+    compile('io.socket:socket.io-client:1.0.0') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
     compile files('libs/org.apache.http.legacy.jar')
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
+
+
+
+
+
 }

@@ -6,10 +6,7 @@ package com.classroomsdk;
 
 public interface WBStateCallBack {
     void onPageFinished();
-
     void onRoomDocChange();
-
     void onWhiteBoradZoom(boolean isZoom);
-
     void onWhiteBoradMediaPublish(String url, boolean isvideo, long fileid);
 }

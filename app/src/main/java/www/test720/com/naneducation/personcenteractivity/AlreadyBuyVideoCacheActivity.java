@@ -122,6 +122,7 @@ public class AlreadyBuyVideoCacheActivity extends BaseToolbarActivity {
                     bundle.putInt("type", 2);
                     bundle.putString("id", mLists.get(position).getLid());
                     bundle.putString("path", mLists.get(position).getBack_url());
+                    bundle.putString("room", mLists.get(position).getRoom_mun());
                     jumpToActivity(CourseInfoActivity.class, bundle, false);
 
                 }

@@ -77,7 +77,7 @@ public class ChatListAdapter extends BaseAdapter {
 
             RoomUser roomUser = RoomManager.getInstance().getUser(chatlist.get(position).getPeerid());
             if (roomUser != null) {
-                //                roomUser.nickName = StringEscapeUtils.unescapeHtml4(roomUser.nickName);
+//                roomUser.nickName = StringEscapeUtils.unescapeHtml4(roomUser.nickName);
                 String username = roomUser.nickName;
                 String tempname = null;
                 try {
@@ -124,7 +124,7 @@ public class ChatListAdapter extends BaseAdapter {
                 String png = tempText.substring("[".length(), tempText.length() - "]".length()) + ".png";
                 Bitmap bitmap = BitmapFactory.decodeStream(context.getAssets().open("face/" + png));
                 Drawable drawable = new BitmapDrawable(bitmap);
-                drawable.setBounds(0, 0, KeyBoardUtil.dp2px(context, 16), KeyBoardUtil.dp2px(context, 16));
+                drawable.setBounds(0, 0, KeyBoardUtil.dp2px(context,16), KeyBoardUtil.dp2px(context,16));
                 ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
                 sb.setSpan(span, m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
               /*  sb.setSpan(new ImageSpan(context, BitmapFactory.decodeStream(context.getAssets().open("face/" + png))),

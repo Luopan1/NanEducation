@@ -7,10 +7,11 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,32 +20,31 @@ import com.edusdk.R;
 import com.edusdk.entity.VideoGroup;
 import com.edusdk.message.NotificationCenter;
 import com.edusdk.message.RoomSession;
+import com.edusdk.tools.Tools;
+import com.talkcloud.roomsdk.RoomControler;
 import com.talkcloud.roomsdk.RoomManager;
 import com.talkcloud.roomsdk.RoomUser;
 
 import org.webrtc.EglBase;
+import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 public class MembersFragment extends Fragment implements NotificationCenter.NotificationCenterDelegate {
-    private View fragmentView;
 
+    private View fragmentView;
     private LinearLayout lin_students;
     private LinearLayout lin_big_video;
     private ArrayList<VideoGroup> stuVideos = new ArrayList<VideoGroup>();
-    private boolean isStart = false;
     int roomType;
     VideoGroup vgTeacher = new VideoGroup();
     VideoGroup vgSec = new VideoGroup();
     boolean isAtc = false;
-    private int count;
-    private long firClick;
-    private long secClick;
-
+    private ImageView iv_back;
+    private boolean isVisiable = false;
 
     @Nullable
     @Override
@@ -58,7 +58,12 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
             vgSec.rel = (RelativeLayout) fragmentView.findViewById(R.id.stu_video_item);
 
             vgTeacher.rel_video = (RelativeLayout) vgTeacher.rel.findViewById(R.id.rel_video);
+            vgTeacher.re_background = (RelativeLayout) vgTeacher.rel.findViewById(R.id.re_background);
+            vgTeacher.tv_home = (TextView) vgTeacher.rel.findViewById(R.id.tv_home);
+
             vgSec.rel_video = (RelativeLayout) vgSec.rel.findViewById(R.id.rel_video);
+            vgSec.re_background = (RelativeLayout) vgSec.rel.findViewById(R.id.re_background);
+            vgSec.tv_home = (TextView) vgSec.rel.findViewById(R.id.tv_home);
 
             vgTeacher.sf = (SurfaceViewRenderer) vgTeacher.rel.findViewById(R.id.sf_video);
             vgTeacher.sf.init(EglBase.create().getEglBaseContext(), null);
@@ -70,9 +75,10 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
             vgSec.txt_idef = (TextView) vgSec.rel.findViewById(R.id.txt_idef);
             vgSec.txt_name = (TextView) vgSec.rel.findViewById(R.id.txt_name);
 
+            iv_back = (ImageView) fragmentView.findViewById(R.id.iv_back);
+
             vgTeacher.sf.setVisibility(View.INVISIBLE);
             vgSec.sf.setVisibility(View.INVISIBLE);
-
 
             initView();
         } else {
@@ -81,10 +87,27 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                 parent.removeView(fragmentView);
             }
         }
-        setListener();
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (vgTeacher.sf != null) {
+                    vgTeacher.sf.setVisibility(View.GONE);
+                }
+                if (vgSec.sf != null) {
+                    vgSec.sf.setVisibility(View.GONE);
+                }
+
+                if (stuVideos != null && stuVideos.size() > 0) {
+                    for (int i = 0; i < stuVideos.size(); i++) {
+                        stuVideos.get(i).sf.setVisibility(View.GONE);
+                    }
+                }
+
+                RoomActivity.vi_contaioner.arrowScroll(17);
+            }
+        });
         return fragmentView;
     }
-
 
     private void initView() {
         if (lin_students == null) {
@@ -100,10 +123,14 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
 
     @Override
     public void onStart() {
-        //        NotificationCenter.getInstance().addObserver(this, RoomSession.VideoPublished);
-        //        NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
+//        NotificationCenter.getInstance().addObserver(this, RoomSession.VideoPublished);
+//        NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
+        NotificationCenter.getInstance().addObserver(this, RoomActivity.GONE_VIDEO);
         super.onStart();
-        doLayout();
+        if (isVisiable) {
+            doPlayVideo();
+            doLayout();
+        }
     }
 
     private void doLayout() {
@@ -111,55 +138,54 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         if (getActivity() == null)
             return;
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        final int wid = dm.widthPixels;
-        final int hid = dm.heightPixels;
+        int wid = dm.widthPixels;
+        int hid = dm.heightPixels;
         LinearLayout.LayoutParams big_param = (LinearLayout.LayoutParams) lin_big_video.getLayoutParams();
+        LinearLayout.LayoutParams stu_param = (LinearLayout.LayoutParams) lin_students.getLayoutParams();
+        big_param.height = hid / 3 * 2;
+        stu_param.height = hid / 3 * 1;
+        stu_param.gravity = Gravity.CENTER_VERTICAL;
 
-        List<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
-        Log.e("TAG+++++++", "playingList" + playingList.size());
-        if (playingList.size() > 2) {
-            big_param.height = hid / 3 * 2;
-            LinearLayout.LayoutParams stu_param = (LinearLayout.LayoutParams) lin_students.getLayoutParams();
-
-            stu_param.height = hid / 3;
-            lin_students.setLayoutParams(stu_param);
-
-
-            lin_big_video.setVisibility(View.VISIBLE);
-            vgTeacher.rel.setVisibility(View.VISIBLE);
-            vgSec.rel.setVisibility(View.VISIBLE);
-            vgSec.sf.setVisibility(View.VISIBLE);
-            vgTeacher.sf.setVisibility(View.VISIBLE);
-
-            for (int i = 0; i < stuVideos.size(); i++) {
-                LinearLayout.LayoutParams relParams = (LinearLayout.LayoutParams) stuVideos.get(i).rel.getLayoutParams();
-                relParams.width = wid / 5;
-                relParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
-                stuVideos.get(i).rel.setLayoutParams(relParams);
-                stuVideos.get(i).rel.setVisibility(View.VISIBLE);
-                stuVideos.get(i).sf.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            big_param.height = hid;
-            lin_students.setVisibility(View.GONE);
+        /*int maxVideo = -1;
+        if (RoomManager.getInstance().getRoomProperties() != null) {
+            maxVideo = RoomManager.getInstance().getRoomProperties().optInt("maxvideo", 6);
         }
+        if (stuVideos.size() > 0 && maxVideo > 7) {
+            *//*big_param.height = hid - stuVideos.get(0).rel.getLayoutParams().height;*//*
+            big_param.height = hid / 3 * 2;
+            stu_param.height = stuVideos.get(0).rel.getLayoutParams().height;
+        } else {
+            big_param.height = hid / 3 * 2;
+            stu_param.height = hid / 3 * 1;
+            stu_param.gravity = Gravity.CENTER_VERTICAL;
+            *//*big_param.height = hid ;*//*
+        }*/
 
 
         lin_big_video.setLayoutParams(big_param);
-    }
+        lin_students.setLayoutParams(stu_param);
 
+        LinearLayout.LayoutParams lin_param = (LinearLayout.LayoutParams) vgTeacher.rel.getLayoutParams();
+        lin_param.height = big_param.height;
+        vgTeacher.rel.setLayoutParams(lin_param);
+        vgSec.rel.setLayoutParams(lin_param);
+
+        RelativeLayout.LayoutParams rel_param = (RelativeLayout.LayoutParams) vgTeacher.rel_video.getLayoutParams();
+        rel_param.height = vgTeacher.rel_video.getWidth() / 4 * 3;
+        vgTeacher.rel_video.setLayoutParams(rel_param);
+        vgSec.rel_video.setLayoutParams(rel_param);
+    }
 
     @Override
     public void onStop() {
-        //       NotificationCenter.getInstance().removeObserver(this);
+        /*NotificationCenter.getInstance().removeObserver(this);*/
+        isVisiable = false;
         super.onStop();
-
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        Log.e("TAG++++++", "setUserVisibleHint" + isVisibleToUser);
+        this.isVisiable = isVisibleToUser;
         if (isVisibleToUser) {
             doLayout();
             initView();
@@ -176,7 +202,10 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                 NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
                 NotificationCenter.getInstance().addObserver(this, RoomSession.UserChanged);
                 NotificationCenter.getInstance().addObserver(this, RoomSession.RemoteMsg);
+                NotificationCenter.getInstance().addObserver(this, RoomSession.RoomBreak);
+                NotificationCenter.getInstance().addObserver(this, RoomActivity.GONE_VIDEO);
             }
+            setUserBackGroud();
         } else {
             doUnPlayAllVideo();
             NotificationCenter.getInstance().removeObserver(this);
@@ -184,13 +213,51 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         super.setUserVisibleHint(isVisibleToUser);
     }
 
+    private void setUserBackGroud() {
+        for (int x = 0; x < stuVideos.size(); x++) {
+            RoomUser roomUser = RoomManager.getInstance().getUser(stuVideos.get(x).peerid);
+            if (roomUser != null) {
+                boolean isinback = Tools.isTure(roomUser.properties.get("isInBackGround"));
+                if (isinback) {
+                    stuVideos.get(x).re_background.setVisibility(View.VISIBLE);
+                } else {
+                    stuVideos.get(x).re_background.setVisibility(View.GONE);
+                }
+            }
+        }
+        if (vgSec != null) {
+            if (vgSec.peerid != null && !vgSec.peerid.isEmpty()) {
+                RoomUser roomUser = RoomManager.getInstance().getUser(vgSec.peerid);
+                if (roomUser != null) {
+                    boolean isinback = Tools.isTure(roomUser.properties.get("isInBackGround"));
+                    if (isinback) {
+                        vgSec.re_background.setVisibility(View.VISIBLE);
+                    } else {
+                        vgSec.re_background.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }
+        if (vgTeacher != null) {
+            if (vgTeacher.peerid != null && !vgTeacher.peerid.isEmpty()) {
+                RoomUser roomUser = RoomManager.getInstance().getUser(vgTeacher.peerid);
+                if (roomUser != null) {
+                    boolean isinback = Tools.isTure(roomUser.properties.get("isInBackGround"));
+                    if (isinback) {
+                        vgTeacher.re_background.setVisibility(View.VISIBLE);
+                    } else {
+                        vgTeacher.re_background.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }
+    }
+
     /***
      * 从别的界面切换回来的时候，要播放当前播放的视频
      */
 
     private void doPlayVideo() {
-        Log.e("TAG+++++", "doPlayVideo");
-
         List<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
         boolean isPlayTeacher = false;
         for (int i = 0; i < playingList.size(); i++) {
@@ -201,7 +268,13 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         String secPeerid = "";
         if (playingList.size() > 2) {
             lin_students.setVisibility(View.VISIBLE);
+            if (isAdded()) {
+                iv_back.setImageDrawable(getResources().getDrawable(R.drawable.back_pressed));
+            }
         } else {
+            if (isAdded()) {
+                iv_back.setImageDrawable(getResources().getDrawable(R.drawable.back_normal));
+            }
             if (playingList.size() == 2 && !isPlayTeacher) {
                 lin_students.setVisibility(View.VISIBLE);
             } else {
@@ -220,7 +293,12 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                         if (u.role == 2) {
                             doPlaySecVideo(u, false);
                         } else if (u.role == 1) {
-                            doPlayStudentVideo(u);
+                            if (playingList.size() == 2) {
+                                doPlaySecVideo(u, false);
+                            }
+                            if (playingList.size() > 2) {
+                                doPlayStudentVideo(u);
+                            }
                         }
                     }
                 }
@@ -245,8 +323,9 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                     } else {
                         if (vgSec.peerid == null || vgSec.peerid.isEmpty()) {
                             doPlaySecVideo(u, false);
+                        } else {
+                            doPlayStudentVideo(u);
                         }
-                        doPlayStudentVideo(u);
                     }
                 }
             }
@@ -278,14 +357,11 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         }
     }
 
-    private boolean studentIsFullScreen = false;
-
     private void doPlayStudentVideo(RoomUser user) {
-        Log.e("TAG+++++", "doPlayStudentVideo");
-        DisplayMetrics dm = new DisplayMetrics();
         if (getActivity() == null) {
             return;
         }
+        DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         final int wid = dm.widthPixels;
         final int hid = dm.heightPixels;
@@ -295,30 +371,45 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                 hasSit = true;
             }
         }
-        if (user.peerId.equals(vgSec.peerid) && !RoomSession.getInstance().isPlayingMe() || RoomActivity.userrole == 4) {
+        if (user.peerId.equals(vgSec.peerid) && !RoomSession.getInstance().isPlayingMe() && RoomManager.getInstance().getRoomType() != 0) {
             hasSit = true;
         }
+
         if (!hasSit) {
-            final VideoGroup stu = new VideoGroup();
+            VideoGroup stu = new VideoGroup();
             RelativeLayout vdi_stu = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.videoitem, null);
             stu.rel = vdi_stu;
             stu.sf = (SurfaceViewRenderer) vdi_stu.findViewById(R.id.sf_video);
             stu.sf.init(EglBase.create().getEglBaseContext(), null);
             stu.txt_name = (TextView) vdi_stu.findViewById(R.id.txt_name);
+            stu.re_background = (RelativeLayout) vdi_stu.findViewById(R.id.re_background);
             stu.peerid = user.peerId;
             stu.txt_name.setText(user.nickName);
             stuVideos.add(stu);
             lin_students.addView(vdi_stu);
+
             LinearLayout.LayoutParams relParams = (LinearLayout.LayoutParams) stu.rel.getLayoutParams();
-            relParams.width = wid / 5;
-            relParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
+            int maxVideo = -1;
+            if (RoomManager.getInstance().getRoomProperties() != null) {
+                maxVideo = RoomManager.getInstance().getRoomProperties().optInt("maxvideo", 6);
+            }
+            if (maxVideo > 7) {
+                relParams.width = wid / stuVideos.size();
+            } else {
+                relParams.width = wid / 5;
+            }
+            /*relParams.width = wid / 10;*/
+            relParams.height = relParams.width / 4 * 3;
+            relParams.gravity = Gravity.CENTER_VERTICAL;
             stu.rel.setLayoutParams(relParams);
+
             if ((user.publishState > 1 && user.publishState < 4)) {
                 stu.sf.setVisibility(View.VISIBLE);
                 RoomManager.getInstance().playVideo(user.peerId, stu.sf);
             } else {
                 stu.sf.setVisibility(View.INVISIBLE);
             }
+
         } else {
             for (int i = 0; i < stuVideos.size(); i++) {
                 if (user.peerId.equals(stuVideos.get(i).peerid)) {
@@ -331,113 +422,35 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                 }
             }
         }
-        try {
-            for (int i = 0; i < stuVideos.size(); i++) {
-                final int finalI = i;
-                stuVideos.get(i).rel.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                            int position = finalI;//记住当前点击的是第几个
-                            //                            String id=stuVideos.get(position).peerid;
-                            count++;
-                            if (count == 1) {
-                                firClick = System.currentTimeMillis();
+        do1vsnLayout();
+    }
 
-                            } else if (count == 2) {
-                                secClick = System.currentTimeMillis();
-                                if (secClick - firClick < 1000) {
-
-                                    Log.e("TAG+++++", "点击了第" + finalI + "个");
-
-                                    if (!studentIsFullScreen) {
-
-                                        for (int j = 0; j < stuVideos.size(); j++) {
-                                            if (position != j) {
-                                                stuVideos.get(j).rel.setVisibility(View.GONE);
-                                                stuVideos.get(j).sf.setVisibility(View.GONE);
-                                            } else {
-                                                stuVideos.get(j).rel.setVisibility(View.VISIBLE);
-                                                stuVideos.get(j).sf.setVisibility(View.VISIBLE);
-
-                                            }
-                                        }
-                                        lin_big_video.setVisibility(View.GONE);
-                                        vgTeacher.rel.setVisibility(View.GONE);
-                                        vgSec.rel.setVisibility(View.GONE);
-                                        vgSec.sf.setVisibility(View.GONE);
-                                        vgTeacher.sf.setVisibility(View.GONE);
-
-                                        LinearLayout.LayoutParams relParams = (LinearLayout.LayoutParams) stuVideos.get(finalI).rel.getLayoutParams();
-                                        relParams.width = wid;
-                                        relParams.height = hid;
-                                        stuVideos.get(finalI).rel.setLayoutParams(relParams);
-
-                                        //                                        lin_students.setLayoutParams(relParams);
-
-                                        LinearLayout.LayoutParams stu_param = (LinearLayout.LayoutParams) lin_students.getLayoutParams();
-                                        stu_param.height = hid;
-                                        stu_param.width = wid;
-                                        lin_students.setLayoutParams(stu_param);
-
-
-                                        studentIsFullScreen = true;
-
-                                    } else {
-
-                                        for (int j = 0; j < stuVideos.size(); j++) {
-                                            stuVideos.get(j).rel.setVisibility(View.VISIBLE);
-                                            stuVideos.get(j).sf.setVisibility(View.VISIBLE);
-                                        }
-                                        lin_big_video.setVisibility(View.VISIBLE);
-                                        vgTeacher.rel.setVisibility(View.VISIBLE);
-                                        vgSec.rel.setVisibility(View.VISIBLE);
-                                        vgSec.sf.setVisibility(View.VISIBLE);
-                                        vgTeacher.sf.setVisibility(View.VISIBLE);
-
-                                        doLayout();
-
-                                        doPlayAllVideo();
-                                        doPlayVideo();
-
-                                        //                                        RoomManager.getInstance().playVideo(id,stuVideos.get(position).sf);
-
-                                        LinearLayout.LayoutParams stu_param = (LinearLayout.LayoutParams) lin_students.getLayoutParams();
-                                        stu_param.height = hid / 3;
-                                        stu_param.width = wid;
-                                        lin_students.setLayoutParams(stu_param);
-
-
-                                        LinearLayout.LayoutParams relParams = (LinearLayout.LayoutParams) stuVideos.get(finalI).rel.getLayoutParams();
-                                        relParams.width = wid / 5;
-                                        relParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
-                                        stuVideos.get(finalI).rel.setLayoutParams(relParams);
-
-
-                                        studentIsFullScreen = false;
-
-
-                                    }
-                                }
-                                count = 0;
-                                firClick = 0;
-                                secClick = 0;
-
-                            }
-                        }
-                        return true;
-                    }
-                });
+    private void do1vsnLayout() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int wid = dm.widthPixels;
+        int hid = dm.heightPixels;
+        for (int i = 0; i < stuVideos.size(); i++) {
+            LinearLayout.LayoutParams relParams = (LinearLayout.LayoutParams) stuVideos.get(i).rel.getLayoutParams();
+            int maxVideo = -1;
+            if (RoomManager.getInstance().getRoomProperties() != null) {
+                maxVideo = RoomManager.getInstance().getRoomProperties().optInt("maxvideo", 6);
             }
-        } catch (Exception e) {
-
+            if (maxVideo > 7) {
+                relParams.width = wid / 11;
+            } else {
+                relParams.width = wid / 5;
+            }
+            /*relParams.width = wid / 10;*/
+            relParams.height = relParams.width / 4 * 3;
+            stuVideos.get(i).rel.setLayoutParams(relParams);
+            stuVideos.get(i).sf.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
+            stuVideos.get(i).sf.setMirror(true);
         }
-
+        doLayout();
     }
 
     private void doPlaySecVideo(RoomUser u, boolean isShowIdef) {
-        Log.e("TAG+++++", "doPlaySecVideo");
-
         vgSec.rel_video.setVisibility(View.VISIBLE);
         vgSec.txt_name.setText(u.nickName);
         if (isAdded()) {
@@ -454,12 +467,30 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         } else {
             vgSec.sf.setVisibility(View.INVISIBLE);
         }
+        vgSec.sf.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
     }
 
     private void playSelfBeforeClassBegin() {
-        if (!TextUtils.isEmpty(RoomManager.getInstance().getMySelf().peerId) && RoomManager.getInstance().getMySelf().role == 2) {
-            vgSec.sf.setVisibility(View.VISIBLE);
-            RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId, vgSec.sf);
+        if (RoomSession.isClassBegin) {
+            return;
+        }
+        if (RoomManager.getInstance().getMySelf() != null) {
+            if (!TextUtils.isEmpty(RoomManager.getInstance().getMySelf().peerId) && RoomManager.getInstance().getMySelf().role == 2) {
+                if (RoomManager.getInstance().getMySelf() != null) {
+                    if (RoomManager.getInstance().getMySelf().publishState == 1 || RoomManager.getInstance().getMySelf().publishState == 4) {
+                        vgSec.sf.setVisibility(View.INVISIBLE);
+                    } else {
+                        vgSec.sf.setVisibility(View.VISIBLE);
+                    }
+                }
+                if (RoomControler.isReleasedBeforeClass()) {
+                    if (RoomManager.getInstance().getMySelf() != null && RoomManager.getInstance().getMySelf().publishState == 0) {
+                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
+                    }
+                } else {
+                    RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId, vgSec.sf);
+                }
+            }
         }
     }
 
@@ -473,7 +504,7 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         vgTeacher.txt_name.setText(u.nickName);
         vgTeacher.txt_idef.setVisibility(View.VISIBLE);
         if (isAdded()) {
-            vgTeacher.txt_idef.setText("（" + getResources().getString(R.string.teacher) + "）");
+            vgTeacher.txt_idef.setText("（" + getActivity().getApplicationContext().getString(R.string.teacher) + "）");
         }
         vgTeacher.txt_idef.setVisibility(View.VISIBLE);
         if ((u.publishState > 1 && u.publishState < 4)) {
@@ -482,6 +513,7 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         } else {
             vgTeacher.sf.setVisibility(View.INVISIBLE);
         }
+        vgTeacher.sf.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
     }
 
     /***
@@ -489,18 +521,30 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
      */
     public void doUnPlayAllVideo() {
 
-        //        ArrayList<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
+//        ArrayList<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
         for (int i = 0; i < stuVideos.size(); i++) {
             String peerid = stuVideos.get(i).peerid;
             if (stuVideos.get(i).sf.getVisibility() == View.VISIBLE) {
                 RoomManager.getInstance().unPlayVideo(peerid);
             }
         }
+
+        if (vgSec.peerid != null && !vgSec.peerid.isEmpty()) {
+            RoomManager.getInstance().unPlayVideo(vgSec.peerid);
+            vgSec.sf.setVisibility(View.INVISIBLE);
+        }
+
+        if (vgTeacher.sf != null) {
+            vgTeacher.sf.setVisibility(View.GONE);
+        }
+
+        /*if (vgTeacher.peerid != null && !vgTeacher.peerid.isEmpty()) {
+            RoomManager.getInstance().unPlayVideo(vgTeacher.peerid);
+            vgTeacher.sf.setVisibility(View.INVISIBLE);
+        }*/
     }
 
     private void doPlayAllVideo() {
-        Log.e("TAG+++++", "doPlayAllVideo");
-
         for (int i = 0; i < stuVideos.size(); i++) {
             String peerid = stuVideos.get(i).peerid;
             RoomUser u = RoomManager.getInstance().getUser(peerid);
@@ -518,29 +562,24 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //        if(!isAtc){
-        //            NotificationCenter.getInstance().addObserver(this, RoomSession.VideoPublished);
-        //            NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
-        //            NotificationCenter.getInstance().addObserver(this, RoomSession.UserChanged);
+//        if(!isAtc){
+//            NotificationCenter.getInstance().addObserver(this, RoomSession.VideoPublished);
+//            NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
+//            NotificationCenter.getInstance().addObserver(this, RoomSession.UserChanged);
         isAtc = true;
-        //        }
+//        }
     }
 
     @Override
     public void didReceivedNotification(final int id, Object... args) {
         switch (id) {
             case RoomSession.VideoPublished:
-                Log.e("TAG+++++", "VideoPublished");
-
                 if (isAtc) {
                     doPlayVideo();
                     doLayout();
                 }
                 break;
             case RoomSession.VideoUnPublished:
-                Log.e("TAG+++++", "VideoUnPublished");
-
-                doLayout();
                 RoomUser upuser = (RoomUser) args[0];
                 doUnPlayVideo(upuser);
                 List<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
@@ -553,31 +592,68 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                 String secPeerid = "";
                 if (playingList.size() > 2) {
                     lin_students.setVisibility(View.VISIBLE);
+                    if (isAdded()) {
+                        iv_back.setImageDrawable(getResources().getDrawable(R.drawable.back_pressed));
+                    }
                 } else {
+                    if (isAdded()) {
+                        iv_back.setImageDrawable(getResources().getDrawable(R.drawable.back_normal));
+                    }
                     if (playingList.size() == 2 && !isPlayTeacher) {
                         lin_students.setVisibility(View.VISIBLE);
                     } else {
                         lin_students.setVisibility(View.GONE);
                     }
                 }
+                doLayout();
                 break;
             case RoomSession.UserChanged:
-                Log.e("TAG+++++", "UserChanged");
-
-                doLayout();
                 RoomUser chUser = (RoomUser) args[0];
                 Map<String, Object> changeMap = (Map<String, Object>) args[1];
 
                 if (changeMap.containsKey("publishstate")) {
                     doPlayVideo();
                 }
-                if (chUser.role == 0 && chUser.publishState <= 1) {
+                if (/*chUser.role == 0 &&*/ chUser.publishState < 1) {
                     doUnPlayVideo(chUser);
+                }
+                if (changeMap.containsKey("isInBackGround")) {
+                    boolean isinback = Tools.isTure(changeMap.get("isInBackGround"));
+                    if (chUser.role == 0) {
+                        if (isinback) {
+                            vgTeacher.re_background.setVisibility(View.VISIBLE);
+                            vgTeacher.tv_home.setText(R.string.tea_background);
+                        } else {
+                            vgTeacher.re_background.setVisibility(View.GONE);
+                        }
+                    }
+
+                    if (vgSec.peerid != null && !vgSec.peerid.isEmpty()) {
+                        if (vgSec.peerid != null && !vgSec.peerid.isEmpty()) {
+                            if (vgSec.peerid.equals(chUser.peerId)) {
+                                if (isinback) {
+                                    vgSec.re_background.setVisibility(View.VISIBLE);
+                                    vgSec.tv_home.setText(R.string.background);
+                                } else {
+                                    vgSec.re_background.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                    }
+                    for (int x = 0; x < stuVideos.size(); x++)
+                        if (stuVideos.get(x).peerid.equals(chUser.peerId)) {
+                            if (isinback) {
+                                stuVideos.get(x).re_background.setVisibility(View.VISIBLE);
+                                if (stuVideos.get(x).tv_home != null) {
+                                    stuVideos.get(x).tv_home.setText(R.string.background);
+                                }
+                            } else {
+                                stuVideos.get(x).re_background.setVisibility(View.GONE);
+                            }
+                        }
                 }
                 break;
             case RoomSession.RemoteMsg:
-                Log.e("TAG+++++", "RemoteMsg");
-
                 boolean add = (boolean) args[0];
                 String id1 = (String) args[1];
                 String name = (String) args[2];
@@ -587,15 +663,32 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
                     OnRemotePubMsg(id1, name, ts, data);
                 }
                 break;
+            case RoomSession.RoomBreak:
+                vgSec.peerid = null;
+                break;
+            case RoomActivity.GONE_VIDEO:
+                if (vgTeacher.sf != null) {
+                    vgTeacher.sf.setVisibility(View.GONE);
+                }
+                if (vgSec.sf != null) {
+                    vgSec.sf.setVisibility(View.GONE);
+                }
+                if (stuVideos != null && stuVideos.size() > 0) {
+                    for (int i = 0; i < stuVideos.size(); i++) {
+                        stuVideos.get(i).sf.setVisibility(View.GONE);
+                    }
+                }
+                break;
             default:
                 break;
         }
     }
 
     private void OnRemotePubMsg(String id, String name, long ts, Object data) {
-        Log.e("TAG+++++++", "OnRemotePubMsg");
         if (name.equals("ClassBegin")) {
-            unPlaySelfAfterClassBegin();
+            if (!RoomControler.isReleasedBeforeClass()) {
+                unPlaySelfAfterClassBegin();
+            }
         }
     }
 
@@ -610,124 +703,14 @@ public class MembersFragment extends Fragment implements NotificationCenter.Noti
         super.onDestroyView();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
-            if (RoomManager.getInstance().getMySelf() != null) {
+            if (RoomManager.getInstance().getMySelf() != null && !RoomSession.isClassBegin) {
                 playSelfBeforeClassBegin();
             }
         }
     }
-
-    private void setListener() {
-        vgTeacher.rel.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    count++;
-                    if (count == 1) {
-                        firClick = System.currentTimeMillis();
-
-                    } else if (count == 2) {
-                        secClick = System.currentTimeMillis();
-                        if (secClick - firClick < 1000) {
-                            if (!isFullScreen) {
-                                setFullScreen(vgTeacher.rel, vgSec.rel, vgSec.sf);
-                            } else {
-                                setSmallScreen(vgTeacher.rel, vgSec.rel, vgSec.sf);
-                            }
-                        }
-                        count = 0;
-                        firClick = 0;
-                        secClick = 0;
-
-                    }
-                }
-                return true;
-            }
-        });
-        vgSec.rel.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
-                    count++;
-                    if (count == 1) {
-                        firClick = System.currentTimeMillis();
-
-                    } else if (count == 2) {
-                        secClick = System.currentTimeMillis();
-                        if (secClick - firClick < 1000) {
-                            if (!isFullScreen) {
-                                setFullScreen(vgSec.rel, vgTeacher.rel, vgTeacher.sf);
-                            } else {
-                                setSmallScreen(vgSec.rel, vgTeacher.rel, vgTeacher.sf);
-                            }
-                        }
-                        count = 0;
-                        firClick = 0;
-                        secClick = 0;
-
-                    }
-                }
-                return true;
-            }
-        });
-
-
-    }
-
-    /**
-     * 全屏的判断
-     */
-    private boolean isFullScreen = false;
-
-    private void setFullScreen(RelativeLayout teacher, RelativeLayout stu, SurfaceViewRenderer sf) {
-        DisplayMetrics dm = new DisplayMetrics();
-        if (getActivity() == null)
-            return;
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        final int wid = dm.widthPixels;
-        final int hid = dm.heightPixels;
-
-        LinearLayout.LayoutParams big_param1 = (LinearLayout.LayoutParams) lin_big_video.getLayoutParams();
-        big_param1.height = hid;
-        lin_big_video.setLayoutParams(big_param1);
-
-        LinearLayout.LayoutParams big_param = (LinearLayout.LayoutParams) teacher.getLayoutParams();
-        //        big_param.weight=2;
-        big_param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        big_param.height = LinearLayout.LayoutParams.MATCH_PARENT;
-        teacher.setLayoutParams(big_param);
-
-
-        doPlayVideo();
-        stu.setVisibility(View.GONE);
-        sf.setVisibility(View.GONE);
-
-        lin_students.setVisibility(View.GONE);
-        isFullScreen = true;
-    }
-
-    private void setSmallScreen(RelativeLayout teacher, RelativeLayout stu, SurfaceViewRenderer sf) {
-
-        LinearLayout.LayoutParams big_param = (LinearLayout.LayoutParams) teacher.getLayoutParams();
-        big_param.weight = 1;
-        teacher.setLayoutParams(big_param);
-
-        stu.setVisibility(View.VISIBLE);
-        sf.setVisibility(View.VISIBLE);
-
-        doPlayVideo();
-
-        LinearLayout.LayoutParams stu_params = (LinearLayout.LayoutParams) stu.getLayoutParams();
-        stu_params.weight = 1;
-        stu.setLayoutParams(big_param);
-
-        lin_students.setVisibility(View.VISIBLE);
-        isFullScreen = false;
-        doLayout();
-    }
-
 }

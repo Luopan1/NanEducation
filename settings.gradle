@@ -1,1 +1,1 @@
-include ':app', ':ClassRoomSdk', ':edusdk', ':jjdxm-ijkplayer', ':IMLib', ':CallLib'
+include ':app', ':jjdxm-ijkplayer', ':ClassRoomSdk', ':edusdk', ':CallLib', ':IMLib'

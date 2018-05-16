@@ -6,10 +6,7 @@ package com.edusdk.interfaces;
 
 public interface MeetingNotify {
     void onKickOut(int res);
-
     void onWarning(int code);
-
     void onClassBegin();
-
     boolean onClassDismiss();
 }

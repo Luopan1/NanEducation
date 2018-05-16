@@ -7,8 +7,8 @@ package com.edusdk.entity;
 public class ChatData {
     private String peerid;
     private String message;
-    private String nickName;
-    private int role;
+    private String nickName ;
+    private int role ;
 
     public int getRole() {
         return role;

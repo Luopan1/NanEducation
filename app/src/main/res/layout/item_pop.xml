@@ -36,7 +36,7 @@
             android:id="@+id/isSelected"
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_del"
+
             android:layout_width="15dp"
             android:layout_height="15dp"/>
     </LinearLayout>

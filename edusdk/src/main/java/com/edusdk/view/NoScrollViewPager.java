@@ -25,20 +25,24 @@ public class NoScrollViewPager extends ViewPager {
         this.noScroll = noScroll;
     }
 
+    public boolean getScroll() {
+        return noScroll;
+    }
+
     @Override
     public void scrollTo(int x, int y) {
         super.scrollTo(x, y);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent arg0) {
+    public boolean onTouchEvent(MotionEvent event) {
         /* return false;//super.onTouchEvent(arg0); */
         if (noScroll) {
-            //            super.onTouchEvent(arg0);
+//            super.onTouchEvent(arg0);
             return false;
         } else {
             try {
-                return super.onTouchEvent(arg0);
+                return super.onTouchEvent(event);
             } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
                 return false;
@@ -49,7 +53,7 @@ public class NoScrollViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
         if (noScroll) {
-            //            super.onInterceptTouchEvent(arg0);
+//            super.onInterceptTouchEvent(arg0);
             return false;
         } else {
             try {
@@ -64,17 +68,17 @@ public class NoScrollViewPager extends ViewPager {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
-        //        if (noScroll){
-        //            super.dispatchTouchEvent(ev);
-        //            return false;
-        //        } else {
+//        if (noScroll){
+//            super.dispatchTouchEvent(ev);
+//            return false;
+//        } else {
         try {
             return super.dispatchTouchEvent(ev);
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
             return false;
         }
-        //        }
+//        }
     }
 
     @Override
@@ -86,5 +90,6 @@ public class NoScrollViewPager extends ViewPager {
     public void setCurrentItem(int item) {
         super.setCurrentItem(item);
     }
+
 
 }

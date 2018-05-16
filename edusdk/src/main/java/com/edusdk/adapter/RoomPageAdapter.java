@@ -12,6 +12,7 @@ import com.edusdk.ui.RoomFragment;
  */
 
 public class RoomPageAdapter extends FragmentPagerAdapter {
+
     public RoomPageAdapter(FragmentManager fm) {
         super(fm);
     }

@@ -59,7 +59,6 @@ import www.test720.com.naneducation.model.PayMentCallBack;
 import www.test720.com.naneducation.utils.DensityUtil;
 import www.test720.com.naneducation.utils.ImageLoader;
 import www.test720.com.naneducation.video.VideoActivity;
-import www.test720.com.naneducation.video.VideoWebViewActivity;
 import www.test720.com.naneducation.view.SpaceItemDecoration;
 
 /**
@@ -372,11 +371,11 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                         bundle.putString("title", mLiveBroadcastList.get(position).getLive_title());
                         bundle.putInt("type", mLiveType);
                         bundle.putString("id", mLiveBroadcastList.get(position).getLid());
-                        if (mLiveType == 1) {
-                            bundle.putString("room", mLiveBroadcastList.get(position).getRoom_mun());
-                        } else {
-                            bundle.putString("path", mLiveBroadcastList.get(position).getBack_url());
-                        }
+
+                        bundle.putString("room", mLiveBroadcastList.get(position).getRoom_mun());
+
+                        bundle.putString("path", mLiveBroadcastList.get(position).getBack_url());
+
                         jumpToActivity(CourseInfoActivity.class, bundle, false);
                     }
                 });
@@ -690,11 +689,11 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
                                     map.put("serial", getIntent().getStringExtra("room")); //课堂号
                                     map.put("nickname", Constans.name); // 昵称
                                     map.put("userid", Constans.uid);
+                                    map.put("password", "123456");
                                     RoomClient.getInstance().joinRoom(CourseInfoActivity.this, map);
                                 } else {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("path", getIntent().getStringExtra("path"));
-                                    jumpToActivity(VideoWebViewActivity.class, bundle, false);
+//                                    Log.e("TAG++++++++++++",UrlFactory.videopath+getIntent().getStringExtra("room")+"&type=3&path=global.talk-cloud.net:8081"+getIntent().getStringExtra("path"));
+                                    RoomClient.getInstance().joinPlayBackRoom(CourseInfoActivity.this,UrlFactory.videopath+getIntent().getStringExtra("room")+"&type=3&path=global.talk-cloud.net:8081"+getIntent().getStringExtra("path"));
                                 }
                             }
                         } else if (mLiveType == 3) {
@@ -926,8 +925,8 @@ public class CourseInfoActivity extends BaseToolbarActivity implements Joinmeeti
     public void errorTipDialog(final Activity activity, int errorTipID) {
 
         AlertDialog.Builder build = new AlertDialog.Builder(activity);
-        build.setTitle(getString(R.string.link_tip));
-        build.setMessage(getString(errorTipID));
+        build.setTitle("提示");
+        build.setMessage("直播暂未结束，无回放可观看，或出服务器现未知错误，请稍后再试！");
         build.setPositiveButton(getString(R.string.OK),
                 new DialogInterface.OnClickListener() {
                     @Override

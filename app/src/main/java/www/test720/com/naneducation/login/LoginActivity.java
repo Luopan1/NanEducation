@@ -370,6 +370,7 @@ public class LoginActivity extends BaseToolbarActivity {
 
                         @Override
                         public void onError(RongIMClient.ErrorCode errorCode) {
+
                         }
                     });
                     jumpToActivity(MainActivity.class, true);

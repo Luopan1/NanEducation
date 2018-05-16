@@ -31,7 +31,6 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.edusdk.Constans_VIdeo;
 import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -702,7 +701,6 @@ public class MainActivity extends BaseToolbarActivity {
                 ShowToast(jsonObject.getString("msg"));
 
                 Constans.head = jsonObject.getJSONObject("data").getString("head");
-                Constans_VIdeo.head = Constans.head;
                 if (jsonObject.getJSONObject("data").getInteger("is_bindbank") == 0) {
                     Constans.isBindbank = false;
                 } else {
@@ -716,7 +714,6 @@ public class MainActivity extends BaseToolbarActivity {
                 }
                 Constans.name = jsonObject.getJSONObject("data").getString("name");
                 Constans.uid = jsonObject.getJSONObject("data").getString("uid");
-                Constans_VIdeo.uid = Constans.uid;
                 Constans.token = jsonObject.getJSONObject("data").getString("rong_cloud_token");
                 RongIMClient.connect(Constans.token, new RongIMClient.ConnectCallback() {
                     @Override

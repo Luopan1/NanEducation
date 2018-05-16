@@ -1,14 +1,10 @@
 package com.edusdk.tools;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.support.v4.content.ContextCompat;
+import android.os.Build;
 
 /**
  * Created by Administrator on 2017/10/20/020.
@@ -22,22 +18,26 @@ public class PermissionTest {
      */
     public static boolean cameraIsCanUse() {
         boolean isCanUse = true;
-        Camera mCamera = null;
-        try {
-            mCamera = Camera.open();
-            Camera.Parameters mParameters = mCamera.getParameters(); //针对魅族手机
-            mCamera.setParameters(mParameters);
-        } catch (Exception e) {
-            isCanUse = false;
-        }
-
-        if (mCamera != null) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+            Camera mCamera = null;
             try {
-                mCamera.release();
+                mCamera = Camera.open();
+                Camera.Parameters mParameters = mCamera.getParameters(); //针对魅族手机
+                mCamera.setParameters(mParameters);
             } catch (Exception e) {
-                e.printStackTrace();
-                return isCanUse;
+                isCanUse = false;
             }
+
+            if (mCamera != null) {
+                try {
+                    mCamera.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return isCanUse;
+                }
+            }
+        }else{
+            isCanUse = true;
         }
         return isCanUse;
     }
@@ -54,47 +54,49 @@ public class PermissionTest {
      * @author ZhuJian
      */
     public static int getRecordState() {
-        int minBuffer = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, 44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, (minBuffer * 100));
-        short[] point = new short[minBuffer];
-        int readSize = 0;
-        try {
-            audioRecord.startRecording();//检测是否可以进入初始化状态
-        } catch (Exception e) {
-            if (audioRecord != null) {
-                audioRecord.release();
-                audioRecord = null;
-            }
-            return STATE_NO_PERMISSION;
-        }
-        if (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) {
-            //6.0以下机型都会返回状态，故使用时需要判断bulid版本
-            //检测是否在录音中
-            if (audioRecord != null) {
-                audioRecord.stop();
-                audioRecord.release();
-                audioRecord = null;
-            }
-            return STATE_RECORDING;
-        } else {//检测是否可以获取录音结果
-            readSize = audioRecord.read(point, 0, point.length);
-            if (readSize <= 0) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+            int minBuffer = AudioRecord.getMinBufferSize(44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+            AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, 44100, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, (minBuffer * 100));
+            short[] point = new short[minBuffer];
+            int readSize = 0;
+            try {
+                audioRecord.startRecording();//检测是否可以进入初始化状态
+            } catch (Exception e) {
                 if (audioRecord != null) {
-                    audioRecord.stop();
                     audioRecord.release();
                     audioRecord = null;
                 }
                 return STATE_NO_PERMISSION;
-            } else {
+            }
+            if (audioRecord.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) {
+//6.0以下机型都会返回状态，故使用时需要判断bulid版本
+//检测是否在录音中
                 if (audioRecord != null) {
                     audioRecord.stop();
                     audioRecord.release();
                     audioRecord = null;
                 }
-                return STATE_SUCCESS;
+                return STATE_RECORDING;
+            } else {//检测是否可以获取录音结果
+                readSize = audioRecord.read(point, 0, point.length);
+                if (readSize <= 0) {
+                    if (audioRecord != null) {
+                        audioRecord.stop();
+                        audioRecord.release();
+                        audioRecord = null;
+                    }
+                    return STATE_NO_PERMISSION;
+                } else {
+                    if (audioRecord != null) {
+                        audioRecord.stop();
+                        audioRecord.release();
+                        audioRecord = null;
+                    }
+                    return STATE_SUCCESS;
+                }
             }
+        }else{
+            return STATE_SUCCESS;
         }
     }
-
-
 }

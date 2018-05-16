@@ -2,6 +2,7 @@ package com.edusdk.message;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.classroomsdk.ShareDoc;
@@ -9,6 +10,7 @@ import com.classroomsdk.WhiteBoradManager;
 import com.edusdk.entity.ChatData;
 import com.edusdk.tools.SoundPlayUtils;
 import com.edusdk.tools.Tools;
+import com.edusdk.ui.RoomActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -65,7 +67,8 @@ public class RoomSession implements IRoomManagerCbk {
     public final static int CloseShareScreen = 1025;
     public final static int TakePhotoByCamera = 1026;
     public final static int UDPError = 1027;
-
+    public final static int PlayMovie = 1028;
+    public final static int UnPlayMovie = 1029;
     private Activity activity = null;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -88,8 +91,6 @@ public class RoomSession implements IRoomManagerCbk {
     public static HashMap<String, Boolean> playingMap = new HashMap<String, Boolean>();
     public static HashMap<String, RoomUser> unplayMap = new HashMap<String, RoomUser>();
 
-    ShareDoc currentDoc = null;
-
     public static boolean isInRoom = false;
     public static boolean isClassBegin = false;
     private boolean isShowVideoView = false;
@@ -104,6 +105,42 @@ public class RoomSession implements IRoomManagerCbk {
     public static boolean isMeCandraw = false;
     public static boolean isOpenCamera = false;
     public static boolean isShowMySelf = false;
+
+    public static JSONArray jsVideoWBTempMsg = new JSONArray();
+    public static boolean isRoomLeaved = false;
+    public static boolean isShowVideoWB = false;
+
+    /*public static long playBackTime = 0;*/
+
+    public void addTempVideoWBRemoteMsg(boolean add, String id, String name, long ts, Object data, String fromID, String associatedMsgID, String associatedUserID) {
+        if (add) {
+            if (name.equals("VideoWhiteboard")) {
+                isShowVideoWB = true;
+            }
+            JSONObject jsobj = new JSONObject();
+            try {
+                jsobj.put("id", id);
+                jsobj.put("ts", ts);
+                jsobj.put("data", data == null ? null : data.toString());
+                jsobj.put("name", name);
+                jsobj.put("fromID", fromID);
+                if (!associatedMsgID.equals("")) {
+                    jsobj.put("associatedMsgID", associatedMsgID);
+                }
+                if (!associatedUserID.equals("")) {
+                    jsobj.put("associatedUserID", associatedUserID);
+                }
+
+                if (associatedMsgID.equals("VideoWhiteboard") || id.equals("VideoWhiteboard")) {
+                    jsVideoWBTempMsg.put(jsobj);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            isShowVideoWB = false;
+        }
+    }
 
     public boolean isAudioHasDoc() {
         return isAudioHasDoc;
@@ -150,14 +187,14 @@ public class RoomSession implements IRoomManagerCbk {
     }
 
     private void addPlayingUser(String peerid, int publishState) {
-        //        playingSet.add(peerid);
+//        playingSet.add(peerid);
         if (publishState > 0) {
-            //            if(RoomManager.getInstance().getRoomType() == 0){
-            //                if(RoomManager.getInstance().getUser(peerid)!=null&&RoomManager.getInstance().getUser(peerid).role!=1)
+//            if(RoomManager.getInstance().getRoomType() == 0){
+//                if(RoomManager.getInstance().getUser(peerid)!=null&&RoomManager.getInstance().getUser(peerid).role!=1)
             playingMap.put(peerid, publishState >= 1);
-            //            }else{
-            //                playingMap.put(peerid, publishState >= 1);
-            //            }
+//            }else{
+//                playingMap.put(peerid, publishState >= 1);
+//            }
         }
     }
 
@@ -185,6 +222,7 @@ public class RoomSession implements IRoomManagerCbk {
 
     @Override
     public void roomManagerRoomJoined() {
+
         isInRoom = true;
         isBreak = false;
         RoomManager.getInstance().getMySelf().nickName = StringEscapeUtils.unescapeHtml4(RoomManager.getInstance().getMySelf().nickName);
@@ -196,8 +234,9 @@ public class RoomSession implements IRoomManagerCbk {
         }
 
         String peerid = RoomManager.getInstance().getMySelf().peerId;
-        getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"), peerid);
-
+        if (RoomManager.getInstance().getRoomProperties() != null) {
+            getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"), peerid);
+        }
     }
 
     private void getGiftNum(String roomNum, final String peerId) {
@@ -234,8 +273,7 @@ public class RoomSession implements IRoomManagerCbk {
             @Override
             public void onFailure(int statusCode, org.apache.http.Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("emm", "error=" + throwable.toString());
-                RoomManager.getInstance().connected();
-                //                RoomClient.getInstance().joinRoomcallBack(-1);
+//                RoomClient.getInstance().joinRoomcallBack(-1);
             }
         });
     }
@@ -269,7 +307,7 @@ public class RoomSession implements IRoomManagerCbk {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //                            RoomManager.getInstance().setTestServer("192.168.1.57", 8890);
+//                            RoomManager.getInstance().setTestServer("192.168.1.57", 8890);
                             int ret = RoomManager.getInstance().joinRoom(serviceHost, servicePort, nickname, paramsMap, pert, true);
                             if (ret != RoomManager.ERR_OK) {
                                 Log.e("RoomActivity", "nonono");
@@ -287,7 +325,7 @@ public class RoomSession implements IRoomManagerCbk {
             @Override
             public void onFailure(int statusCode, org.apache.http.Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Log.d("emm", "error=" + throwable.toString());
-                //                RoomClient.getInstance().joinRoomcallBack(-1);
+//                RoomClient.getInstance().joinRoomcallBack(-1);
             }
         });
     }
@@ -295,59 +333,55 @@ public class RoomSession implements IRoomManagerCbk {
 
     @Override
     public void roomManagerRoomLeaved() {
+        SoundPlayUtils.release();
+
         chatList.clear();
-        currentDoc = null;
         isInRoom = false;
         isClassBegin = false;
         isMeCandraw = false;
         myGiftNum = 0;
+        playingMap.clear();
 
         if (isExitRoom) {
-            WhiteBoradManager.getInstance().clear();
             isExitRoom = false;
+            WhiteBoradManager.getInstance().clear();
             RoomManager.getInstance().setCallbBack(null);
             RoomManager.getInstance().setWhiteBoard(null);
-            playingMap.clear();
             if (t != null) {
                 t.cancel();
                 t = null;
             }
             NotificationCenter.getInstance().postNotificationName(RoomLeaved);
         } else {
-            //                Toast.makeText(this, "断网了！！！！！", Toast.LENGTH_LONG).show();\
+//                Toast.makeText(this, "断网了！！！！！", Toast.LENGTH_LONG).show();\
             NotificationCenter.getInstance().postNotificationName(RoomBreak);
-            playingMap.clear();
             isBreak = true;
             mediaPublishStream = null;
-            //            if (t != null) {
-            //                t.cancel();
-            //                t = null;
-            //            }
-            //            Log.d("emm","break");
-            //            if (t == null) {
-            //                t = new Timer();
-            //                t.schedule(new TimerTask() {
-            //                    @Override
-            //                    public void run() {
-            //                        if (activity != null) {
-            //                            activity.runOnUiThread(new Runnable() {
-            //                                @Override
-            //                                public void run() {
-            //                                    String peerid = RoomManager.getInstance().getMySelf().peerId;
-            //                                    getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"),peerid);
-            //                                    Log.d("emm","getGiftNum");
-            //
-            //                                }
-            //                            });
-            //                        }
-            //
-            //
-            //                    }
-            //                }, 5000,5000);
-            //            }
-
+//            if (t != null) {
+//                t.cancel();
+//                t = null;
+//            }
+//            Log.d("emm","break");
+//            if (t == null) {
+//                t = new Timer();
+//                t.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        if (activity != null) {
+//                            activity.runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    String peerid = RoomManager.getInstance().getMySelf().peerId;
+//                                    getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"),peerid);
+//                                    Log.d("emm","getGiftNum");
+//
+//                                }
+//                            });
+//                        }
+//                    }
+//                }, 5000,5000);
+//            }
         }
-
     }
 
     @Override
@@ -392,7 +426,7 @@ public class RoomSession implements IRoomManagerCbk {
             unplayMap.remove(classRoomUser.peerId);
         if (map.containsKey("giftnumber") && classRoomUser.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
             myGiftNum = Integer.valueOf(map.get("giftnumber").toString());
-            SoundPlayUtils.play(1);
+            SoundPlayUtils.play();
         }
         if (map.containsKey("candraw") && classRoomUser.peerId.equals(RoomManager.getInstance().getMySelf().peerId) && RoomManager.getInstance().getMySelf().role == 2) {
             isMeCandraw = Tools.isTure(map.get("candraw"));
@@ -410,11 +444,9 @@ public class RoomSession implements IRoomManagerCbk {
                 isShowMySelf = true;
             } else {
                 isShowMySelf = false;
-                //                wbFragment.setDrawable(chUser.canDraw);
+//                wbFragment.setDrawable(chUser.canDraw);
             }
         }
-
-
         NotificationCenter.getInstance().postNotificationName(UserChanged, classRoomUser, map, s);
     }
 
@@ -444,16 +476,19 @@ public class RoomSession implements IRoomManagerCbk {
     }
 
     @Override
-    public void roomManagerSelfEvicted() {
-        isExitRoom = true;
-        RoomClient.getInstance().kickout(RoomClient.Kickout_Repeat);
-        NotificationCenter.getInstance().postNotificationName(SelfEvicted);
+    public void roomManagerSelfEvicted(int reason) {
+        if (TextUtils.isEmpty(RoomActivity.path)) {
+            isExitRoom = true;
+            RoomManager.getInstance().leaveRoom();
+            RoomClient.getInstance().kickout(reason == 1 ? RoomClient.Kickout_ChairmanKickout : RoomClient.Kickout_Repeat);
+            NotificationCenter.getInstance().postNotificationName(SelfEvicted);
+        }
     }
 
-    //    @Override
-    //    public void roomManagerIceStatusChanged(ClassRoomUser classRoomUser, String s) {
-    //        NotificationCenter.getInstance().postNotificationName(IceStatusChanged,classRoomUser,s);
-    //    }
+//    @Override
+//    public void roomManagerIceStatusChanged(ClassRoomUser classRoomUser, String s) {
+//        NotificationCenter.getInstance().postNotificationName(IceStatusChanged,classRoomUser,s);
+//    }
 
     @Override
     public void roomManagerMessageReceived(RoomUser classRoomUser, String s, int type, long ts) {
@@ -470,40 +505,66 @@ public class RoomSession implements IRoomManagerCbk {
     }
 
     @Override
-    public void roomManagerOnRemoteMsg(boolean add, String id, String name, long ts, Object data, boolean inList, String fromID) {
+    public void roomManagerOnRemoteMsg(boolean add, String id, String name, long ts, Object data, boolean inList, String fromID, String associatedMsgID, String associatedUserID) {
+        addTempVideoWBRemoteMsg(add, id, name, ts, data, fromID, associatedMsgID, associatedUserID);
         if (add) {
             if (name.equals("ClassBegin")) {
                 if (isClassBegin) {
                     return;
                 }
                 isClassBegin = true;
-                try {
-                    char ops = RoomManager.getInstance().getRoomProperties().getString("chairmancontrol").charAt(23);
-                    boolean haveSit = false;
-                    int sitCount = 0;
-                    for (RoomUser u : RoomManager.getInstance().getUsers().values()) {
-                        if (u.role == 2 && (u.publishState == 3 || u.publishState == 2)) {
-                            sitCount++;
+
+                boolean haveSit = false;
+                int sitCount = 0;
+                for (RoomUser u : RoomManager.getInstance().getUsers().values()) {
+                    if (u.role == 2 && (u.publishState == 3 || u.publishState == 2)) {
+                        sitCount++;
+                    }
+                }
+                if (RoomManager.getInstance().getRoomProperties() != null && sitCount <= RoomManager.getInstance().getRoomProperties().optInt("maxvideo", 6)) {
+                    haveSit = true;
+                }
+
+                if (TextUtils.isEmpty(RoomActivity.path)) {
+                    if (!RoomControler.isReleasedBeforeClass()) {
+                        if (RoomControler.isAutomaticUp() && haveSit && RoomManager.getInstance().getMySelf().role == 2) {
+                            RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
+                        }
+                    } else {
+                        if (RoomControler.isAutomaticUp() && RoomManager.getInstance().getMySelf().role == 2 &&
+                                RoomManager.getInstance().getMySelf().publishState != 3 && haveSit) {
+                            RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
+                        }
+                        if (!RoomControler.isAutomaticUp() && RoomManager.getInstance().getMySelf().role == 2) {
+                            RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 0);
                         }
                     }
-                    if (sitCount <= 6) {
-                        haveSit = true;
+                    if (RoomManager.getInstance().getRoomType() == 0 && RoomManager.getInstance().getMySelf().role == 2 && RoomControler.isAutoHasDraw()) {
+                        RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "candraw", true);
                     }
-                    if (ops == '1' && haveSit && RoomManager.getInstance().getMySelf().role == 2) {
-                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-                if (RoomManager.getInstance().getRoomType() == 0 && RoomManager.getInstance().getMySelf().role == 2 && RoomControler.isAutoHasDraw()) {
-                    RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "candraw", true);
-                }
-
                 RoomClient.getInstance().onClassBegin();
             }
-
         } else {
             if (name.equals("ClassBegin")) {
+                isClassBegin = false;
+                try {
+                    if (RoomManager.getInstance().getRoomProperties() != null && !RoomManager.getInstance().getRoomProperties().getString("companyid").equals("10035")) {
+                        if (!RoomControler.isNotLeaveAfterClass()) {
+                            isRoomLeaved = true;
+                            RoomSession.getInstance().setIsExit(true);
+                            RoomManager.getInstance().leaveRoom();
+                        } else {
+                            isRoomLeaved = false;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (!RoomControler.isNotLeaveAfterClass()) {
+                    RoomSession.getInstance().chatList.clear();
+                }
                 RoomClient.getInstance().onClassDismiss();
             }
         }
@@ -512,7 +573,6 @@ public class RoomSession implements IRoomManagerCbk {
 
     public static Map<String, Object> toMap(JSONObject object) throws JSONException {
         Map<String, Object> map = new HashMap<String, Object>();
-
         Iterator<String> keysItr = object.keys();
         while (keysItr.hasNext()) {
             String key = keysItr.next();
@@ -561,11 +621,11 @@ public class RoomSession implements IRoomManagerCbk {
         NotificationCenter.getInstance().postNotificationName(MediaControl, stream, isplay);
     }
 
-    //    @Override
-    //    public void roomManagerRoomConnected(RoomUser roomUser) {
-    //        String peerid = RoomManager.getInstance().getMySelf().peerId;
-    //        getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"), peerid);
-    //    }
+//    @Override
+//    public void roomManagerRoomConnected(RoomUser roomUser) {
+//        String peerid = RoomManager.getInstance().getMySelf().peerId;
+//        getGiftNum(RoomManager.getInstance().getRoomProperties().optString("serial"), peerid);
+//    }
 
     @Override
     public void roomManagerPlayBackClearAll() {
@@ -576,6 +636,13 @@ public class RoomSession implements IRoomManagerCbk {
 
     @Override
     public void roomManagerPlayBackUpdateTime(long currenttime) {
+        /*if (currenttime < playBackTime) {
+            RoomManager.getInstance().seekPlayback(playBackTime);
+            playBackTime = currenttime;
+            return;
+        } else {
+            playBackTime = currenttime;
+        }*/
         NotificationCenter.getInstance().postNotificationName(playBackUpdateTime, currenttime);
     }
 
@@ -586,6 +653,7 @@ public class RoomSession implements IRoomManagerCbk {
 
     @Override
     public void roomManagerPlayBackEnd() {
+        /*playBackTime = 0;*/
         NotificationCenter.getInstance().postNotificationName(playBackEnd);
     }
 
@@ -610,12 +678,30 @@ public class RoomSession implements IRoomManagerCbk {
     }
 
     @Override
+    public void roomManagerMoviePublish(Stream stream) {
+        NotificationCenter.getInstance().postNotificationName(PlayMovie, stream);
+    }
+
+    @Override
+    public void roomManagerMovieUnPublish(Stream stream) {
+        NotificationCenter.getInstance().postNotificationName(UnPlayMovie, stream);
+    }
+
+    @Override
     public void onCapturerStopped() {
         NotificationCenter.getInstance().postNotificationName(TakePhotoByCamera);
     }
 
     @Override
     public void onCapturerStarted(boolean b) {
+
+    }
+
+    /***
+     *媒体文件播放失败
+     */
+    @Override
+    public void onPublishError(int i) {
 
     }
 
@@ -630,7 +716,6 @@ public class RoomSession implements IRoomManagerCbk {
     @Override
     public void roomManagerRoomConnectFaild() {
         chatList.clear();
-        currentDoc = null;
         isInRoom = false;
         isClassBegin = false;
         isMeCandraw = false;
@@ -671,7 +756,6 @@ public class RoomSession implements IRoomManagerCbk {
         }
     }
 
-
     public boolean isPlayingMe() {
         String myPeerid = RoomManager.getInstance().getMySelf().peerId;
         if (playingMap.containsKey(myPeerid) && playingMap.get(myPeerid))
@@ -679,6 +763,4 @@ public class RoomSession implements IRoomManagerCbk {
         else
             return false;
     }
-
-
 }

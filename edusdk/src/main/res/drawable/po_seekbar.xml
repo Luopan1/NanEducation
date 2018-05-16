@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/seek_bar_back"/>
+            <solid android:color="@color/seek_bar_back" />
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
-                <solid android:color="@color/seek_bar_red"/>
+                <solid android:color="@color/seek_bar_red" />
             </shape>
         </clip>
     </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/seek_bar_red"/>
+                <solid android:color="@color/seek_bar_red" />
             </shape>
         </clip>
     </item>

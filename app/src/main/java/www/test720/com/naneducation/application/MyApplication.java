@@ -65,7 +65,7 @@ public class MyApplication extends MultiDexApplication {
 
         SDKInitializer.initialize(this);
         /**友盟*/
-        Config.DEBUG = true;
+        Config.DEBUG = false;
         QueuedWork.isUseThreadPool = true;
         UMShareAPI.get(this);
 
@@ -100,9 +100,9 @@ public class MyApplication extends MultiDexApplication {
 
 
         LogUtils.getLogConfig()
-                .configAllowLog(true)
+                .configAllowLog(false)
                 .configTagPrefix("CityGuestSociety")
-                .configShowBorders(true)
+                .configShowBorders(false)
                 .configFormatTag("%d{HH:mm:ss:SSS} %t %c{-5}");
         preinitX5WebCore();
 

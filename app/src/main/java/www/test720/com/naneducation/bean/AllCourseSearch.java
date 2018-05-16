@@ -165,6 +165,24 @@ public class AllCourseSearch {
             private String price;
             private String tc_head;
             private String tc_name;
+            private String room_mun;
+            private String back_url;
+
+            public String getRoom_mun() {
+                return room_mun;
+            }
+
+            public void setRoom_mun(String room_mun) {
+                this.room_mun = room_mun;
+            }
+
+            public String getBack_url() {
+                return back_url;
+            }
+
+            public void setBack_url(String back_url) {
+                this.back_url = back_url;
+            }
 
             public String getCastId() {
                 return castId;
@@ -233,6 +251,35 @@ public class AllCourseSearch {
              * tc_head : Uploads/Img/2017-11-10/5a051ec286b4d.jpg
              * tc_name : 9527
              */
+
+
+            /* "livetype":"进行中",
+                "name":"测试",
+                "logo":"Uploads/Img/2018-04-21/825f9cd5f0390bc77c1fed3c94885c87.jpg",
+                "tc_head":"",
+                "tc_name":"1899089916怒",
+                "price":"5.00",
+                "castId":"132",
+                "room_mun":"363296143",
+                "back_url":""*/
+            private String room_mun;
+            private String back_url;
+
+            public String getRoom_mun() {
+                return room_mun;
+            }
+
+            public void setRoom_mun(String room_mun) {
+                this.room_mun = room_mun;
+            }
+
+            public String getBack_url() {
+                return back_url;
+            }
+
+            public void setBack_url(String back_url) {
+                this.back_url = back_url;
+            }
 
             private String castId;
             private String livetype;

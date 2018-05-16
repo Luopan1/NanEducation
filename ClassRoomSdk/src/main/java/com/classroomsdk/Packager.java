@@ -15,7 +15,8 @@ public class Packager {
         doc.setMedia(Tools.isTure(jsdata.opt("isMedia")));
         doc.setDynamicPPT(Tools.isTure(jsdata.opt("isDynamicPPT")));
         doc.setH5Docment(Tools.isTure(jsdata.opt("isH5Document")));
-        doc.setFileid(Long.valueOf(jsfiledata.opt("fileid").toString()));
+        /*doc.setFileid(Long.valueOf(jsfiledata.opt("fileid").toString()));*/
+        doc.setFileid(jsfiledata.optInt("fileid"));
         doc.setCurrentPage(jsfiledata.optInt("currpage"));
         doc.setFiletype(jsfiledata.optString("filetype"));
         doc.setPagenum(jsfiledata.optInt("pagenum"));
@@ -46,7 +47,7 @@ public class Packager {
             filedata.put("pptslide", doc.getPptslide());
             filedata.put("pptstep", doc.getPptstep());
             if (doc.isDynamicPPT()) {
-                filedata.put("swfpath", doc.getDownloadpath() == null ? doc.getSwfpath() : doc.getDownloadpath());
+                filedata.put("swfpath", doc.getDownloadpath()==null?doc.getSwfpath():doc.getDownloadpath());
             } else {
                 filedata.put("swfpath", doc.getSwfpath());
             }

@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import www.test720.com.naneducation.R;
+import www.test720.com.naneducation.activity.AllCourseActivity;
 import www.test720.com.naneducation.activity.CourseInfoActivity;
 import www.test720.com.naneducation.activity.LiveBroadcastActivity;
 import www.test720.com.naneducation.bean.AllCourseSearch;
@@ -152,7 +153,7 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, LiveBroadcastActivity.class);
+                    Intent intent = new Intent(context, AllCourseActivity.class);
                     intent.putExtra("type", 2);
                     context.startActivity(intent);
                 }
@@ -225,7 +226,8 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     intent.putExtra("title", vedioLists.get(position).getName());
                     intent.putExtra("type", 2);
                     intent.putExtra("id", vedioLists.get(position).getCastId());
-                    //                    intent.putExtra("path", vedioLists.get(position).getBack_url());
+                     intent.putExtra("path", vedioLists.get(position).getBack_url());
+                    intent.putExtra("room",vedioLists.get(position).getRoom_mun());
                     context.startActivity(intent);
                 }
             });
@@ -305,6 +307,8 @@ public class AllSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     intent.putExtra("title", liveCastLists.get(position).getName());
                     intent.putExtra("type", 1);
                     intent.putExtra("id", liveCastLists.get(position).getCastId());
+                    intent.putExtra("path", liveCastLists.get(position).getBack_url());
+                    intent.putExtra("room", liveCastLists.get(position).getRoom_mun());
                     context.startActivity(intent);
                 }
             });

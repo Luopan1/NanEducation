@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
  * 文档实体
  */
 
-public class ShareDoc implements Cloneable, Comparable<ShareDoc> {
+public class ShareDoc implements Cloneable,Comparable<ShareDoc>{
     private String pdfpath;
     private String filepath;
     private int animation;
@@ -37,6 +37,15 @@ public class ShareDoc implements Cloneable, Comparable<ShareDoc> {
     private boolean isGeneralFile;
     private boolean isDynamicPPT;
     private boolean isH5Docment;
+    private int filecategory; // 0 可以删除  1 不可以删除
+
+    public int getFilecategory() {
+        return filecategory;
+    }
+
+    public void setFilecategory(int filecategory) {
+        this.filecategory = filecategory;
+    }
 
     public boolean isGeneralFile() {
         return isGeneralFile;
@@ -281,7 +290,7 @@ public class ShareDoc implements Cloneable, Comparable<ShareDoc> {
     }
 
     @Override
-    public ShareDoc clone() {
+    public ShareDoc clone(){
         ShareDoc o = null;
         try {
             o = (ShareDoc) super.clone();
@@ -292,8 +301,9 @@ public class ShareDoc implements Cloneable, Comparable<ShareDoc> {
     }
 
 
+
     @Override
     public int compareTo(@NonNull ShareDoc o) {
-        return (int) (this.getFileid() - o.getFileid());
+        return (int)(this.getFileid()-o.getFileid());
     }
 }

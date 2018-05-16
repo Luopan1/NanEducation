@@ -96,8 +96,8 @@ public class SudokuView extends View implements DrawDone {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawCell(canvas);
         drawLine(canvas);
+        drawCell(canvas);
     }
 
     private void drawCell(Canvas canvas) {

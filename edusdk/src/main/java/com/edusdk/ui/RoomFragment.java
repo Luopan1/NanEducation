@@ -36,7 +36,6 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -55,7 +54,6 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,10 +63,9 @@ import com.classroomsdk.WBFragment;
 import com.classroomsdk.WhiteBoradManager;
 import com.edusdk.R;
 import com.edusdk.adapter.ChatListAdapter;
-import com.edusdk.adapter.CommonAdaper;
 import com.edusdk.adapter.FaceGVAdapter;
-import com.edusdk.adapter.ViewHolder;
 import com.edusdk.message.NotificationCenter;
+import com.edusdk.message.RoomClient;
 import com.edusdk.message.RoomSession;
 import com.edusdk.tools.KeyBoardUtil;
 import com.edusdk.tools.PersonInfo_ImageUtils;
@@ -85,6 +82,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.EglBase;
+import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 
 import java.io.File;
@@ -99,7 +97,6 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class RoomFragment extends Fragment implements View.OnClickListener, NotificationCenter.NotificationCenterDelegate {
 
     private static String TAG = "kdemo";
@@ -111,13 +108,11 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     private static String me = "ad";
     private static String watchingWhom = null;
     //    private boolean isExitRoom = false;
-    //    private boolean isChatShow = false;
 
-    private ArrayList<RoomUser> memberList = new ArrayList<RoomUser>();
     private ChatListAdapter adapter;
-    //    private ServerListAdapter serverListAdapter;
+//    private ServerListAdapter serverListAdapter;
 
-    //    private WebView web_white_pad;
+//    private WebView web_white_pad;
 
 
     private SurfaceViewRenderer sf_teacher;
@@ -144,7 +139,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     Timer timerAddTime;
     boolean m_blayoutsShow = true;
     private String lastPeerId = "";
-    //    private boolean isShowMySelf = false;
+//    private boolean isShowMySelf = false;
 
 
     //    private Timer timer;
@@ -162,7 +157,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     private String nickname = "";
     private String param = "";
     private String domain = "";
-    Timer checkNetTimer = null;
+    //    Timer checkNetTimer = null;
     //    private boolean isInRoom = false;
     int netBreakCount = 0;
     boolean candraw = false;
@@ -174,24 +169,6 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
 
     private RelativeLayout sf_re_background;
     private RelativeLayout t_re_background;
-    private boolean isFullScreen = false;
-    /**
-     * 判断双击
-     */
-    int count;
-    long firClick;
-    long secClick;
-    private GestureDetector gestureScanner;
-    private SurfaceViewRenderer fullScreenSurface;
-    private String mTeacherID;
-    private RelativeLayout mFR;
-    private RelativeLayout mFirstRelative;
-    private ImageView mMembers;
-    private CommonAdaper<RoomUser> menbersAdapter;
-    private ImageView mJubao;
-    private float mTranslationX;
-    private float mTranslationY;
-
 
     @Nullable
     @Override
@@ -199,32 +176,32 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         Log.e("xiao", "room_onCreateView");
         if (fragmentView == null) {
             fragmentView = inflater.inflate(R.layout.fragment_room, null);
-            //            getExData();
+//            getExData();
 
-            //            web_white_pad = (WebView) fragmentView.findViewById(R.id.web_white_pad);
+//            web_white_pad = (WebView) fragmentView.findViewById(R.id.web_white_pad);
+
+
             wb_container = (FrameLayout) fragmentView.findViewById(R.id.wb_container);
-            fullScreenSurface = (SurfaceViewRenderer) fragmentView.findViewById(R.id.FSFV);
-            mFirstRelative = (RelativeLayout) fragmentView.findViewById(R.id.firstRelative);
+
             iv_photo = (ImageView) fragmentView.findViewById(R.id.iv_photo);
             list_chat = (DisListView) fragmentView.findViewById(R.id.list_chat);
-            mFR = (RelativeLayout) fragmentView.findViewById(R.id.FR);
+
             sf_teacher = (SurfaceViewRenderer) fragmentView.findViewById(R.id.sf_teacher);
             sf_teacher.init(EglBase.create().getEglBaseContext(), null);
+            sf_teacher.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
 
             sf_my_video = (SurfaceViewRenderer) fragmentView.findViewById(R.id.sf_my_video);
             sf_my_video.init(EglBase.create().getEglBaseContext(), null);
+            sf_my_video.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
 
             rel_teacher = (RelativeLayout) fragmentView.findViewById(R.id.rel_teacher);
             rel_my_video = (RelativeLayout) fragmentView.findViewById(R.id.rel_my);
 
             sf_re_background = (RelativeLayout) fragmentView.findViewById(R.id.sf_re_background);
             t_re_background = (RelativeLayout) fragmentView.findViewById(R.id.t_re_background);
-            mMembers = (ImageView) fragmentView.findViewById(R.id.members);
 
-            mJubao = (ImageView) fragmentView.findViewById(R.id.jubao);
 
-            img_clock = (ImageView) fragmentView.findViewById(R.id.img_clock);
-            //            img_server = (ImageView) fragmentView.findViewById(R.id.img_server);
+//            img_server = (ImageView) fragmentView.findViewById(R.id.img_server);
             DisplayMetrics dm = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
             final int wid = dm.widthPixels;
@@ -248,132 +225,53 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                             if (!(Math.abs(x - event.getRawX()) < 30 && Math.abs(y - event.getRawY()) < 30)) {
                                 if (rel_teacher.getLeft() - (x - event.getRawX()) >= 0 && rel_teacher.getRight() - (x - event.getRawX()) <= wid) {
                                     rel_teacher.setTranslationX(-(x - event.getRawX()));
-
-
                                 }
                                 if (rel_teacher.getTop() - (y - event.getRawY()) >= 0 && rel_teacher.getBottom() - (y - event.getRawY()) <= hid) {
                                     rel_teacher.setTranslationY(-(y - event.getRawY()));
                                 }
                             }
-                            mTranslationX = rel_teacher.getTranslationX();
-                            mTranslationY = rel_teacher.getTranslationY();
                             break;
                         case MotionEvent.ACTION_UP:
                             isFirstFinish = true;
-
-
                             /*RoomActivity.vi_contaioner.setNoScroll(candraw);*/
                             break;
                     }
-                    return false;
-                }
-            });
-
-            gestureScanner = new GestureDetector(new GestureDetector.OnGestureListener() {
-                @Override
-                public boolean onDown(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onShowPress(MotionEvent e) {
-
-                }
-
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-
-                }
-
-                @Override
-                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                     return true;
                 }
             });
-            gestureScanner.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
-                public boolean onDoubleTap(MotionEvent e) {
-                    //双击时产生一次
-                    Log.e("test", "onDoubleTap");
-                    return false;
-                }
 
-                public boolean onDoubleTapEvent(MotionEvent e) {
-                    //双击时产生两次
-                    Log.v("test", "onDoubleTapEvent");
-                    return false;
-                }
+            rel_my_video.setOnTouchListener(new View.OnTouchListener() {
+                float x = 0;
+                float y = 0;
+                private boolean isFirstFinish;
 
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    //短快的点击算一次单击
-                    Log.v("test", "onSingleTapConfirmed");
-                    return false;
-                }
-            });
-
-
-            rel_teacher.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    count++;
-                    if (count == 1) {
-                        firClick = System.currentTimeMillis();
-                    } else if (count == 2) {
-                        secClick = System.currentTimeMillis();
-                        if (secClick - firClick < 1000) {
-                            //双击事件 放大老师屏幕
-                            DisplayMetrics dm = new DisplayMetrics();
-                            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                            final int wid = dm.widthPixels;
-                            final int hid = dm.heightPixels;
-                            if (!isFullScreen) {
-                                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) sf_teacher.getLayoutParams();
-                                params.width = wid;
-                                params.height = hid;
-                                sf_teacher.setLayoutParams(params);
-                                sf_teacher.bringToFront();
-                                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) rel_teacher.getLayoutParams();
-                                layoutParams.width = wid;
-                                layoutParams.height = hid;
-                                rel_teacher.setTranslationX(0);
-                                rel_teacher.setTranslationY(0);
-                                rel_teacher.setLayoutParams(layoutParams);
-                                isFullScreen = true;
-                            } else {
-                                mFirstRelative.setVisibility(View.VISIBLE);
-                                ViewGroup.LayoutParams layoutParams = sf_teacher.getLayoutParams();
-                                layoutParams.width = 300;
-                                layoutParams.height = 300;
-                                sf_teacher.setLayoutParams(layoutParams);
-                                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rel_teacher.getLayoutParams();
-                                params.width = 300;
-                                params.height = 300;
-                                rel_teacher.setTranslationX(mTranslationX);
-                                rel_teacher.setTranslationY(mTranslationY);
-                                rel_teacher.setLayoutParams(params);
-                                wb_container.setVisibility(View.VISIBLE);
-                                mFR.setVisibility(View.GONE);
-                                isFullScreen = false;
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            if (!isFirstFinish) {
+                                x = event.getRawX();
+                                y = event.getRawY();
                             }
-
-
-                        }
-                        count = 0;
-                        firClick = 0;
-                        secClick = 0;
+                            RoomActivity.vi_contaioner.setNoScroll(true);
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (!(Math.abs(x - event.getRawX()) < 20 && Math.abs(y - event.getRawY()) < 20)) {
+                                if (rel_my_video.getLeft() - (x - event.getRawX()) >= 0 && rel_my_video.getRight() - (x - event.getRawX()) <= wid) {
+                                    rel_my_video.setTranslationX(-(x - event.getRawX()));
+                                }
+                                if (rel_my_video.getTop() - (y - event.getRawY()) >= 0 && rel_my_video.getBottom() - (y - event.getRawY()) <= hid) {
+                                    rel_my_video.setTranslationY(-(y - event.getRawY()));
+                                }
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isFirstFinish = true;
+                           /* RoomActivity.vi_contaioner.setNoScroll(candraw);*/
+                            break;
                     }
-
+                    return true;
                 }
-
             });
 
             img_memmber = (ImageView) fragmentView.findViewById(R.id.img_memmber);
@@ -399,11 +297,10 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 iv_dissclass.setVisibility(View.GONE);
                 img_send_message.setVisibility(View.GONE);
                 img_memmber.setVisibility(View.GONE);
-                //                img_server.setVisibility(View.GONE);
+//                img_server.setVisibility(View.GONE);
             }
 
-
-            img_hand_up.setOnClickListener(this);
+            /*img_hand_up.setOnClickListener(this);*/
 
             img_memmber.setOnClickListener(this);
             //          txt_hand_up.setOnClickListener(this);
@@ -411,13 +308,11 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             img_audio.setOnClickListener(this);
             iv_dissclass.setOnClickListener(this);
             iv_photo.setOnClickListener(this);
-            mMembers.setOnClickListener(this);
             img_send_message.setOnClickListener(this);
-            mJubao.setOnClickListener(this);
-            //            img_server.setOnClickListener(this);
-            //            wb_container.requestFocus();
+//            img_server.setOnClickListener(this);
+//            wb_container.requestFocus();
             adapter = new ChatListAdapter(RoomSession.getInstance().chatList, getActivity());
-            //            serverListAdapter = new ServerListAdapter(getActivity());
+//            serverListAdapter = new ServerListAdapter(getActivity());
             list_chat.setAdapter(adapter);
             list_chat.setOnTouchListener(new View.OnTouchListener() {
                 float x = 0;
@@ -462,11 +357,13 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             ft.replace(R.id.wb_container, wbFragment);
             ft.commit();
             wbFragment.setWebWhitePadOnClickListener(this);
+
             WhiteBoradManager.getInstance().setFileServierUrl(RoomSession.getInstance().getHost());
             WhiteBoradManager.getInstance().setFileServierPort(RoomSession.getInstance().getPort());
             WhiteBoradManager.getInstance().setLocalControl(wbFragment);
             RoomManager.getInstance().setCallbBack(RoomSession.getInstance());
             RoomManager.getInstance().setWhiteBoard(wbFragment);
+
 
         } else {
             ViewGroup parent = (ViewGroup) fragmentView.getParent();
@@ -474,27 +371,212 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 parent.removeView(fragmentView);
             }
         }
-        if (checkNetTimer == null) {
-
-            checkNetTimer = new Timer();
-            checkNetTimer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    if (!Tools.isNetworkAvailable(getActivity()) && RoomSession.isInRoom && netBreakCount == 10) {
-                        wbFragment.roomDisConnect();
+//        if (checkNetTimer == null) {
+//
+//            checkNetTimer = new Timer();
+//            checkNetTimer.schedule(new TimerTask() {
+//
+//                @Override
+//                public void run() {
+//                    if (!Tools.isNetworkAvailable(getActivity()) && RoomSession.isInRoom && netBreakCount == 10) {
+//                        wbFragment.roomDisConnect();
+//                    }
+//                    netBreakCount++;
+//                }
+//            }, 0, 1000);
+//        }
+       /* fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+//                        int[] loca = new int[2];
+//                        lin_input_chat.getLocationOnScreen(loca);
+//                        int heightDiff = fragmentView.getRootView().getHeight() - fragmentView.getHeight();
+//                        // 大于100像素，是打开的情况
+//                        if (heightDiff > 100) {
+//                            // 如果已经打开软键盘，就不理会
+//                            if (keyBoardShown) {
+//                                return;
+//                            }
+//                            // do something when keyboard show，
+//                            // i.e. listView or recyclerView scrolls to bottom
+//                            img_hand_up.setVisibility(View.GONE);
+//                            keyBoardShown = true;
+//                            return;
+//                        }else{
+//                            // 软键盘收起的情况
+//                            if(RoomManager.getInstance().getMySelf()!=null){
+//                                int publisthstate = RoomManager.getInstance().getMySelf().publishState;
+//                                if((publisthstate == 0||publisthstate == 2)&&isClassBegin){
+//                                    img_hand_up.setVisibility(View.VISIBLE);
+//                                }else{
+//                                    img_hand_up.setVisibility(View.GONE);
+//                                }
+//                                keyBoardShown = false;
+//                            }
+//
+//                        }
+                        DisplayMetrics dm = new DisplayMetrics();
+                        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                        final int wid = dm.widthPixels;
+                        final int hid = dm.heightPixels;
+                        int screenHeight = hid;
+                        //阀值设置为屏幕高度的1/3
+                        int keyHeight = screenHeight / 3;
+                        int[] loca = new int[2];
+                        lin_input_chat.getLocationOnScreen(loca);
+                        int inputHight = hid - loca[1];
+                        if (inputHight > keyHeight) {
+                            // 如果已经打开软键盘，就不理会
+                            if (keyBoardShown) {
+                                return;
+                            }
+                            // do something when keyboard show，
+                            // i.e. listView or recyclerView scrolls to bottom
+                            //txt_hand_up.setVisibility(View.GONE);
+                            keyBoardShown = true;
+                        } else {
+                            //软键盘收起的情况
+                            if (RoomManager.getInstance().getMySelf() != null) {
+                                if ((RoomManager.getInstance().getMySelf().publishState == 2 || RoomManager.getInstance().getMySelf().publishState == 0 || RoomManager.getInstance().getMySelf().publishState == 4) && isClassBegin) {
+                                    if (RoomManager.getInstance().getMySelf().disableaudio) {
+                                        //txt_hand_up.setBackgroundResource(R.drawable.round_back_red_black);
+                                    } else {
+                                        //txt_hand_up.setBackgroundResource(R.drawable.round_back_red);
+                                    }
+//                            txt_hand_up.setClickable(true);
+                                } else {
+                                    // txt_hand_up.setBackgroundResource(R.drawable.round_back_red_black);
+//                            txt_hand_up.setClickable(false);
+                                }
+                                if (RoomManager.getInstance().getMySelf().properties.containsKey("raisehand")) {
+                                    boolean israisehand = Tools.isTure(RoomManager.getInstance().getMySelf().properties.get("raisehand"));
+                                    if (israisehand) {
+                                        //  txt_hand_up.setText(R.string.no_raise);
+                                    } else {
+                                        //txt_hand_up.setText(R.string.raise); //同意了，或者拒绝了
+                                    }
+                                } else {
+                                    //txt_hand_up.setText(R.string.raise); //还没举手
+                                }
+                                if (RoomManager.getInstance().getRoomType() != 0) {
+                                    // txt_hand_up.setVisibility(View.VISIBLE);
+                                } else {
+                                    // txt_hand_up.setVisibility(View.GONE);
+                                }
+                            }
+                            keyBoardShown = false;
+                        }
                     }
-                    netBreakCount++;
+                    // do something when keyboard hide
+
                 }
-            }, 0, 1000);
-        }
+        );*/
+
+//        lin_input_chat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                DisplayMetrics dm = new DisplayMetrics();
+//                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//                final int wid = dm.widthPixels;
+//                final int hid = dm.heightPixels;
+//                int screenHeight = hid;
+//                //阀值设置为屏幕高度的1/3
+//                int keyHeight = screenHeight / 3;
+//                int[] loca = new int[2];
+//                lin_input_chat.getLocationOnScreen(loca);
+//                int inputHight = hid - loca[1];
+//                if (inputHight > keyHeight) {
+//                    // 如果已经打开软键盘，就不理会
+//                    if (keyBoardShown) {
+//                        return;
+//                    }
+//                    // do something when keyboard show，
+//                    // i.e. listView or recyclerView scrolls to bottom
+//                    img_hand_up.setVisibility(View.GONE);
+//                    keyBoardShown = true;
+//                } else {
+//                    //软键盘收起的情况
+//                    if (RoomManager.getInstance().getMySelf() != null) {
+//                        int publisthstate = RoomManager.getInstance().getMySelf().publishState;
+//                        if ((publisthstate == 0 || publisthstate == 2) && isClassBegin) {
+//                            img_hand_up.setVisibility(View.VISIBLE);
+//                        } else {
+//                            img_hand_up.setVisibility(View.GONE);
+//                        }
+//                        keyBoardShown = false;
+//                    }
+//
+//                }
+//            }
+//
+//        });
+
+        /*img_hand_up.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!RoomSession.isClassBegin) {
+                    return true;
+                }
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        RoomUser roomUser = RoomManager.getInstance().getMySelf();
+                        //判断是否在台上
+                        if (roomUser.publishState == 0) {
+                            RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
+                        } else {
+                            RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", false);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });*/
+
+        img_hand_up.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!RoomSession.isClassBegin) {
+                    return true;
+                }
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        RoomUser roomUser = RoomManager.getInstance().getMySelf();
+                        if (roomUser != null && roomUser.publishState != 0) {
+                            RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        RoomUser user = RoomManager.getInstance().getMySelf();
+                        //判断是否在台上
+                        if (user.publishState == 0) {
+                            if (RoomManager.getInstance().getMySelf().properties.containsKey("raisehand")) {
+                                boolean israisehand = Tools.isTure(RoomManager.getInstance().getMySelf().properties.get("raisehand"));
+                                if (israisehand) {
+                                    RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", false);
+                                } else {
+                                    RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
+                                }
+                            } else {
+                                RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
+                            }
+                        } else {
+                            RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", false);
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
 
         initChatExpressionPop();
         initToolBarPop();
         initStaticFaces();
         return fragmentView;
     }
-
 
     private void initGridView() {
         FaceGVAdapter mGvAdapter = new FaceGVAdapter(staticFacesList, getContext());
@@ -610,7 +692,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             NotificationCenter.getInstance().addObserver(this, RoomSession.TakePhotoByCamera);
 
         }
-        //        ((RoomActivity)this.getActivity()).joinRoom();
+//        ((RoomActivity)this.getActivity()).joinRoom();
         super.onStart();
         if (isVisiable) {
             doPlayAllVideo();
@@ -620,7 +702,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         if (RoomSession.getInstance().chatList.size() != 0) {
             adapter.notifyDataSetChanged();
             list_chat.setSelection(adapter.getCount());
-            //            list_chat.setVisibility(View.VISIBLE);
+//            list_chat.setVisibility(View.VISIBLE);
         }
         if (RoomSession.isInRoom) {
             Tools.HideProgressDialog();
@@ -628,8 +710,9 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         setDisableState();
         txt_gift_num.setText(RoomSession.myGiftNum + "");
         if (wbFragment != null && RoomManager.getInstance().getMySelf() != null) {
-
-            RoomActivity.vi_contaioner.setNoScroll(true);
+            if (isVisiable) {
+                RoomActivity.vi_contaioner.setNoScroll(true);
+            }
             /*if (RoomSession.isClassBegin) {
 //                wbFragment.setDrawable(RoomSession.isMeCandraw);
                 RoomActivity.vi_contaioner.setNoScroll(RoomSession.isMeCandraw);
@@ -660,7 +743,6 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         doVideoLayout();
-        getMemberList();
     }
 
     @Override
@@ -669,16 +751,21 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         NotificationCenter.getInstance().removeObserver(this);
     }
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisiable = isVisibleToUser;
         if (isVisibleToUser) {
             if (isStart) {
                 if (RoomSession.isClassBegin) {
-                    unPlaySelfAfterClassBegin();
+                    if (!RoomControler.isReleasedBeforeClass()) {
+                        unPlaySelfAfterClassBegin();
+                    }
                 } else {
-                    playSelfBeforeClassBegin();
+                    if (!RoomControler.isReleasedBeforeClass()) {
+                        playSelfBeforeClassBegin();
+                    } else {
+                        doPlayAllVideo();
+                    }
                 }
                 if (RoomSession.isClassBegin) {
                     doPlayAllVideo();
@@ -686,6 +773,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             }
             isvisi = true;
             NotificationCenter.getInstance().addObserver(this, RoomSession.VideoUnPublished);
+            NotificationCenter.getInstance().addObserver(this, RoomSession.MessageReceived);
             NotificationCenter.getInstance().addObserver(this, RoomSession.VideoPublished);
             NotificationCenter.getInstance().addObserver(this, RoomSession.PlayNetVideo);
             NotificationCenter.getInstance().addObserver(this, RoomSession.PlayNetAudio);
@@ -709,12 +797,38 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             setUserBackGroud();
         } else {
             isvisi = false;
+            doUnPlayAllVideo();
             NotificationCenter.getInstance().removeObserver(this, RoomSession.VideoPublished);
             NotificationCenter.getInstance().removeObserver(this, RoomSession.VideoUnPublished);
             NotificationCenter.getInstance().removeObserver(this, RoomSession.PlayNetVideo);
             NotificationCenter.getInstance().removeObserver(this, RoomSession.PlayNetAudio);
         }
         super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    /***
+     * 切换到别的界面的时候，所有视频要停止播放
+     */
+    public void doUnPlayAllVideo() {
+        List<RoomUser> playingList = RoomSession.getInstance().getPlayingList();
+        for (int i = 0; i < playingList.size(); i++) {
+            RoomUser u = playingList.get(i);
+            if (u == null) {
+                return;
+            }
+            if (u.role == 0) {
+                RoomManager.getInstance().unPlayVideo(u.peerId);
+                if (sf_teacher != null) {
+                    sf_teacher.setVisibility(View.GONE);
+                }
+            }
+            if (u.peerId.equals(RoomManager.getInstance().getMySelf().peerId) && u.role == 2) {
+                RoomManager.getInstance().unPlayVideo(u.peerId);
+                if (sf_teacher != null) {
+                    sf_teacher.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     private void setUserBackGroud() {
@@ -745,7 +859,6 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             }
             if (u.role == 0) {
                 if (u.publishState > 1 && u.publishState < 4) {
-                    mTeacherID = u.peerId;
                     sf_teacher.setVisibility(View.VISIBLE);
                     RoomManager.getInstance().playVideo(u.peerId, sf_teacher);
                 } else {
@@ -777,10 +890,10 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                     }
                     hasMe = true;
                 }
-                //                else {
-                //                    hasMe = false;
-                //                    /*rel_my_video.setVisibility(View.GONE);*/
-                //                }
+//                else {
+//                    hasMe = false;
+//                    /*rel_my_video.setVisibility(View.GONE);*/
+//                }
             }
 
             if (!TextUtils.isEmpty(RoomActivity.path)) {
@@ -813,7 +926,9 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         }
 
         if (!hasMe) {
-            sf_my_video.setVisibility(View.INVISIBLE);
+            if (isClassBegin) {
+                sf_my_video.setVisibility(View.INVISIBLE);
+            }
         }
         if (!hasteacher) {
             sf_teacher.setVisibility(View.INVISIBLE);
@@ -826,13 +941,18 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     }
 
     private void playSelfBeforeClassBegin() {
-        getMemberList();
-
+        if (RoomSession.isClassBegin) {
+            return;
+        }
         if (sf_my_video != null) {
             if (RoomManager.getInstance().getMySelf() != null) {
                 if (!RoomActivity.isVideo && RoomManager.getInstance().getMySelf().role == 2) {
                     sf_my_video.setVisibility(View.VISIBLE);
-                    RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId, sf_my_video);
+                    if (RoomControler.isReleasedBeforeClass()) {
+                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
+                    } else {
+                        RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId, sf_my_video);
+                    }
                 } else {
                     sf_my_video.setVisibility(View.INVISIBLE);
                 }
@@ -843,52 +963,43 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     private void unPlaySelfAfterClassBegin() {
         RoomManager.getInstance().unPlayVideo(RoomManager.getInstance().getMySelf().peerId);
         sf_my_video.setVisibility(View.INVISIBLE);
-
-        getMemberList();
     }
 
     private void OnRemotePubMsg(String id, String name, long ts, Object data) {
-        getMemberList();
-
         if (name.equals("ClassBegin")) {
             isClassBegin = true;
             Log.d(TAG, "class begins");
             if (RoomManager.getInstance().getMySelf() != null && RoomManager.getInstance().getRoomType() == 0 && RoomManager.getInstance().getMySelf().role == 2 && RoomControler.isAutoHasDraw()) {
                 RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "candraw", true);
             }
-
-            if (RoomManager.getInstance().getMySelf().publishState == 2 || RoomManager.getInstance().getMySelf().publishState == 0 || RoomManager.getInstance().getMySelf().publishState == 4) {
-                // txt_hand_up.setBackgroundResource(R.drawable.round_back_red);
-                img_hand_up.setClickable(true);
-                img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
-
+            img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
+            if (!RoomControler.isReleasedBeforeClass()) {
+                unPlaySelfAfterClassBegin();
             }
 
-            unPlaySelfAfterClassBegin();
-            //            if (RoomManager.getInstance().getRoomType() == 0) {
-            //                img_hand_up.setVisibility(View.GONE);
-            //            }
-            //            try {
-            //                char ops = RoomManager.getInstance().getRoomProperties().getString("chairmancontrol").charAt(23);
-            //                boolean haveSit = false;
-            //                int sitCount = 0;
-            //                for (RoomUser u:RoomManager.getInstance().getUsers().values()) {
-            //                    if(u.role==2&&(u.publishState==3||u.publishState==2)){
-            //                        sitCount++;
-            //                    }
-            //                }
-            //                if(sitCount<=6){
-            //                    haveSit = true;
-            //                }
-            //
-            //                if (ops == '1' && haveSit) {
-            //                    if (isMuteAudio) {
-            //                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 2);
-            //                    } else {
-            //                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
-            //                    }
-            //                }
-            if (RoomActivity.userrole == 2) {
+//            if (RoomManager.getInstance().getRoomType() == 0) {
+//                img_hand_up.setVisibility(View.GONE);
+//            }
+//                boolean haveSit = false;
+//                int sitCount = 0;
+//                for (RoomUser u:RoomManager.getInstance().getUsers().values()) {
+//                    if(u.role==2&&(u.publishState==3||u.publishState==2)){
+//                        sitCount++;
+//                    }
+//                }
+//                if(sitCount<=6){
+//                    haveSit = true;
+//                }
+//
+//                if (RRoomControler.isAutomaticUp() && haveSit) {
+//                    if (isMuteAudio) {
+//                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 2);
+//                    } else {
+//                        RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 3);
+//                    }
+//                }
+
+            if (RoomManager.getInstance().getMySelf().role == 2) {
                 iv_dissclass.setVisibility(View.GONE);
             } else {
                 if (TextUtils.isEmpty(RoomActivity.path)) {
@@ -897,14 +1008,14 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                     }
                 }
             }
-            //            } catch (JSONException e) {
-            //                e.printStackTrace();
-            //            }
-
             classStartTime = ts;
             RoomManager.getInstance().pubMsg("UpdateTime", "UpdateTime", RoomManager.getInstance().getMySelf().peerId, null, false, null, null);
         } else if (name.equals("UpdateTime")) {
             if (isClassBegin) {
+                if (img_clock != null && txt_time != null) {
+                    img_clock.setVisibility(View.VISIBLE);
+                    txt_time.setVisibility(View.VISIBLE);
+                }
                 serviceTime = ts;
                 localTime = serviceTime - classStartTime;
                 if (timerAddTime == null) {
@@ -926,30 +1037,45 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     }
 
     private void OnRemoteDelMsg(String id, String name, long ts, Object data) {
-        getMemberList();
-
         if (name.equals("ClassBegin")) {
             isClassBegin = false;
             Log.d(TAG, "class ends");
-            img_video.setVisibility(View.GONE);
-            img_audio.setVisibility(View.GONE);
-            try {
-                char ops = RoomManager.getInstance().getRoomProperties().getString("chairmancontrol").charAt(23);
-                if (ops == '1')
-                    RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 0);
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+            if (RoomManager.getInstance().getMySelf().role == 4) {
+                iv_dissclass.setVisibility(View.GONE);
+            }
+
+            if (!RoomControler.isNotLeaveAfterClass()) {
+                RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, 0);
+            }
+
+            if (RoomManager.getInstance().getMySelf().publishState == 0) {
+                img_video.setVisibility(View.GONE);
+                img_audio.setVisibility(View.GONE);
             }
 
             localTime = 0;
             if (timerAddTime != null) {
-                timerAddTime.cancel();
-                timerAddTime = null;
+                if (!RoomControler.haveTimeQuitClassroomAfterClass()) {
+                    timerAddTime.cancel();
+                    timerAddTime = null;
+                }
             }
             try {
-                if (!RoomManager.getInstance().getRoomProperties().getString("companyid").equals("10035")) {
-                    RoomSession.getInstance().setIsExit(true);
-                    RoomManager.getInstance().leaveRoom();
+                if (RoomManager.getInstance().getRoomProperties() != null && !RoomManager.getInstance().getRoomProperties().getString("companyid").equals("10035")) {
+                    /*if (!RoomControler.isNotLeaveAfterClass()) {
+                        RoomSession.getInstance().setIsExit(true);
+                        RoomManager.getInstance().leaveRoom();
+                    }*/
+                    if (img_clock != null && txt_time != null) {
+                        txt_time.setText("00:00:00");
+                        img_clock.setVisibility(View.INVISIBLE);
+                        txt_time.setVisibility(View.INVISIBLE);
+                    }
+                    img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
+                    img_hand_up.setClickable(false);
+                    iv_photo.setImageDrawable(getResources().getDrawable(R.drawable.btn_photo_disabled));
+                    iv_photo.setClickable(false);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -973,17 +1099,17 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         final int wid = dm.widthPixels;
         final int hid = dm.heightPixels;
-        RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams) sf_teacher.getLayoutParams();
+        /*RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams) sf_teacher.getLayoutParams();*/
         RelativeLayout.LayoutParams lin_param = (RelativeLayout.LayoutParams) rel_teacher.getLayoutParams();
         RelativeLayout.LayoutParams lin_paramstu = (RelativeLayout.LayoutParams) rel_my_video.getLayoutParams();
-        param.width = wid / 16 * 3;
-        param.height = wid / 16 * 3 / 4 * 3;
+       /* param.width = wid / 16 * 3;
+        param.height = wid / 16 * 3 / 4 * 3;*/
         lin_param.width = wid / 16 * 3 / 4 * 3;
         lin_param.height = wid / 16 * 3 / 4 * 3 / 4 * 3;
         lin_paramstu.width = wid / 16 * 3 / 4 * 3;
         lin_paramstu.height = wid / 16 * 3 / 4 * 3 / 4 * 3;
-        sf_teacher.setLayoutParams(param);
-        sf_my_video.setLayoutParams(param);
+//        sf_teacher.setLayoutParams(param);
+//        sf_my_video.setLayoutParams(param);
         rel_teacher.setLayoutParams(lin_param);
         lin_paramstu.topMargin = lin_param.height;
         rel_my_video.setLayoutParams(lin_paramstu);
@@ -1000,7 +1126,41 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 iv_chat.setVisibility(View.VISIBLE);
                 iv_broad.setVisibility(View.GONE);
             } else {
-
+                /*if (isClassBegin) {
+                    showLayouts();
+                    if (RoomActivity.userrole == 2) {
+                        lin_input_chat.setVisibility(View.VISIBLE);
+                    }
+                }*/
+               /* if (RoomManager.getInstance().getMySelf() != null) {
+                    if ((RoomManager.getInstance().getMySelf().publishState == 2 || RoomManager.getInstance().getMySelf().publishState == 0 || RoomManager.getInstance().getMySelf().publishState == 4) && isClassBegin) {
+//                        txt_hand_up.setClickable(true);
+                        if (RoomManager.getInstance().getMySelf().disableaudio) {
+                            // txt_hand_up.setBackgroundResource(R.drawable.round_back_red_black);
+                        } else {
+                            // txt_hand_up.setBackgroundResource(R.drawable.round_back_red);
+                        }
+                    } else {
+                        // txt_hand_up.setBackgroundResource(R.drawable.round_back_red_black);
+//                        txt_hand_up.setClickable(false);
+                       // img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
+                    }
+                    if (RoomManager.getInstance().getMySelf().properties.containsKey("raisehand")) {
+                        boolean israisehand = Tools.isTure(RoomManager.getInstance().getMySelf().properties.get("raisehand"));
+                        if (israisehand) {
+                            //txt_hand_up.setText(R.string.no_raise);
+                         //   img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.cacel_hand_normal));
+                        } else {
+                            //txt_hand_up.setText(R.string.raise); //同意了，或者拒绝了
+                          //  img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_pressed));
+                        }
+                    } else {
+                        // txt_hand_up.setText(R.string.raise); //还没举手
+                        if (RoomSession.isClassBegin) {
+                          //  img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
+                        }
+                    }
+                }*/
             }
             wbFragment.setWBTouchable(true);
 
@@ -1010,7 +1170,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             hideToolBarPop();
             NotificationCenter.getInstance().postNotificationName(MOVE_PAGE, 1);
         } else if (vid == R.id.hands_up) {
-            //举手功能
+            /*//举手功能
             if (RoomManager.getInstance().getMySelf().publishState != 2 && RoomManager.getInstance().getMySelf().publishState != 0 && RoomManager.getInstance().getMySelf().publishState != 4 || !isClassBegin || RoomManager.getInstance().getMySelf().disableaudio)
                 return;
             if (RoomManager.getInstance().getMySelf().properties.containsKey("raisehand")) {
@@ -1022,7 +1182,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 }
             } else {
                 RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "raisehand", true);
-            }
+            }*/
         } else if (vid == R.id.txt_send) {
             String message = edt_input_chat.getText().toString().trim();
             if (!message.isEmpty()) {
@@ -1037,7 +1197,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             KeyBoardUtil.hideKeyBoard(getContext(), edt_input_chat);
         } else if (vid == R.id.img_send_message) {
             wbFragment.setWBTouchable(false);
-            if (RoomActivity.userrole == 2) {
+            if (RoomManager.getInstance().getMySelf().role == 2) {
                 showChatExpressionPop();
             }
             showLayouts();
@@ -1047,7 +1207,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
 
         } else if (vid == R.id.img_video) {
             RoomUser user = RoomManager.getInstance().getMySelf();
-            //            RoomManager.getInstance().disableLocalVideo(!user.disablevideo);
+//            RoomManager.getInstance().disableLocalVideo(!user.disablevideo);
             if (user.publishState == 2 || user.publishState == 3) {
                 if (user.publishState == 2) {
                     RoomManager.getInstance().changeUserPublish(user.peerId, 4);
@@ -1117,64 +1277,12 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             InputMethodManager inputManager = (InputMethodManager) edt_input_chat.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.showSoftInput(edt_input_chat, 0);
 
-        } else if (vid == R.id.members) {
-            getMemberList();
-            showMenmbersPop();
-        } else if (vid == R.id.jubao) {
-            Intent intent = new Intent(getActivity(), JuBaoClassActivity.class);
-            startActivity(intent);
+
+            //KeyBoardUtil.showKeyBoard(getContext(), edt_input_chat);
         }
-
-
-    }
-
-    private void showMenmbersPop() {
-        final PopupWindow mPopWindow;
-        int DisplayWidth = getActivity().getResources().getDisplayMetrics().widthPixels / 4;
-        int DisplayHeight = getActivity().getResources().getDisplayMetrics().heightPixels - getStatusBarHeight();
-
-
-        final View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.custom_pop, null);
-        contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
-        ListView menmberlistView = (ListView) contentView.findViewById(R.id.member_listView);
-        // TODO: 2018/1/2
-        if (menbersAdapter == null) {
-            menbersAdapter = new CommonAdaper<RoomUser>(getActivity(), memberList, R.layout.item_members) {
-                @Override
-                public void convert(ViewHolder holder, RoomUser item, int position) {
-                    if (item.role == 0) {
-                        holder.setText(R.id.txt_user_name, item.nickName + "(老师)");
-                    } else {
-                        holder.setText(R.id.txt_user_name, item.nickName);
-                    }
-                }
-            };
-            menmberlistView.setAdapter(menbersAdapter);
-
-        } else {
-            menbersAdapter.notifyDataSetChanged();
-            menmberlistView.setAdapter(menbersAdapter);
-        }
-
-
-        mPopWindow = new PopupWindow(contentView, DisplayWidth, DisplayHeight, false);
-        mPopWindow.setBackgroundDrawable(new ColorDrawable());
-
-        mPopWindow.setOutsideTouchable(true);
-
-        mPopWindow.setTouchable(true);
-
-
-        mPopWindow.setFocusable(false);
-        mPopWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        mPopWindow.showAtLocation(contentView, Gravity.RIGHT, 0, 0);
-
+//        else if (vid == R.id.img_server) {
+////            showList(4);
+//        }
     }
 
     BasePopupWindow chatWindow;
@@ -1236,6 +1344,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         img_back = (ImageView) contentView.findViewById(R.id.img_back);
         txt_meeting_name = (TextView) contentView.findViewById(R.id.txt_pad_name);
         txt_time = (TextView) contentView.findViewById(R.id.txt_time);
+        img_clock = (ImageView) contentView.findViewById(R.id.img_clock);
         img_back.setOnClickListener(this);
 
         ToolBarPop = new PopupWindow(getActivity());
@@ -1257,12 +1366,11 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 hideChatExpressionPop();
             }
         });
-
     }
 
     private void showToolBarPop() {
         ToolBarPop.showAtLocation(fragmentView, Gravity.TOP, 0, 0);
-        //        KeyBoardUtil.hideKeyBoard(getContext(), chat);
+//        KeyBoardUtil.hideKeyBoard(getContext(), chat);
     }
 
     private void hideToolBarPop() {
@@ -1273,7 +1381,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
 
     private void showChatExpressionPop() {
         chatWindow.showAtLocation(fragmentView, Gravity.BOTTOM, 0, 0);
-        //        KeyBoardUtil.hideKeyBoard(getContext(), chat);
+//        KeyBoardUtil.hideKeyBoard(getContext(), chat);
     }
 
     private void hideChatExpressionPop() {
@@ -1334,7 +1442,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (PersonInfo_ImageUtils.hasSdcard()) {
-            SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyy-MM-dd-HH_mm_ss");
             String filename = timeStampFormat.format(new Date());
             tempFile = new File(Environment.getExternalStorageDirectory(),
                     filename + ".jpg");
@@ -1380,8 +1488,10 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                         try {
                             String path = PersonInfo_ImageUtils.scaleAndSaveImage(PersonInfo_ImageUtils.getRealFilePath(getContext(),
                                     PersonInfo_ImageUtils.getFileUri(uri, getContext())), 800, 800, getContext());
-                            WhiteBoradManager.getInstance().uploadRoomFile(
-                                    RoomManager.getInstance().getRoomProperties().getString("serial"), path);
+                            if (RoomManager.getInstance().getRoomProperties() != null) {
+                                WhiteBoradManager.getInstance().uploadRoomFile(
+                                        RoomManager.getInstance().getRoomProperties().getString("serial"), path);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1400,8 +1510,10 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                         }
                         if (!TextUtils.isEmpty(imagePath)) {
                             String path = PersonInfo_ImageUtils.scaleAndSaveImage(imagePath, 800, 800, getContext());
-                            WhiteBoradManager.getInstance().uploadRoomFile(
-                                    RoomManager.getInstance().getRoomProperties().getString("serial"), path);
+                            if (RoomManager.getInstance().getRoomProperties() != null) {
+                                WhiteBoradManager.getInstance().uploadRoomFile(
+                                        RoomManager.getInstance().getRoomProperties().getString("serial"), path);
+                            }
                         } else {
                             Toast.makeText(getContext(), "图片选择失败", Toast.LENGTH_SHORT).show();
                         }
@@ -1439,23 +1551,28 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     }
 
     private void sendClassDissToPhp() {
+        /*if (!(RoomManager.getInstance().getMySelf().role == 0)) {
+            return;
+        }*/
         String webFun_controlroom = "http://" + RoomActivity.host + ":" + port + "/ClientAPI" + "/roomover";
         RequestParams params = new RequestParams();
         try {
             params.put("act", 3);
-            if (RoomControler.isAutoClassDissMiss()) {
+            /*if (RoomControler.isAutoClassDissMiss()) {
                 params.put("endsign", 1);
+            }*/
+            if(RoomManager.getInstance().getRoomProperties()!=null){
+                params.put("serial", RoomManager.getInstance().getRoomProperties().get("serial"));
+                params.put("companyid", RoomManager.getInstance().getRoomProperties().get("companyid"));
             }
-            params.put("serial", RoomManager.getInstance().getRoomProperties().get("serial"));
-            params.put("companyid", RoomManager.getInstance().getRoomProperties().get("companyid"));
             client.post(webFun_controlroom, params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, JSONObject response) {
                     try {
                         int nRet = response.getInt("result");
                         if (nRet == 0) {
-                            //                            RoomManager.getInstance().delMsg("ClassBegin", "ClassBegin", "__all", new HashMap<String, Object>());
-                            //                            txt_class_begin.setVisibility(View.GONE);
+//                            RoomManager.getInstance().delMsg("ClassBegin", "ClassBegin", "__all", new HashMap<String, Object>());
+//                            txt_class_begin.setVisibility(View.GONE);
                         } else {
                             Log.e("demo", "下课接口调用失败，失败数据：");
                         }
@@ -1468,7 +1585,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 @Override
                 public void onFailure(int statusCode, org.apache.http.Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Log.d("emm", "error=" + throwable.toString());
-                    //                RoomClient.getInstance().joinRoomcallBack(-1);
+//                RoomClient.getInstance().joinRoomcallBack(-1);
                 }
             });
         } catch (JSONException e) {
@@ -1477,20 +1594,20 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
     }
 
     private void showLayouts() {
-        //        m_blayoutsShow = true;
+//        m_blayoutsShow = true;
         String roomname = RoomManager.getInstance().getRoomName();
         roomname = StringEscapeUtils.unescapeHtml4(roomname);
         txt_meeting_name.setText(roomname);
-        //        tool_bar.setVisibility(View.VISIBLE);
+//        tool_bar.setVisibility(View.VISIBLE);
         showToolBarPop();
     }
 
-    //    private void hideLayouts() {
-    //        m_blayoutsShow = false;
-    //        tool_bar.setVisibility(View.INVISIBLE);
-    ////        if (timerhide != null)
-    ////            timerhide.cancel();
-    //    }
+//    private void hideLayouts() {
+//        m_blayoutsShow = false;
+//        tool_bar.setVisibility(View.INVISIBLE);
+////        if (timerhide != null)
+////            timerhide.cancel();
+//    }
 
     private void showTime() {
         getActivity().runOnUiThread(new Runnable() {
@@ -1508,6 +1625,24 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 M = tempm == 0 ? "00" : tempm >= 10 ? tempm + "" : "0" + tempm;
                 S = sec == 0 ? "00" : sec >= 10 ? sec + "" : "0" + sec;
                 txt_time.setText(H + ":" + M + ":" + S);
+
+
+                try {
+                    if (RoomManager.getInstance().getRoomProperties() != null &&
+                            serviceTime == RoomManager.getInstance().getRoomProperties().getLong("endtime")) {
+                        if (timerAddTime != null) {
+                            timerAddTime.cancel();
+                            timerAddTime = null;
+                        }
+                        RoomClient.getInstance().onClassDismiss();
+                        RoomSession.getInstance().setIsExit(true);
+                        RoomManager.getInstance().leaveRoom();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
     }
@@ -1522,18 +1657,16 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         float x = loca[0] / 2 - txt_gift_num.getWidth() * 2 + txt_gift_num.getWidth() / 2;
         float y = loca[1] / 2 + txt_gift_num.getWidth() / 2;
         TranslateAnimation translateAnimation = new TranslateAnimation(-img_gift.getWidth(), x, -img_gift.getHeight(), y);
-        //        translateAnimation.setFillAfter(true);
-        //初始化 Alpha动画
-        //初始化
-        //        ScaleAnimation scaleAnimationBig = new ScaleAnimation(1.0f, 4.0f, 1.0f, 4.0f);
-        //        scaleAnimationBig.setStartOffset(1000);
+//        translateAnimation.setFillAfter(true);
+//        ScaleAnimation scaleAnimationBig = new ScaleAnimation(1.0f, 4.0f, 1.0f, 4.0f);
+//        scaleAnimationBig.setStartOffset(1000);
         ScaleAnimation scaleAnimation = new ScaleAnimation(4.0f, 0.1f, 4.0f, 0.1f);
         scaleAnimation.setFillAfter(true);
         //动画集
         AnimationSet set = new AnimationSet(true);
-        //        set.setFillAfter(true);
+//        set.setFillAfter(true);
         set.setFillBefore(false);
-        //        set.addAnimation(scaleAnimationBig);
+//        set.addAnimation(scaleAnimationBig);
         set.addAnimation(scaleAnimation);
         set.addAnimation(translateAnimation);
 
@@ -1549,7 +1682,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                //                animation.cancel();
+//                animation.cancel();
                 img_gift.setVisibility(View.GONE);
             }
 
@@ -1560,26 +1693,33 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         });
     }
 
-    //    @Override
-    //    public void onPageFinished() {
-    //        joinRoom();
-    //    }
+//    @Override
+//    public void onPageFinished() {
+//        joinRoom();
+//    }
 
 
     @Override
     public void didReceivedNotification(final int id, final Object... args) {
         switch (id) {
             case RoomSession.RoomJoined:
-                getMemberList();
+                if (RoomManager.getInstance().getMySelf().role == 4) {
+                    if (!RoomSession.isClassBegin) {
+                        iv_dissclass.setVisibility(View.GONE);
+                    } else {
+                        iv_dissclass.setVisibility(View.VISIBLE);
+                    }
+                    txt_gift_num.setVisibility(View.GONE);
+                }
 
                 Log.d(TAG, "roomManagerRoomJoined");
                 doVideoLayout();
                 RoomManager.getInstance().getRoomProperties();
-                //                if (wbFragment != null) {
-                //                    wbFragment.idForWhiteBorad(RoomManager.getInstance().getMySelf().role);
-                //                    wbFragment.sendJoinRoomDataToWB();
-                ////                    wbFragment.localChangeDoc();
-                //                }
+//                if (wbFragment != null) {
+//                    wbFragment.idForWhiteBorad(RoomManager.getInstance().getMySelf().role);
+//                    wbFragment.sendJoinRoomDataToWB();
+////                    wbFragment.localChangeDoc();
+//                }
                 setDisableState();
                 Tools.HideProgressDialog();
                 RoomSession.isInRoom = true;
@@ -1598,49 +1738,43 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 if (RoomManager.getInstance().getRoomType() == 0) {
                     img_hand_up.setVisibility(View.GONE);
                 }
-                //                sf_my_video.setVisibility(View.VISIBLE);
-                //                RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId,sf_my_video);
-                //                RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, RoomManager.getInstance().getMySelf().publishState);
-                //                RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "publishstate", RoomManager.getInstance().getMySelf().publishState);
+//                sf_my_video.setVisibility(View.VISIBLE);
+//                RoomManager.getInstance().playVideo(RoomManager.getInstance().getMySelf().peerId,sf_my_video);
+//                RoomManager.getInstance().changeUserPublish(RoomManager.getInstance().getMySelf().peerId, RoomManager.getInstance().getMySelf().publishState);
+//                RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "publishstate", RoomManager.getInstance().getMySelf().publishState);
                 break;
 
             case RoomSession.UserJoined:
-
-                getMemberList();
                 RoomUser user = (RoomUser) args[0];
                 boolean inList = (boolean) args[1];
                 Log.d(TAG, "roomManagerPeerJoined " + user.peerId + (inList ? " inlist" : ""));
 
-                //                if (inList) {
-                //                    if (user.role == 0 && RoomManager.getInstance().getMySelf().role == 0 ||
-                //                            (RoomManager.getInstance().getRoomType() == 0 && user.role == RoomManager.getInstance().getMySelf().role)) {
-                //                        RoomManager.getInstance().evictUser(user.peerId);
-                //                    }
-                //                }
+//                if (inList) {
+//                    if (user.role == 0 && RoomManager.getInstance().getMySelf().role == 0 ||
+//                            (RoomManager.getInstance().getRoomType() == 0 && user.role == RoomManager.getInstance().getMySelf().role)) {
+//                        RoomManager.getInstance().evictUser(user.peerId);
+//                    }
+//                }
                 break;
             case RoomSession.UserLeft:
-                getMemberList();
-
                 RoomUser user1 = (RoomUser) args[0];
                 Log.d(TAG, "roomManagerPeerLeft " + user1.peerId);
-                //                if(user1.role == 0){
-                //                    int publishstate = RoomManager.getInstance().getMySelf().publishState;
-                //                    String peerid = RoomManager.getInstance().getMySelf().peerId;
-                //                    if(publishstate!=0){
-                //                        RoomManager.getInstance().changeUserPublish(peerid,0);
-                //                    }
-                //                }
+//                if(user1.role == 0){
+//                    int publishstate = RoomManager.getInstance().getMySelf().publishState;
+//                    String peerid = RoomManager.getInstance().getMySelf().peerId;
+//                    if(publishstate!=0){
+//                        RoomManager.getInstance().changeUserPublish(peerid,0);
+//                    }
+//                }
                 break;
             case RoomSession.UserChanged:
                 RoomUser chUser = (RoomUser) args[0];
-                getMemberList();
-
                 if (chUser.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
                     if (chUser.publishState == 0) {
                         wbFragment.setDrawable(RoomSession.isMeCandraw);
                     }
                 }
-                if (RoomSession.isClassBegin && isVisiable) {
+                if (/*RoomSession.isClassBegin &&*/ isVisiable) {
                     doPlayAllVideo();
                 }
                 Map<String, Object> changeMap = (Map<String, Object>) args[1];
@@ -1648,10 +1782,13 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 if (changeMap.containsKey("isInBackGround")) {
                     boolean isinback = Tools.isTure(changeMap.get("isInBackGround"));
                     if (chUser.role == 2) {
-                        if (isinback) {
-                            sf_re_background.setVisibility(View.VISIBLE);
-                        } else {
-                            sf_re_background.setVisibility(View.GONE);
+                        if (RoomManager.getInstance().getMySelf().role == 2 &&
+                                chUser.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
+                            if (isinback) {
+                                sf_re_background.setVisibility(View.VISIBLE);
+                            } else {
+                                sf_re_background.setVisibility(View.GONE);
+                            }
                         }
                     }
                     if (chUser.role == 0) {
@@ -1693,41 +1830,35 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                                 hideToolBarPop();
                             }
                         }
-                        //                        if (RoomSession.isClassBegin) {
-                        //                            if (candraw) {
-                        //                                wbFragment.setTurnPagePermission(true);
-                        //                            } else {
-                        //                                wbFragment.setTurnPagePermission((RoomManager.getInstance().getMySelf().role == 2 && RoomControler.isStudentCanTurnPage()));
-                        //                            }
-                        //                        }
                     }
-
-                    if (RoomManager.getInstance().getMySelf().publishState == 2 || RoomManager.getInstance().getMySelf().publishState == 0 || RoomManager.getInstance().getMySelf().publishState == 4) {
-                        // txt_hand_up.setBackgroundResource(R.drawable.round_back_red);
-                        img_hand_up.setClickable(true);
-                        img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
-
+                    /*if (RoomManager.getInstance().getMySelf().publishState == 2 || RoomManager.getInstance().getMySelf().publishState == 0 || RoomManager.getInstance().getMySelf().publishState == 4) {
+                        if (RoomSession.isClassBegin) {
+                            img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
+                        } else {
+                            img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
+                        }
                     } else {
-                        //                      txt_hand_up.setBackgroundResource(R.drawable.round_back_red_black);
-                        img_hand_up.setClickable(false);
-                        img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
-                    }
+                        //img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
+                    }*/
                     if (RoomManager.getInstance().getMySelf().properties.containsKey("raisehand")) {
                         boolean israisehand = Tools.isTure(RoomManager.getInstance().getMySelf().properties.get("raisehand"));
+                        RoomUser roomUser = RoomManager.getInstance().getMySelf();
                         if (israisehand) {
-                            // txt_hand_up.setText(R.string.no_raise);
                             img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.cacel_hand_pressed));
                         } else {
-                            // txt_hand_up.setText(R.string.raise); //同意了，或者拒绝了
-                            if (RoomManager.getInstance().getMySelf().publishState != 3 && RoomManager.getInstance().getMySelf().publishState != 1 && RoomSession.isClassBegin) {
-                                img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_pressed));
+                            if (RoomSession.isClassBegin) {
+                                img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
                             } else {
                                 img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
                             }
+                           /* if (RoomManager.getInstance().getMySelf().publishState != 3 && RoomManager.getInstance().getMySelf().publishState != 1 && RoomSession.isClassBegin) {
+                                img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_pressed));
+                            } else {
+                                img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
+                            }*/
                         }
                     } else {
-                        //                      /*  txt_hand_up.setText(R.string.raise); //还没举手
-                        if (RoomManager.getInstance().getMySelf().publishState != 3 && RoomManager.getInstance().getMySelf().publishState != 1 && RoomSession.isClassBegin) {
+                        if (RoomSession.isClassBegin) {
                             img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_up_normal));
                         } else {
                             img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
@@ -1742,17 +1873,17 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 if (isVisiable) {
                     doPlayAllVideo();
                 }
-                //                doVideoLayout();
-                //                SurfaceViewRenderer remoteView = null;
-                //                if (user2 != null && user2.role == 0) {
-                //                    remoteView = sf_teacher;
-                //                    sf_teacher.setVisibility(View.VISIBLE);
-                //                } else if (user2.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
-                //                    remoteView = sf_my_video;
-                //                    isShowMySelf = true;
-                //                    sf_my_video.setVisibility(View.VISIBLE);
-                //                }
-                //                RoomManager.getInstance().playVideo(user2.peerId, remoteView);
+//                doVideoLayout();
+//                SurfaceViewRenderer remoteView = null;
+//                if (user2 != null && user2.role == 0) {
+//                    remoteView = sf_teacher;
+//                    sf_teacher.setVisibility(View.VISIBLE);
+//                } else if (user2.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
+//                    remoteView = sf_my_video;
+//                    isShowMySelf = true;
+//                    sf_my_video.setVisibility(View.VISIBLE);
+//                }
+//                RoomManager.getInstance().playVideo(user2.peerId, remoteView);
                 break;
             case RoomSession.VideoUnPublished:
                 RoomUser user3 = (RoomUser) args[0];
@@ -1761,19 +1892,19 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 if (user3 != null && user3.role == 0) {
                     sf_teacher.setVisibility(View.GONE);
                 }
-                //                else if (user3.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
-                //                    isShowMySelf = false;
-                //                }
+//                else if (user3.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
+//                    isShowMySelf = false;
+//                }
                 doPlayAllVideo();
                 break;
             case RoomSession.MessageReceived:
-                //                RoomUser classRoomUser = (RoomUser) args[0];
-                //                String s = (String) args[1];
-                //                Log.d(TAG, "roomManagerMessageReceived " + classRoomUser.peerId);
-                //                ChatData cd = new ChatData();
-                //                cd.setPeerid(classRoomUser.peerId);
-                //                cd.setMessage(s);
-                //                chatList.add(cd);
+//                RoomUser classRoomUser = (RoomUser) args[0];
+//                String s = (String) args[1];
+//                Log.d(TAG, "roomManagerMessageReceived " + classRoomUser.peerId);
+//                ChatData cd = new ChatData();
+//                cd.setPeerid(classRoomUser.peerId);
+//                cd.setMessage(s);
+//                chatList.add(cd);
                 adapter.notifyDataSetChanged();
                 list_chat.setSelection(adapter.getCount());
                 list_chat.setVisibility(View.VISIBLE);
@@ -1800,10 +1931,10 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                     timerAddTime.cancel();
                     timerAddTime = null;
                 }
-                if (checkNetTimer != null) {
-                    checkNetTimer.cancel();
-                    checkNetTimer = null;
-                }
+//                if (checkNetTimer != null) {
+//                    checkNetTimer.cancel();
+//                    checkNetTimer = null;
+//                }
                 RoomSession.isInRoom = false;
                 break;
             case RoomActivity.ChangeViewLayoutByKeyEvent:
@@ -1820,7 +1951,6 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                         txt_gift_num.setText(gifnum + "");
                     }
                 });
-
                 break;
             case RoomSession.RoomBreak:
                 getActivity().runOnUiThread(new Runnable() {
@@ -1828,7 +1958,7 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                     public void run() {
                         if (wbFragment != null) {
                             wbFragment.setDrawable(false);
-                            wbFragment.roomDisConnect();
+//                            wbFragment.roomDisConnect();
                         }
                     }
                 });
@@ -1852,9 +1982,9 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 }
                 break;
             case RoomSession.playBackClearAll:
-                if (wbFragment != null) {
-                    wbFragment.roomPlaybackClearAll();
-                }
+//                if (wbFragment != null) {
+//                    wbFragment.roomPlaybackClearAll();
+//                }
                 if (RoomSession.getInstance().chatList != null) {
                     adapter.notifyDataSetChanged();
                 }
@@ -1882,7 +2012,27 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             }
         }
         if (getUserVisibleHint() && !RoomSession.isClassBegin) {
-            playSelfBeforeClassBegin();
+            try {
+                if (RoomManager.getInstance().getRoomProperties() != null && RoomManager.getInstance().getRoomProperties().getString("chairmancontrol").length() > 41) {
+                    if (!RoomControler.isReleasedBeforeClass()) {
+                        playSelfBeforeClassBegin();
+                    }
+                } else {
+                    playSelfBeforeClassBegin();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!RoomSession.isClassBegin) {
+            if (img_clock != null && txt_time != null) {
+                txt_time.setText("00:00:00");
+                img_clock.setVisibility(View.INVISIBLE);
+                txt_time.setVisibility(View.INVISIBLE);
+            }
+            img_hand_up.setImageDrawable(getResources().getDrawable(R.drawable.hand_disabled));
+            img_hand_up.setClickable(false);
         }
     }
 
@@ -1891,14 +2041,14 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
             return;
         }
         if (RoomManager.getInstance().getMySelf().publishState == 1 || RoomManager.getInstance().getMySelf().publishState == 3) {
-            img_audio.setImageResource(R.drawable.audio_on);
-        } else {
             img_audio.setImageResource(R.drawable.audio_off);
+        } else {
+            img_audio.setImageResource(R.drawable.audio_on);
         }
         if (RoomManager.getInstance().getMySelf().publishState >= 2 && RoomManager.getInstance().getMySelf().publishState != 4) {
-            img_video.setImageResource(R.drawable.video_on);
-        } else {
             img_video.setImageResource(R.drawable.video_off);
+        } else {
+            img_video.setImageResource(R.drawable.video_on);
         }
         if (RoomManager.getInstance().getMySelf().publishState == 0 || !RoomControler.isAllowStudentControlAV()) {
             img_audio.setVisibility(View.GONE);
@@ -1956,7 +2106,6 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
         super.onDestroyView();
     }
 
-
     class whenHide extends TimerTask {
 
         @Override
@@ -1969,29 +2118,50 @@ public class RoomFragment extends Fragment implements View.OnClickListener, Noti
                 }
             });
         }
-
     }
 
     class AddTime extends TimerTask {
 
         @Override
         public void run() {
-            localTime += 1;
+            serviceTime += 1;
+            localTime = serviceTime - classStartTime;
             showTime();
         }
     }
 
-    private void getMemberList() {
-        memberList.clear();
-        for (RoomUser u : RoomManager.getInstance().getUsers().values()) {
-            if (u.role == 1 || u.role == 0) {
-                memberList.add(0, u);
-            } else {
-                memberList.add(u);
-            }
-
-        }
-    }
+//    private void showList(int type) {
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        final int wid = dm.widthPixels;
+//        final int hid = dm.heightPixels;
+//        View contentView = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.list_pop, null);
+////        contentView.setBackgroundColor(Color.BLUE);
+//        ListView list = (ListView) contentView.findViewById(R.id.list);
+//        TextView txt_topic = (TextView) contentView.findViewById(R.id.topic);
+//        TextView txt_sure = (TextView) contentView.findViewById(R.id.txt_sure);
+//
+//
+//        final PopupWindow popupWindow = new PopupWindow(fragmentView.findViewById(R.id.mainLayout), wid / 3, hid);
+//        popupWindow.setContentView(contentView);
+//        if (type == 4) {
+//            txt_topic.setText(getResources().getText(R.string.select_country));
+//            list.setAdapter(serverListAdapter);
+//            serverListAdapter.notifyDataSetChanged();
+//            txt_sure.setVisibility(View.VISIBLE);
+//            txt_sure.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    RoomManager.getInstance().switchService(serverListAdapter.getSelectServerName());
+//                    popupWindow.dismiss();
+//                }
+//            });
+//        }
+//        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+//        popupWindow.setFocusable(true);
+//        popupWindow.setOutsideTouchable(true);
+//        popupWindow.showAtLocation(fragmentView.findViewById(R.id.mainLayout), Gravity.LEFT, 0, 0);
+//    }
 
 }
 

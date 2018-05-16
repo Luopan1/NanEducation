@@ -70,6 +70,7 @@ public class SchoolSignUpFragment extends BaseFragment {
             schoolAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(RecyclerView parent, View view, int position) {
+
                     Bundle bundle = new Bundle();
                     bundle.putString("title", info.getData().getDetail().getS_name());
                     bundle.putString("id", mGradeLists.get(position).getY_id());

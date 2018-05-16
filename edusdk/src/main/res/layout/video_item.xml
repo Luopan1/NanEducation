@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#2C2C2C">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#2C2C2C">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:scaleType="center"
-        android:src="@drawable/icon_teacher_big"/>
+        android:src="@drawable/icon_teacher_big" />
 
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/sf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

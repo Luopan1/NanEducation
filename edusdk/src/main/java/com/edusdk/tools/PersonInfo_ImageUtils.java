@@ -26,9 +26,7 @@ import java.io.InputStream;
  */
 public class PersonInfo_ImageUtils {
 
-
     public static int externalCacheNotAvailableState = 0;
-
 
     public static String scaleAndSaveImage(String strPath, float maxWidth, float maxHeight, Context context) {
 
@@ -68,20 +66,16 @@ public class PersonInfo_ImageUtils {
                 scaledBitmap = bitmap;
             } else {
                 scaledBitmap = Bitmap.createScaledBitmap(bitmap,
-                        (int) (photoW / scaleFactor), (int) (photoH / scaleFactor),
-                        true);
+                        (int) (photoW / scaleFactor), (int) (photoH / scaleFactor), true);
                 bitmap.recycle();
             }
 
-
             String picUrl = strPath.substring(0, strPath.lastIndexOf("/"));
-            String picName = "/_1_2"
-                    + strPath.substring(strPath.lastIndexOf("/") + 1);
+            String picName = "/" + strPath.substring(strPath.lastIndexOf("/") + 1);
 
             File f = null;
             try {
                 f = new File(getCacheDir(context), picName);
-
             } catch (Exception e) {
                 f = new File(picUrl, picName);
             }
@@ -219,8 +213,7 @@ public class PersonInfo_ImageUtils {
     }
 
     public static String getRealFilePath(final Context context, final Uri uri) {
-        if (null == uri)
-            return null;
+        if (null == uri) return null;
         final String scheme = uri.getScheme();
         String data = null;
         if (scheme == null)

@@ -48,8 +48,8 @@ public class UploadFile {
 
     public void UploadOperation(String url) {
         httpUrl = url;
-        //        applicationContext = appContext;
-        //        myCookieStore = new PersistentCookieStore(applicationContext);
+//        applicationContext = appContext;
+//        myCookieStore = new PersistentCookieStore(applicationContext);
     }
 
 
@@ -59,9 +59,9 @@ public class UploadFile {
         }
         state = 1;
 
-        //        //sam
-        //    	if(myCookieStore != null)
-        //    		client.setCookieStore(myCookieStore);
+//        //sam
+//    	if(myCookieStore != null)
+//    		client.setCookieStore(myCookieStore);
 
         if (httpUrl != null) {
             startUploadHTTPRequest();
@@ -130,6 +130,7 @@ public class UploadFile {
             params.put("filetype", fileType);
             params.put("alluser", "1");
             params.put("writedb", 1);
+            params.put("filenewname", username + "_" + "mobile"+ "_" + fileOldName );
 
             this.fileParams = params;
         } catch (Exception e) {

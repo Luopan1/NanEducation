@@ -17,8 +17,8 @@ android {
         applicationId "www.test720.com.naneducation"
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
@@ -83,7 +83,6 @@ dependencies {
     compile(name: 'classroomsdk-release', ext: 'aar')
     compile files('libs/hockeysdk-android.jar')
     //noinspection GradleCompatible
-    compile project(':edusdk')
     compile files('libs/alipaySdk-20170922.jar')
     compile project(':jjdxm-ijkplayer')
     compile 'com.android.support:multidex:1.0.0'
@@ -111,9 +110,12 @@ dependencies {
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:26.0.0'
-    compile project(':IMLib')
-    compile project(':CallLib')
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:design:26.0.0-alpha1'
+    compile project(':ClassRoomSdk')
+    compile project(':edusdk')
+    compile files('libs/fastjson-1.2.47.jar')
+    compile project(':CallLib')
+    compile project(':IMLib')
 }

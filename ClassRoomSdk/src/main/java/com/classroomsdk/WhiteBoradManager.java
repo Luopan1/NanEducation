@@ -6,6 +6,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.talkcloud.roomsdk.RoomControler;
 import com.talkcloud.roomsdk.RoomManager;
 
 import org.json.JSONException;
@@ -20,22 +21,38 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 public class WhiteBoradManager {
+
     private static String sync = "";
     private WBStateCallBack callBack;
     private LocalControl control;
     static private WhiteBoradManager mInstance = null;
-    public ShareDoc mBlankShareDoc = new ShareDoc();
     private static AsyncHttpClient client = new AsyncHttpClient();
     private ShareDoc currentMediaDoc;
     private ShareDoc currentFileDoc;
     private ShareDoc defaultFileDoc;
     private String fileServierUrl = "";
     private int fileServierPort = 80;
+
     private ConcurrentHashMap<Long, ShareDoc> docMap = new ConcurrentHashMap<Long, ShareDoc>();
     private ConcurrentHashMap<Long, ShareDoc> mediaMap = new ConcurrentHashMap<Long, ShareDoc>();
     private ArrayList<ShareDoc> docList = new ArrayList<ShareDoc>();
     private ArrayList<ShareDoc> mediaList = new ArrayList<ShareDoc>();
+
+    private ArrayList<ShareDoc> classDocList = new ArrayList<ShareDoc>();
+    private ArrayList<ShareDoc> adminDocList = new ArrayList<ShareDoc>();
+    private ArrayList<ShareDoc> classMediaList = new ArrayList<ShareDoc>();
+    private ArrayList<ShareDoc> adminMediaList = new ArrayList<ShareDoc>();
+
     private int userrole = -1;
+    public ShareDoc mBlankShareDoc = new ShareDoc();
+
+    public ShareDoc getmBlankShareDoc() {
+        return mBlankShareDoc;
+    }
+
+    public void setmBlankShareDoc(ShareDoc mBlankShareDoc) {
+        this.mBlankShareDoc = mBlankShareDoc;
+    }
 
     public ShareDoc getDefaultFileDoc() {
         return defaultFileDoc;
@@ -53,7 +70,7 @@ public class WhiteBoradManager {
 
     public ArrayList<ShareDoc> getDocList() {
         docList.clear();
-        //        docList.add(mBlankShareDoc);
+//        docList.add(mBlankShareDoc);
         for (ShareDoc d : docMap.values()) {
             if (d.getFileid() == 0) {
                 docList.add(0, d);
@@ -74,18 +91,64 @@ public class WhiteBoradManager {
         return mediaList;
     }
 
+    public ArrayList<ShareDoc> getClassMediaList() {
+        classMediaList.clear();
+        for (ShareDoc d : mediaMap.values()) {
+            if (d.getFilecategory() == 0) {
+                classMediaList.add(d);
+            }
+        }
+        Collections.sort(classMediaList);
+        return classMediaList;
+    }
+
+    public ArrayList<ShareDoc> getAdminmMediaList() {
+        adminMediaList.clear();
+        for (ShareDoc d : mediaMap.values()) {
+            if (d.getFilecategory() == 1) {
+                adminMediaList.add(d);
+            }
+        }
+        Collections.sort(adminMediaList);
+        return adminMediaList;
+    }
+
+    public ArrayList<ShareDoc> getClassDocList() {
+        classDocList.clear();
+        for (ShareDoc d : docMap.values()) {
+            if (d.getFilecategory() == 0 && d.getFileid() != 0) {
+                classDocList.add(d);
+            }
+        }
+        Collections.sort(classDocList);
+        return classDocList;
+    }
+
+    public ArrayList<ShareDoc> getAdminDocList() {
+        adminDocList.clear();
+        for (ShareDoc d : docMap.values()) {
+            if (d.getFilecategory() == 1 && d.getFileid() != 0) {
+                adminDocList.add(d);
+            }
+        }
+        Collections.sort(adminDocList);
+        return adminDocList;
+    }
+
     public void addDocList(ShareDoc doc) {
         if (doc.isMedia()) {
-            //            mediaList.add(doc);
+//            mediaList.add(doc);
             mediaMap.put(doc.getFileid(), doc);
         } else {
             if (doc.getType() == 1) {
                 defaultFileDoc = doc.clone();
             }
+            if (doc.getFileid() == 0) {
+                setmBlankShareDoc(doc);
+            }
             docMap.put(doc.getFileid(), doc);
-            //            docList.add(doc);
+//            docList.add(doc);
         }
-
     }
 
     public ShareDoc getCurrentMediaDoc() {
@@ -119,7 +182,9 @@ public class WhiteBoradManager {
     }
 
     public void setCurrentFileDoc(ShareDoc doc) {
-        this.currentFileDoc = doc.clone();
+        if (doc != null) {
+            this.currentFileDoc = doc.clone();
+        }
     }
 
     public void setCurrentMediaDoc(ShareDoc doc) {
@@ -141,9 +206,7 @@ public class WhiteBoradManager {
         mBlankShareDoc.setH5Docment(false);
         mBlankShareDoc.setMedia(false);
         docMap.put(mBlankShareDoc.getFileid(), mBlankShareDoc);
-
     }
-
 
     static public WhiteBoradManager getInstance() {
         synchronized (sync) {
@@ -155,6 +218,12 @@ public class WhiteBoradManager {
     }
 
     public void clear() {
+
+        classDocList.clear();
+        classMediaList.clear();
+        adminDocList.clear();
+        adminMediaList.clear();
+
         currentMediaDoc = null;
         currentFileDoc = null;
         mediaList.clear();
@@ -162,6 +231,7 @@ public class WhiteBoradManager {
         docMap.clear();
         mediaMap.clear();
         mInstance = null;
+        defaultFileDoc = null;
     }
 
     public void setWBCallBack(WBStateCallBack wbCallBack) {
@@ -185,7 +255,6 @@ public class WhiteBoradManager {
             callBack.onWhiteBoradMediaPublish(url, isvideo, fileid);
         }
     }
-
 
     public void onRoomFileChange(ShareDoc sdoc, boolean isdel, boolean islocal, boolean isClassBegin) {
         ShareDoc doc = null;
@@ -215,7 +284,7 @@ public class WhiteBoradManager {
                 if (!doc.isMedia()) {
                     if (docMap.containsKey(doc.getFileid())) {
                         if (doc.getFileid() == currentFileDoc.getFileid()) {
-                            getNextDoc(doc.getFileid(), doc.isMedia());
+                            callGetNextDoc(doc);
                             if (!doc.isMedia()) {
                                 localChangeDoc(currentFileDoc);
                             }
@@ -226,7 +295,7 @@ public class WhiteBoradManager {
                                 }
                             }
                         } else {
-                            getNextDoc(doc.getFileid(), doc.isMedia());
+                            callGetNextDoc(doc);
                             if (islocal && !doc.isMedia()) {
                                 if (isClassBegin) {
                                     JSONObject data = Packager.pageSendData(currentFileDoc);
@@ -237,7 +306,7 @@ public class WhiteBoradManager {
                     }
                 } else {
                     if (mediaMap.containsKey(doc.getFileid())) {
-                        getNextDoc(doc.getFileid(), doc.isMedia());
+                        callGetNextDoc(doc);
                     }
                 }
             } else {
@@ -247,7 +316,16 @@ public class WhiteBoradManager {
                         localChangeDoc(currentFileDoc);
                     }
                 }
-                docList.add(sdoc);
+                if (RoomControler.isDocumentClassification()) {
+                    classDocList.add(sdoc);
+                } else {
+                    docList.add(sdoc);
+                }
+                if (doc.getType() == 1) {
+                    defaultFileDoc = doc.clone();
+                    currentFileDoc = defaultFileDoc;
+                    localChangeDoc(currentFileDoc);
+                }
             }
         } else {
 
@@ -256,51 +334,64 @@ public class WhiteBoradManager {
             callBack.onRoomDocChange();
             isdeling = false;
         }
-
     }
 
-    private int getIndexByDocid(long docid, boolean ismedia) {
+    private void callGetNextDoc(ShareDoc doc) {
+        if (RoomControler.isDocumentClassification()) {
+            getNextDoc(doc.getFileid(), doc.isMedia(), classDocList);
+        } else {
+            getNextDoc(doc.getFileid(), doc.isMedia(), docList);
+        }
+    }
+
+    private int getIndexByDocid(long docid, boolean ismedia, ArrayList<ShareDoc> list) {
         if (!ismedia) {
-            for (int i = 0; i < docList.size(); i++) {
-                ShareDoc dc = docList.get(i);
+            for (int i = 0; i < list.size(); i++) {
+                ShareDoc dc = list.get(i);
                 if (dc.getFileid() == docid) {
                     return i;
                 }
             }
         } else {
-            for (int i = 0; i < mediaList.size(); i++) {
-                ShareDoc dc = mediaList.get(i);
+            for (int i = 0; i < list.size(); i++) {
+                ShareDoc dc = list.get(i);
                 if (dc.getFileid() == docid) {
                     return i;
                 }
             }
         }
-
         return -1;
     }
 
-    public void getNextDoc(long docid, boolean ismedia) {
-        int removeIndex = getIndexByDocid(docid, ismedia);
+    public void getNextDoc(long docid, boolean ismedia, ArrayList<ShareDoc> list) {
+        int removeIndex = getIndexByDocid(docid, ismedia, list);
         if (!ismedia) {
             ShareDoc sc = docMap.get(docid);
-            docList.remove(sc);
+            list.remove(sc);
             docMap.remove(docid);
 
-            int size = docList.size();
+            int size = list.size();
             if (removeIndex != -1 && removeIndex <= size && currentFileDoc.getFileid() == docid) {
                 if (size == removeIndex) {
-
-                    if (docList.size() > 0)
-                        currentFileDoc = docList.get(docList.size() - 1);
+                    if (list.size() > 0) {
+                        currentFileDoc = list.get(list.size() - 1);
+                    } else {
+                        currentFileDoc = WhiteBoradManager.getInstance().getmBlankShareDoc();
+                    }
                 } else {
-
-                    currentFileDoc = docList.get(removeIndex);
+                    if (list.size() > 0 && removeIndex <= list.size()) {
+                        currentFileDoc = list.get(removeIndex);
+                    }
                 }
                 if (RoomManager.getInstance().getMySelf().role == 2) {
-                    currentFileDoc = WhiteBoradManager.getInstance().getDocList().get(0);
+                    //currentFileDoc = WhiteBoradManager.getInstance().getDocList().get(0);
+                    currentFileDoc = WhiteBoradManager.getInstance().getmBlankShareDoc();
+                }
+            } else {
+                if (removeIndex == -1) {
+                    currentFileDoc = WhiteBoradManager.getInstance().getmBlankShareDoc();
                 }
             }
-
         } else {
             ShareDoc sc = mediaMap.get(docid);
             mediaList.remove(sc);
@@ -316,9 +407,9 @@ public class WhiteBoradManager {
      * @param docid
      */
     public void delRoomFile(final String roomID, final long docid, final boolean isMedia, final boolean isClassBegin) {
-        //        if(isdeling){
-        //            return;
-        //        }
+//        if(isdeling){
+//            return;
+//        }
         isdeling = true;
         String url = "http://" + fileServierUrl + ":" + fileServierPort + "/ClientAPI/" + "delroomfile";
 
@@ -347,7 +438,6 @@ public class WhiteBoradManager {
                 Log.d("emm", "error");
             }
         });
-
     }
 
     /**
@@ -356,9 +446,9 @@ public class WhiteBoradManager {
      * @param roomID
      */
     public void uploadRoomFile(final String roomID, final String path) {
-        //        if(isdeling){
-        //            return;
-        //        }
+//        if(isdeling){
+//            return;
+//        }
         isdeling = true;
         String url = "http://" + fileServierUrl + ":" + fileServierPort + "/ClientAPI/" + "uploaddocument";
 
@@ -390,6 +480,9 @@ public class WhiteBoradManager {
             dc.setPptslide(1);
             if (dc.getFileid() == 0) {
                 dc.setPagenum(1);
+            }
+            if (currentFileDoc != null && currentFileDoc.getFileid() == dc.getFileid() && dc.getFileid() == 0) {
+                currentFileDoc = dc;
             }
         }
     }

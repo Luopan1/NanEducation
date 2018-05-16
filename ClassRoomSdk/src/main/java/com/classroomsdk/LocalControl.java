@@ -6,6 +6,5 @@ package com.classroomsdk;
 
 public interface LocalControl {
     void localChangeDoc();
-
     void playbackPlayAndPauseController(boolean isplay);
 }

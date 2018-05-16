@@ -17,4 +17,5 @@ public class VideoGroup {
     public String peerid;
     public TextView txt_idef;
     public RelativeLayout re_background;
+    public TextView tv_home;
 }

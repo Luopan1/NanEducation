@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/re_share"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#000000"
-                tools:context="com.edusdk.ui.RoomActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/re_share"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.edusdk.ui.RoomActivity">
 
     <com.edusdk.view.NoScrollViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#000000"
-        android:focusable="false"/>
+        android:focusable="false" />
 
     <com.edusdk.view.DisListView
         android:id="@+id/list_chat"
@@ -23,9 +23,9 @@
         android:divider="@null"
         android:dividerHeight="5dp"
         android:focusableInTouchMode="false"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/sur_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,26 +38,48 @@
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/sur_player_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
         <org.webrtc.SurfaceViewRenderer
             android:id="@+id/sur_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"/>
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/re_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:gravity="center"
+            android:visibility="gone">
 
-    <LinearLayout
-        android:id="@+id/ll_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="#e0666666"
-        android:orientation="vertical"
-        android:visibility="gone">
+            <ImageView
+                android:id="@+id/loadingImageView"
+                android:layout_width="320dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:src="@drawable/frame" />
 
-    </LinearLayout>
+        </RelativeLayout>
+
+        <org.xwalk.core.XWalkView
+            android:id="@+id/video_white_board"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+        <org.xwalk.core.XWalkView
+            android:id="@+id/movie_white_board"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/img_disk"
@@ -70,7 +92,8 @@
         android:layout_toEndOf="@+id/list_chat"
         android:scaleType="center"
         android:src="@drawable/disk3x"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
+
     <!--回放界面-->
     <RelativeLayout
         android:id="@+id/rel_play_back"
@@ -88,7 +111,7 @@
             android:paddingBottom="15dp"
             android:paddingLeft="10dp"
             android:paddingTop="15dp"
-            android:visibility="visible">
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/img_back"
@@ -100,7 +123,7 @@
                 android:nextFocusDown="@+id/wb_container"
                 android:paddingLeft="10dp"
                 android:paddingRight="20dp"
-                android:src="@drawable/tittlebar_back"/>
+                android:src="@drawable/tittlebar_back" />
 
         </RelativeLayout>
 
@@ -117,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:scaleType="centerInside"
-                android:src="@drawable/btn_pause_normal"/>
+                android:src="@drawable/btn_pause_normal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,14 +160,14 @@
                     android:paddingLeft="16.0dip"
                     android:paddingRight="16.0dip"
                     android:paddingTop="3dp"
-                    android:progressDrawable="@drawable/po_seekbar"/>
+                    android:progressDrawable="@drawable/po_seekbar" />
 
                 <TextView
                     android:id="@+id/txt_play_back_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="00:00/00:00"/>
+                    android:text="00:00/00:00" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

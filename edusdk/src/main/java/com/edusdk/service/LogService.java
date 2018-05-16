@@ -40,7 +40,6 @@ public class LogService extends Service {
     private SimpleDateFormat LOGCAT_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS");
     private Thread readLog;
     private boolean isAllowReadLog = true;
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -63,7 +62,6 @@ public class LogService extends Service {
         isAllowReadLog = false;
         super.onDestroy();
     }
-
     private void createSystemWindow() {
         final WindowManager.LayoutParams lp = new WindowManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.MATCH_PARENT
@@ -91,7 +89,6 @@ public class LogService extends Service {
             wm.removeViewImmediate(listview);
         }
     }
-
     class LogAdapter extends ArrayAdapter<LogLine> {
 
         private LayoutInflater inflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -144,7 +141,6 @@ public class LogService extends Service {
         public TextView time;
         public TextView content;
     }
-
     class LogReaderThread implements Runnable {
 
         private String filter;
@@ -158,7 +154,7 @@ public class LogService extends Service {
             Process mLogcatProc = null;
             BufferedReader reader = null;
             try {
-                mLogcatProc = Runtime.getRuntime().exec(new String[]{"logcat"});
+                mLogcatProc = Runtime.getRuntime().exec(new String[] { "logcat"});
                 reader = new BufferedReader(new InputStreamReader(mLogcatProc.getInputStream()));
                 String line;
 
@@ -186,7 +182,7 @@ public class LogService extends Service {
             log.color = Color.parseColor("#8f3aa3");
         } else if (line.startsWith("E")) {
             log.color = Color.parseColor("#fe2b00");
-        } else if (line.startsWith("W")) {
+        } else if(line.startsWith("W")){
             log.color = Color.parseColor("#DC143C");
         }
         if (line.contains(")")) {
@@ -203,9 +199,7 @@ public class LogService extends Service {
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             buildLogLine(msg.obj.toString());
-        }
-
-        ;
+        };
     };
 
 }

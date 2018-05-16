@@ -69,23 +69,23 @@ public class JSWhitePadInterface {
         try {
             JSONObject jsdata = new JSONObject(videoData);
             String url = jsdata.getString("url");
-            long fileid = ((Number) jsdata.opt("fileid")).longValue();
+            long fileid = ((Number)jsdata.opt("fileid")).longValue();
             boolean isvideo = Tools.isTure(jsdata.opt("isvideo"));
-            if (RoomManager.getInstance().getMySelf().role == 2 && !RoomManager.getInstance().getMySelf().canDraw) {
+            if(RoomManager.getInstance().getMySelf().role == 2&&!RoomManager.getInstance().getMySelf().canDraw){
                 return;
             }
             boolean issuccess = RoomManager.getInstance().unPublishMedia();
-            if (!issuccess) {
+            if(!issuccess){
                 RoomManager.isMediaPublishing = true;
 
-                if (isClassbegin) {
-                    RoomManager.getInstance().publishMedia(url, isvideo, "", fileid, "__all");
-                } else {
-                    RoomManager.getInstance().publishMedia(url, isvideo, "", fileid, RoomManager.getInstance().getMySelf().peerId);
+                if(isClassbegin){
+                    RoomManager.getInstance().publishMedia(url,isvideo,"",fileid,"__all");
+                }else{
+                    RoomManager.getInstance().publishMedia(url,isvideo,"",fileid, RoomManager.getInstance().getMySelf().peerId);
                 }
             }
             if (callBack != null) {
-                callBack.onJsPlay(url, isvideo, fileid);
+                callBack.onJsPlay(url,isvideo,fileid);
             }
         } catch (JSONException e) {
             e.printStackTrace();

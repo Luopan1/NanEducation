@@ -37,6 +37,7 @@
     <string name="me">me</string>
     <string name="joining_classroom">Entering class</string>
     <string name="background">student pressed home button</string>
+    <string name="tea_background">user pressed home button</string>
     <string name="open_audio">Audio On</string>
     <string name="close_audio">Audio Off</string>
     <string name="candraw">Operation</string>
@@ -74,9 +75,12 @@
     <string name="back_hint">TalkCloud executes in the background and clicks back to the classroom</string>
     <string name="select_country">Please choose your country or region</string>
     <string name="country_default">(Auto)</string>
+    <string name="updateing">updateing...</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="find_new_version">A new version is available, and for the best use experience, it is recommended that you complete the version upgrade immediately.</string>
+    <string name="find_new_version_fouce">The new version is available, so to get the full learning experience, please do your version upgrade immediately.</string>
 
 </resources>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/mainLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                tools:context=".ui.RoomFragment">
+    xmlns:andoird="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.RoomFragment">
 
     <RelativeLayout
-        android:id="@+id/firstRelative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <FrameLayout
             android:id="@+id/wb_container"
@@ -21,8 +21,18 @@
             android:nextFocusDown="@+id/edt_input_chat"
             android:nextFocusRight="@+id/img_send_message"
             android:nextFocusUp="@+id/img_back">
+
+            <!--<requestFocus />-->
         </FrameLayout>
 
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/lin_video"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:orientation="vertical">-->
         <RelativeLayout
             android:id="@+id/rel_teacher"
             android:layout_width="wrap_content"
@@ -35,12 +45,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
-                android:src="@drawable/icon_teacher_big"/>
+                android:src="@drawable/icon_teacher_big" />
 
             <org.webrtc.SurfaceViewRenderer
                 android:id="@+id/sf_teacher"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
 
             <RelativeLayout
                 android:id="@+id/t_re_background"
@@ -61,16 +72,15 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="4dp"
-                    android:text="@string/background"
+                    android:text="@string/tea_background"
                     android:textColor="#ffffff"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rel_my"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,13 +92,14 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:scaleType="center"
-                android:src="@drawable/icon_user_big"/>
+                android:src="@drawable/icon_user_big" />
 
             <org.webrtc.SurfaceViewRenderer
                 android:id="@+id/sf_my_video"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+                android:layout_centerInParent="true"
+                android:visibility="invisible" />
 
             <RelativeLayout
                 android:id="@+id/sf_re_background"
@@ -111,10 +122,73 @@
                     android:paddingTop="4dp"
                     android:text="@string/background"
                     android:textColor="#ffffff"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
             </RelativeLayout>
         </RelativeLayout>
+        <!--</LinearLayout>-->
+
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/tool_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#702f3a45"-->
+        <!--android:paddingBottom="15dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingTop="15dp"-->
+        <!--android:visibility="invisible">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/img_back"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:focusable="true"-->
+        <!--android:nextFocusDown="@+id/wb_container"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="20dp"-->
+        <!--android:src="@drawable/tittlebar_back" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/txt_pad_name"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_toRightOf="@id/img_back"-->
+        <!--android:textColor="#FFFFFF" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/img_clock"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:src="@drawable/img_clock" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/txt_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:text="00:00:00"-->
+        <!--android:textColor="#FFFFFF" />-->
+        <!--</LinearLayout>-->
+        <!--</RelativeLayout>-->
+        <!--<ImageView-->
+        <!--android:id="@+id/img_server"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:src="@drawable/img_server"/>-->
 
         <com.edusdk.view.DisListView
             android:id="@+id/list_chat"
@@ -126,7 +200,7 @@
             android:divider="@null"
             android:dividerHeight="5dp"
             android:focusableInTouchMode="false"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -136,25 +210,14 @@
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/jubao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:focusable="true"
-                android:src="@drawable/jubaoimage"
-                android:visibility="visible"/>
+            <!--<ImageView-->
+            <!--android:id="@+id/img_server"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:src="@drawable/img_server"/>-->
 
-            <ImageView
-                android:id="@+id/members"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:focusable="true"
-                android:src="@drawable/renyuan"
-                android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/img_video"
@@ -166,7 +229,7 @@
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
                 android:src="@drawable/video_on"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/img_audio"
@@ -178,7 +241,7 @@
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
                 android:src="@drawable/audio_on"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_photo"
@@ -191,7 +254,7 @@
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
                 android:scaleType="center"
-                android:src="@drawable/btn_photo_disabled"/>
+                android:src="@drawable/btn_photo_disabled" />
 
             <ImageView
                 android:id="@+id/hands_up"
@@ -204,7 +267,7 @@
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
                 android:scaleType="center"
-                android:src="@drawable/hand_disabled"/>
+                android:src="@drawable/hand_disabled" />
 
             <TextView
                 android:id="@+id/txt_gift_num"
@@ -215,7 +278,7 @@
                 android:gravity="center"
                 android:paddingLeft="12dp"
                 android:text="0"
-                android:textColor="#FCD000"/>
+                android:textColor="#FCD000" />
 
             <ImageView
                 android:id="@+id/iv_dissclass"
@@ -227,7 +290,7 @@
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
                 android:src="@drawable/diss_class"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/img_send_message"
@@ -238,19 +301,104 @@
                 android:focusable="true"
                 android:nextFocusLeft="@+id/wb_container"
                 android:nextFocusRight="@+id/img_memmber"
-                android:src="@drawable/img_send_message"/>
+                android:src="@drawable/img_send_message" />
 
             <ImageView
                 android:id="@+id/img_memmber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:focusable="true"
                 android:layout_marginLeft="20dp"
+                android:focusable="true"
                 android:nextFocusLeft="@id/img_send_message"
-                android:src="@drawable/members"/>
+                android:src="@drawable/members" />
+
         </LinearLayout>
 
+        <!--<LinearLayout-->
+        <!--android:id="@+id/lin_input_chat"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="#2C2C2C"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="5dp"-->
+        <!--android:visibility="gone">-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/round_grey_back"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/edt_input_chat"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_weight="8"-->
+        <!--android:background="@null"-->
+        <!--android:hint="@string/say_something"-->
+        <!--android:imeOptions="flagNoExtractUi"-->
+        <!--android:lines="1"-->
+        <!--android:paddingLeft="3dp"-->
+        <!--android:textColor="#AAAAAA"-->
+        <!--android:textColorHint="#AAAAAA"-->
+        <!--android:textSize="24sp" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_chat"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/chat_normal" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_broad"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/keybraod"-->
+        <!--android:visibility="gone" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/txt_send"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:text="@string/send"-->
+        <!--android:textColor="#FFFFFF" />-->
+        <!--</LinearLayout>-->
+
+        <!--&lt;!&ndash; <TextView-->
+        <!--android:id="@+id/txt_hand_up"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="@drawable/round_back_red"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="@string/raise"-->
+        <!--android:textColor="#FFFFFF" />&ndash;&gt;-->
+
+        <!--<GridView-->
+        <!--android:id="@+id/chart_face_gv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#ffffff"-->
+        <!--android:numColumns="14"-->
+        <!--android:padding="10dp"-->
+        <!--android:verticalSpacing="5dp"-->
+        <!--android:visibility="gone" />-->
+
+        <!--</LinearLayout>-->
 
         <ImageView
             android:id="@+id/img_gift"
@@ -258,19 +406,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/ico_gift"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/FR"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/FSFV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

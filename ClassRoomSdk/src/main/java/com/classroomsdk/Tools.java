@@ -55,7 +55,7 @@ public class Tools {
     public static void HideProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();
-        } else {
+        }else {
             return;
         }
     }

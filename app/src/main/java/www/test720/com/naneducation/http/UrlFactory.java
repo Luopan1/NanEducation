@@ -104,4 +104,6 @@ public class UrlFactory {
     public static String actSignDetail = baseUrl + "index/actSignDetail";
     public static String startPage = baseUrl + "index/startPage";
     public static String downLoadUrl = baseUrl + "index/down";
+    public static String videopath = "host=global.talk-cloud.net&serial=";
+
 }

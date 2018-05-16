@@ -210,13 +210,10 @@ public class LiveBroadcastActivity extends BaseToolbarActivity {
                     bundle.putString("title", liveBroadcastList.get(position).getLive_title());
                     bundle.putInt("type", mLiveType);
                     bundle.putString("id", liveBroadcastList.get(position).getLid());
-                    if (mLiveType == 2) {
-                        bundle.putString("path", liveBroadcastList.get(position).getBack_url());
-                        jumpToActivity(CourseInfoActivity.class, bundle, false);
-                    } else {
-                        bundle.putString("room", liveBroadcastList.get(position).getRoom_mun());
-                        jumpToActivity(CourseInfoActivity.class, bundle, false);
-                    }
+                    bundle.putString("path", liveBroadcastList.get(position).getBack_url());
+                    bundle.putString("room", liveBroadcastList.get(position).getRoom_mun());
+                    jumpToActivity(CourseInfoActivity.class, bundle, false);
+
 
                 }
             });

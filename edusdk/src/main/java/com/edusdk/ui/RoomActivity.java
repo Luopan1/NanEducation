@@ -3,7 +3,6 @@ package com.edusdk.ui;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,9 +10,11 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,49 +24,59 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.classroomsdk.ShareDoc;
+import com.classroomsdk.Config;
 import com.classroomsdk.WBStateCallBack;
 import com.classroomsdk.WhiteBoradManager;
-import com.edusdk.Constans_VIdeo;
 import com.edusdk.R;
 import com.edusdk.adapter.RoomPageAdapter;
 import com.edusdk.message.BroadcastReceiverMgr;
+import com.edusdk.message.JSVideoWhitePadInterface;
 import com.edusdk.message.NotificationCenter;
 import com.edusdk.message.RoomClient;
 import com.edusdk.message.RoomSession;
+import com.edusdk.message.VideoWBCallback;
 import com.edusdk.tools.PermissionTest;
 import com.edusdk.tools.SoundPlayUtils;
 import com.edusdk.tools.Tools;
 import com.edusdk.view.NoScrollViewPager;
+import com.talkcloud.roomsdk.IRoomVideoWhiteBoard;
+import com.talkcloud.roomsdk.RoomControler;
 import com.talkcloud.roomsdk.RoomManager;
 import com.talkcloud.roomsdk.RoomUser;
 import com.talkcloud.roomsdk.Stream;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.webrtc.EglBase;
+import org.webrtc.EglRenderer;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
+import org.xwalk.core.XWalkPreferences;
+import org.xwalk.core.XWalkSettings;
+import org.xwalk.core.XWalkUIClient;
+import org.xwalk.core.XWalkView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,19 +84,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
-import static android.os.Build.VERSION_CODES.M;
-
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class RoomActivity extends FragmentActivity implements WBStateCallBack, NotificationCenter.NotificationCenterDelegate {
+public class RoomActivity extends FragmentActivity implements WBStateCallBack, NotificationCenter.NotificationCenterDelegate, VideoWBCallback, IRoomVideoWhiteBoard {
+
     public static final int ChangeViewLayoutByKeyEvent = 2001;
     public static final int SendMessageByKeyEvent = 2002;
     public static final int SHOW_LAYOUT = 2003;
+    public static final int GONE_VIDEO = 3000;
+
     public static NoScrollViewPager vi_contaioner;
+    RoomPageAdapter adapter;
     private SurfaceViewRenderer sur_player_view;
-    private LinearLayout sur_container;
+    private XWalkView videoXWalkView, movieXWalkView;
+    private RelativeLayout sur_container;
     private ImageView img_disk;
     //回放使用的控件
     private RelativeLayout rel_play_back;
@@ -126,7 +140,6 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
     boolean isPlayPlayback = true;
     boolean isEnd = false;
 
-    private LinearLayout ll_bg;
     boolean isShowToolBar = false;
 
     private int lastX, lastY;
@@ -148,22 +161,21 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
     NotificationCompat.Builder mBuilder = null;
     public static boolean isBackApp = false;
 
+    private EglRenderer.FrameListener frameListener;
+    private RelativeLayout re_loading;
+    private ImageView loadingImageView;
+    private AnimationDrawable animationDrawable;
 
-    @RequiresApi(api = M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //全屏
-        //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // 横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_room);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //        Intent startIntent = new Intent(this, LogService.class);
         //        startService(startIntent);
 
-        SoundPlayUtils.init(this);
         resultActivityBackApp();
 
         RoomSession.mediaPublishStream = null;
@@ -171,10 +183,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         getExData();
         vi_contaioner = (NoScrollViewPager) findViewById(R.id.container);
 
-        ll_bg = (LinearLayout) findViewById(R.id.ll_bg);
-        ll_bg.setVisibility(View.GONE);
-
-        sur_container = (LinearLayout) findViewById(R.id.sur_container);
+        sur_container = (RelativeLayout) findViewById(R.id.sur_container);
         img_disk = (ImageView) findViewById(R.id.img_disk);
         img_disk.clearAnimation();
         img_disk.setVisibility(View.GONE);
@@ -186,15 +195,20 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         tool_bar = (RelativeLayout) findViewById(R.id.tool_bar);
         img_back = (ImageView) findViewById(R.id.img_back);
 
+        re_loading = (RelativeLayout) findViewById(R.id.re_loading);
+        loadingImageView = (ImageView) findViewById(R.id.loadingImageView);
+
         WhiteBoradManager.getInstance().setWBCallBack(this);
         WhiteBoradManager.getInstance().setFileServierUrl(host);
         WhiteBoradManager.getInstance().setFileServierPort(port);
+        JSVideoWhitePadInterface.getInstance().setVideoWBCallBack(this);
+        RoomManager.getInstance().setVideoWhiteBoard(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        vi_contaioner.setAdapter(new RoomPageAdapter(fragmentManager));
+        adapter = new RoomPageAdapter(fragmentManager);
+        vi_contaioner.setAdapter(adapter);
         vi_contaioner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -203,15 +217,24 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
                     vi_contaioner.setNoScroll(true);
                 } else if (position == 1) {
                     vi_contaioner.setNoScroll(false);
-                    //                    list_chat.setVisibility(View.INVISIBLE);
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (state == 2 && !vi_contaioner.getScroll()) {
+                    if (vi_contaioner.getCurrentItem() == 0) {
+                        NotificationCenter.getInstance().postNotificationName(GONE_VIDEO, 1);
+                    }
+                }
+                /*if (state == 0 && !vi_contaioner.getScroll()) {
+                    if (vi_contaioner.getCurrentItem() == 1) {
 
+                    }
+                }*/
             }
         });
+
         initPlayBackView();
         operatingAnim = AnimationUtils.loadAnimation(RoomActivity.this, R.anim.disk_aim);
         LinearInterpolator lin = new LinearInterpolator();
@@ -227,10 +250,9 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         });
         sur_player_view = (SurfaceViewRenderer) findViewById(R.id.sur_player_view);
 
-        /*sur_player_view.setKeepScreenOn(true);
-        // 将Window设置为可以超出屏幕尺寸
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);*/
+        videoXWalkView = (XWalkView) findViewById(R.id.video_white_board);
+        movieXWalkView = (XWalkView) findViewById(R.id.movie_white_board);
+        setXWalkView();
 
         DisplayMetrics display = new DisplayMetrics();
         display = this.getResources().getDisplayMetrics();
@@ -238,15 +260,12 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
         screenWidth = display.widthPixels + frame.top;
         screenHeight = display.heightPixels;
-
-
         sur_screen = (SurfaceViewRenderer) findViewById(R.id.sur_screen);
 
         //sur_container.layout(-sur_container.getWidth() / 2, -sur_container.getHeight() / 2, sur_container.getWidth() * 3 / 2, sur_container.getHeight() * 3 / 2);
         sur_screen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_DOWN:
                         mode = DRAG;
@@ -331,12 +350,113 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         });
     }
 
+    private void setXWalkView() {
+        XWalkPreferences.setValue("enable-javascript", true);
+        XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
+        XWalkPreferences.setValue(XWalkPreferences.ALLOW_UNIVERSAL_ACCESS_FROM_FILE, true);
+
+        XWalkPreferences.setValue(XWalkPreferences.JAVASCRIPT_CAN_OPEN_WINDOW, true);
+        XWalkPreferences.setValue(XWalkPreferences.SUPPORT_MULTIPLE_WINDOWS, true);
+
+        XWalkSettings webs = videoXWalkView.getSettings();
+        webs.setJavaScriptEnabled(true);
+        webs.setCacheMode(WebSettings.LOAD_DEFAULT);
+        webs.setDomStorageEnabled(true);
+        webs.setDatabaseEnabled(true);
+        webs.setAllowFileAccess(true);
+        webs.setSupportZoom(false);
+        webs.setBuiltInZoomControls(false);
+
+        webs.setLoadWithOverviewMode(false);
+        webs.setJavaScriptCanOpenWindowsAutomatically(true);
+        webs.setLoadWithOverviewMode(true);
+        webs.setDomStorageEnabled(true);
+        webs.setUseWideViewPort(true);
+        webs.setMediaPlaybackRequiresUserGesture(false);
+        webs.setSupportSpatialNavigation(true);
+        webs.setAllowFileAccessFromFileURLs(true);
+
+        webs.setLayoutAlgorithm(XWalkSettings.LayoutAlgorithm.NORMAL);
+        webs.setUseWideViewPort(true);
+
+        videoXWalkView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        videoXWalkView.setHorizontalScrollBarEnabled(false);
+        JSVideoWhitePadInterface.getInstance().setVideoWBCallBack(this);
+        videoXWalkView.addJavascriptInterface(JSVideoWhitePadInterface.getInstance(), "JSVideoWhitePadInterface");
+        videoXWalkView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        videoXWalkView.setBackgroundColor(0);
+
+        videoXWalkView.setUIClient(new XWalkUIClient(videoXWalkView) {
+            @Override
+            protected Object getBridge() {
+                return super.getBridge();
+            }
+
+            @Override
+            public void onPageLoadStarted(XWalkView view, String url) {
+                super.onPageLoadStarted(view, url);
+            }
+
+            @Override
+            public void onPageLoadStopped(XWalkView view, String url, LoadStatus status) {
+                super.onPageLoadStopped(view, url, status);
+
+            }
+        });
+
+        XWalkSettings movieWebs = movieXWalkView.getSettings();
+        movieWebs.setJavaScriptEnabled(true);
+        movieWebs.setCacheMode(WebSettings.LOAD_DEFAULT);
+        movieWebs.setDomStorageEnabled(true);
+        movieWebs.setDatabaseEnabled(true);
+        movieWebs.setAllowFileAccess(true);
+        movieWebs.setSupportZoom(false);
+        movieWebs.setBuiltInZoomControls(false);
+
+        movieWebs.setLoadWithOverviewMode(false);
+        movieWebs.setJavaScriptCanOpenWindowsAutomatically(true);
+        movieWebs.setLoadWithOverviewMode(true);
+        movieWebs.setDomStorageEnabled(true);
+        movieWebs.setUseWideViewPort(true);
+        movieWebs.setMediaPlaybackRequiresUserGesture(false);
+        movieWebs.setSupportSpatialNavigation(true);
+        movieWebs.setAllowFileAccessFromFileURLs(true);
+
+        movieWebs.setLayoutAlgorithm(XWalkSettings.LayoutAlgorithm.NORMAL);
+        movieWebs.setUseWideViewPort(true);
+
+        movieXWalkView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        movieXWalkView.setHorizontalScrollBarEnabled(false);
+        JSVideoWhitePadInterface.getInstance().setVideoWBCallBack(this);
+        movieXWalkView.addJavascriptInterface(JSVideoWhitePadInterface.getInstance(), "JSVideoWhitePadInterface");
+        movieXWalkView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        movieXWalkView.setBackgroundColor(0);
+
+        movieXWalkView.setUIClient(new XWalkUIClient(movieXWalkView) {
+            @Override
+            protected Object getBridge() {
+                return super.getBridge();
+            }
+
+            @Override
+            public void onPageLoadStarted(XWalkView view, String url) {
+                super.onPageLoadStarted(view, url);
+            }
+
+            @Override
+            public void onPageLoadStopped(XWalkView view, String url, LoadStatus status) {
+                super.onPageLoadStopped(view, url, status);
+
+            }
+        });
+    }
+
     //点击通知进入一个Activity，点击返回时进入指定页面。
     public void resultActivityBackApp() {
-        nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    /*    nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setTicker(getString(R.string.app_name));
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setSmallIcon(R.drawable.logo);
         mBuilder.setContentTitle(getString(R.string.app_name));
         mBuilder.setContentText(getString(R.string.back_hint));
 
@@ -344,20 +464,20 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         mBuilder.setAutoCancel(true);
 
         //点击通知之后需要跳转的页面
-        Intent resultIntent = new Intent();
+        Intent resultIntent = new Intent(this, RoomActivity.class);
 
         //使用TaskStackBuilder为“通知页面”设置返回关系
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         //为点击通知后打开的页面设定 返回 页面。（在manifest中指定）
-        //        stackBuilder.addParentStack(RoomActivity.class);
-        //        stackBuilder.addNextIntent(resultIntent);
+//        stackBuilder.addParentStack(RoomActivity.class);
+//        stackBuilder.addNextIntent(resultIntent);
 
         PendingIntent pIntent = PendingIntent.getActivity(
                 getApplicationContext(), 0, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pIntent);
         // mId allows you to update the notification later on.
-        //        nm.notify(2, mBuilder.build());
+//        nm.notify(2, mBuilder.build());*/
     }
 
     private void requestRoomPermissions() {
@@ -384,7 +504,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             return;
         }
         sur_player_view.setLayoutParams(layoutParams);
-        sur_player_view.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
+        sur_player_view.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) sur_container.getLayoutParams();
         sur_container.setLayoutParams(lp);
         //sur_player_view.invalidate();
@@ -499,9 +619,9 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (isShowToolBar) {
-                        tool_bar.setVisibility(View.VISIBLE);
+                        tool_bar.setVisibility(View.INVISIBLE);
                     } else {
-                        tool_bar.setVisibility(View.GONE);
+                        tool_bar.setVisibility(View.VISIBLE);
                     }
                     isShowToolBar = !isShowToolBar;
                 }
@@ -525,6 +645,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                /*RoomSession.playBackTime = 0;*/
                 long pos = (long) (((double) progress / 100) * (endtime - starttime) + starttime);
                 if (isEnd) {
                     img_play_back.setImageResource(R.drawable.btn_pause_normal);
@@ -585,11 +706,23 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         NotificationCenter.getInstance().addObserver(this, RoomSession.playBackEnd);
         NotificationCenter.getInstance().addObserver(this, RoomSession.ShareScreen);
         NotificationCenter.getInstance().addObserver(this, RoomSession.CloseShareScreen);
+        NotificationCenter.getInstance().addObserver(this, RoomSession.RemoteMsg);
+        NotificationCenter.getInstance().addObserver(this, RoomSession.PlayMovie);
+        NotificationCenter.getInstance().addObserver(this, RoomSession.UnPlayMovie);
 
         super.onStart();
         mWakeLock.acquire();
+        //        if(RoomSession.getInstance().chatList.size()!=0){
+        //            adapter.notifyDataSetChanged();
+        //            list_chat.setSelection(adapter.getCount());
+        //            list_chat.setVisibility(View.VISIBLE);
+        //        }
+
+        //        checkMedia();
         if (RoomManager.getInstance().getMySelf() != null) {
-            nm.cancel(2);
+            if (nm != null) {
+                nm.cancel(2);
+            }
             isBackApp = false;
             if (RoomManager.getInstance().getMySelf().role == 2) {
                 RoomManager.getInstance().setInBackGround(false);
@@ -608,6 +741,29 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
       /*  openSpeaker();
         RoomManager.getInstance().useLoudSpeaker(true);*/
         closeSpeaker();
+        if (RoomManager.getInstance() != null) {
+            if (RoomManager.getInstance().getRoomStatus() > 0 && RoomManager.getInstance().getRoomStatus() < 6) {
+                RoomManager.getInstance().pubMsg("UpdateTime", "UpdateTime", "__all", null, false, null, null);
+            }
+        }
+
+        if (videoXWalkView != null) {
+            videoXWalkView.onShow();
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            final int wid = dm.widthPixels;
+            final int hid = dm.heightPixels;
+            transmitWindowSize(wid, hid);
+        }
+
+        if (movieXWalkView != null) {
+            movieXWalkView.onShow();
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            final int wid = dm.widthPixels;
+            final int hid = dm.heightPixels;
+            transmitWindowSize(wid, hid);
+        }
     }
 
     /**
@@ -633,13 +789,13 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
 
     @Override
     protected void onStop() {
-        Log.e("TAG++++++", "onStop");
+        /*RoomSession.playBackTime = 0;*/
+
         NotificationCenter.getInstance().removeObserver(this);
         super.onStop();
         //        VideoPlayer.getInstance().pause();
         //        Intent intent = new Intent(this, LogService.class);
         //        stopService(intent);
-        ShareDoc currentMedia = WhiteBoradManager.getInstance().getCurrentMediaDoc();
 
         mWakeLock.release();
         if (!isFinishing()) {
@@ -648,11 +804,15 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             //            RoomManager.getInstance().enableOtherAudio(true);
             //            RoomManager.getInstance().setMuteAllStream(true);
             if (!isBackApp) {
-                nm.notify(2, mBuilder.build());
+                if (nm!=null){
+                    nm.notify(2, mBuilder.build());
+                }
             }
-            if (RoomManager.getInstance().getMySelf().role == 2) {
-                RoomManager.getInstance().setInBackGround(true);
-                RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "isInBackGround", true);
+            if (RoomManager.getInstance().getMySelf() != null) {
+                if (RoomManager.getInstance().getMySelf().role == 2) {
+                    RoomManager.getInstance().setInBackGround(true);
+                    RoomManager.getInstance().changeUserProperty(RoomManager.getInstance().getMySelf().peerId, "__all", "isInBackGround", true);
+                }
             }
         }
         img_disk.clearAnimation();
@@ -674,12 +834,9 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
 
     @Override
     protected void onResume() {
-        Log.e("TAG++++++", "onResume");
-
         super.onResume();
         if (RoomSession.mediaunPublishStream == null) {
             if (RoomSession.updateAttributeStream == null) {
-                ll_bg.setVisibility(View.GONE);
                 img_disk.clearAnimation();
                 img_disk.setVisibility(View.GONE);
                 if (RoomSession.mediaPublishStream != null) {
@@ -694,12 +851,10 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
                     }
                 }
             } else {
-                ll_bg.setVisibility(View.VISIBLE);
                 NotificationCenter.getInstance().postNotificationName(RoomSession.MediaControl, RoomSession.updateAttributeStream,
                         RoomSession.AttributeStream);
             }
         } else {
-            ll_bg.setVisibility(View.GONE);
             img_disk.clearAnimation();
             img_disk.setVisibility(View.GONE);
             NotificationCenter.getInstance().postNotificationName(RoomSession.PlayNetStop, RoomSession.mediaunPublishStream);
@@ -710,6 +865,9 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             NotificationCenter.getInstance().postNotificationName(RoomSession.RoomBreak);
         } else {
             Tools.HideProgressDialog();
+        }
+        if (RoomSession.isRoomLeaved) {
+            NotificationCenter.getInstance().postNotificationName(RoomSession.RoomLeaved);
         }
     }
 
@@ -783,17 +941,22 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         builder.setMessage(R.string.logouts);
         builder.setPositiveButton(R.string.sure,
                 new DialogInterface.OnClickListener() {
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         isExitRoom = true;
                         RoomSession.getInstance().setIsExit(isExitRoom);
                         if (RoomSession.getInstance().isBreak()) {
                             RoomSession.getInstance().setIsBreak(false);
-                            RoomManager.getInstance().leaveRoom();
-                            //                            finish();
-                        } else {
-                            RoomManager.getInstance().leaveRoom();
+                        }
+                        RoomManager.getInstance().leaveRoom();
+                        if (RoomManager.getInstance() != null) {
+                            if (RoomManager.getInstance().getRoomStatus() == 3) {
+                                RoomManager.getInstance().leaveRoom();
+                                finish();
+                            }
+                            if (RoomManager.getInstance().getRoomStatus() == 0 || RoomManager.getInstance().getRoomStatus() == 6) {
+                                finish();
+                            }
                         }
                     }
                 }).setNegativeButton(R.string.cancel,
@@ -801,6 +964,7 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                     }
                 });
         AlertDialog dialog = builder.create();
@@ -808,18 +972,102 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         dialog.show();
     }
 
-    @RequiresApi(api = M)
+    @Override
+    public void pubMsg(String js) {
+        Log.d("xiao", js);
+        try {
+            JSONObject jsobj = new JSONObject(js);
+            String msgName = jsobj.optString("signallingName");
+            String msgId = jsobj.optString("id");
+            String toId = jsobj.optString("toID");
+            String data = jsobj.optString("data");
+            String associatedMsgID = jsobj.optString("associatedMsgID");
+            String associatedUserID = jsobj.optString("associatedUserID");
+            boolean save = jsobj.optBoolean("do_not_save", false);
+            if (jsobj.has("do_not_save")) {
+                save = false;
+            } else {
+                save = true;
+            }
+            RoomManager.getInstance().pubMsg(msgName, msgId, toId, data, save, associatedMsgID, associatedUserID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delMsg(String js) {
+        Log.d("xiao", js);
+        try {
+            JSONObject jsobj = new JSONObject(js);
+            String msgName = jsobj.optString("signallingName");
+            String msgId = jsobj.optString("id");
+            String toId = jsobj.optString("toID");
+            String data = jsobj.optString("data");
+            //            Map<String,Object> datamap = new HashMap<String,Object>();
+            //            if(data!=null){
+            //                datamap =  toMap(data);
+            //            }
+            RoomManager.getInstance().delMsg(msgName, msgId, toId, data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPageFinishedVideoWhiteBoard() {
+        Log.d("xiao", "onPageFinished: ");
+
+        final JSONObject j = new JSONObject();
+        try {
+            j.put("mClientType", 3);
+            j.put("deviceType", 0);
+            j.put("isSendLogMessage", false);
+            j.put("debugLog", false);
+            j.put("myself", RoomManager.getInstance().getMySelf().toJson());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.setInitPageParameterFormPhone('" + j.toString() + "')");
+                movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.setInitPageParameterFormPhone('" + j.toString() + "')");
+            }
+        });
+
+        if (RoomSession.jsVideoWBTempMsg.length() > 0) {
+            final JSONObject js = new JSONObject();
+            try {
+                js.put("type", "room-msglist");
+                js.put("message", RoomSession.jsVideoWBTempMsg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                    movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                   /* RoomSession.jsVideoWBTempMsg = new JSONArray();*/
+                }
+            });
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onPageFinished() {
-        if (Build.VERSION.SDK_INT >= M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] pers = new String[2];
             if (!(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
-                if (Build.VERSION.SDK_INT >= M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     pers[0] = Manifest.permission.CAMERA;
                 }
             }
             if (!(checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
-                if (Build.VERSION.SDK_INT >= M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
                     for (int i = 0; i < pers.length; i++) {
                         if (pers[i] == null) {
@@ -841,7 +1089,15 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
 
     @Override
     public void onRoomDocChange() {
-
+        if (RoomControler.isDocumentClassification()) {
+            WhiteBoradManager.getInstance().getClassDocList();
+            WhiteBoradManager.getInstance().getAdminDocList();
+            WhiteBoradManager.getInstance().getClassMediaList();
+            WhiteBoradManager.getInstance().getAdminmMediaList();
+        } else {
+            WhiteBoradManager.getInstance().getDocList();
+            WhiteBoradManager.getInstance().getMediaList();
+        }
     }
 
     @Override
@@ -874,13 +1130,14 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         params.put("serial", serial);
         params.put("nickname", nickname);
         params.put("userrole", userrole);
+        params.put("volume", 100);
 
         if (domain != null && !domain.isEmpty())
             params.put("domain", domain);
         if (servername != null && !servername.isEmpty())
             params.put("servername", servername);
         params.put("mobilenameOnList", mobilenameNotOnList);
-
+        RoomManager.getInstance().setDeviceType("AndroidPhone");
         //        RoomSession.getInstance().getGiftNumJoinRoom(serial,userid,nickname,params);
         if (path != null && !path.isEmpty()) {
             params.put("path", path);
@@ -898,16 +1155,20 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
     @Override
     public void didReceivedNotification(int id, Object... args) {
         if (id == RoomSession.RoomLeaved) {
+
+            RoomSession.isRoomLeaved = false;
+
+            WhiteBoradManager.getInstance().clear();
             RoomSession.getInstance().setIsExit(false);
             RoomManager.getInstance().setCallbBack(null);
             RoomManager.getInstance().setWhiteBoard(null);
+            RoomManager.getInstance().setVideoWhiteBoard(null);
             RoomManager.getInstance().useLoudSpeaker(false);
             if (sur_player_view != null) {
                 sur_player_view.release();
             }
             path = null;
             //            unregisterIt();
-            ll_bg.setVisibility(View.GONE);
             img_disk.clearAnimation();
             img_disk.setVisibility(View.GONE);
             finish();
@@ -919,39 +1180,65 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             if (!chUser.peerId.equals(RoomManager.getInstance().getMySelf().peerId)) {
                 return;
             }
-            if (changeMap.containsKey("candraw")) {
-                candraw = Tools.isTure(changeMap.get("candraw"));
-                /*if (vi_contaioner.getCurrentItem() == 0) {
-                    if (RoomSession.isClassBegin) {
-                        vi_contaioner.setNoScroll(candraw);
-                    } else {
-                        vi_contaioner.setNoScroll(false);
-                    }
-                }*/
-            }
             if (vi_contaioner.getCurrentItem() == 1) {
                 vi_contaioner.setNoScroll(false);
             }
         } else if (id == RoomSession.SelfEvicted) {
-            RoomClient.getInstance().kickout(RoomClient.Kickout_Repeat);
+
+           /* RoomClient.getInstance().kickout(RoomClient.Kickout_Repeat);*/
             isExitRoom = true;
+
+
         } else if (id == RoomSession.RoomJoined) {
+
+            if (TextUtils.isEmpty(RoomManager.getInstance().get_MP3Url())) {
+                SoundPlayUtils.init(this);
+            } else {
+                SoundPlayUtils.loadMP3(host, port, this);
+            }
+
             //            registerIt();
             boolean meHasVideo = RoomManager.getInstance().getMySelf().hasVideo;
             boolean meHasAudio = RoomManager.getInstance().getMySelf().hasAudio;
             //RoomManager.getInstance().useLoudSpeaker(true);
             closeSpeaker();
-            if (userrole == -1) {
+            if (path != null && !path.isEmpty()) {
                 rel_play_back.setVisibility(View.VISIBLE);
             } else {
                 rel_play_back.setVisibility(View.INVISIBLE);
             }
             Tools.HideProgressDialog();
 
+            if (videoXWalkView != null) {
+                if (Config.isWhiteVideoBoardTest) {
+                    videoXWalkView.loadUrl("http://192.168.1.182:1314/publish/index.html#/mobileApp_videoWhiteboard?videoDrawingBoardType=" + "mediaVideo");//广生
+                } else {
+                    videoXWalkView.loadUrl("file:///android_asset/react_mobile_video_whiteboard_publishdir/index.html#/mobileApp_videoWhiteboard?videoDrawingBoardType=" + "mediaVideo");
+                }
+            }
+
+            if (movieXWalkView != null) {
+                if (Config.isWhiteMovieBoardTest) {
+                    movieXWalkView.loadUrl("http://192.168.1.182:1314/publish/index.html#/mobileApp_videoWhiteboard?videoDrawingBoardType=" + "fileVideo");//广生
+                } else {
+                    movieXWalkView.loadUrl("file:///android_asset/react_mobile_video_whiteboard_publishdir/index.html#/mobileApp_videoWhiteboard?videoDrawingBoardType=" + "fileVideo");
+                }
+            }
+
         } else if (id == RoomSession.ShowVideoView) {
 
             //            VideoPlayer.getInstance().init(sur_player_view);
         } else if (id == RoomSession.PlayNetVideo) {
+
+            if (videoXWalkView != null) {
+                videoXWalkView.setVisibility(View.VISIBLE);
+                videoXWalkView.setZOrderOnTop(true);
+            }
+
+            re_loading.setVisibility(View.VISIBLE);
+            animationDrawable = (AnimationDrawable) loadingImageView.getDrawable();
+            animationDrawable.start();
+
             isWBMediaPlay = false;
             if (sur_player_view != null) {
                 sur_player_view.release();
@@ -962,10 +1249,27 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             sur_player_view.init(EglBase.create().getEglBaseContext(), null);
             sur_player_view.setZOrderOnTop(true);
             sur_player_view.setZOrderMediaOverlay(true);
+
             Stream stream = (Stream) args[0];
             sur_player_view.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
             RoomManager.getInstance().playVideo(stream.getExtensionId(), sur_player_view);
-            ll_bg.setVisibility(View.GONE);
+
+            frameListener = new EglRenderer.FrameListener() {
+                @Override
+                public void onFrame(Bitmap bitmap) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (animationDrawable != null && animationDrawable.isRunning()) {
+                                animationDrawable.stop();
+                            }
+                            re_loading.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            };
+            sur_player_view.addFrameListener(frameListener, 0);
+
         } else if (id == RoomSession.PlayNetAudio) {
             isWBMediaPlay = false;
             Stream stream = (Stream) args[0];
@@ -976,16 +1280,33 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
                 img_disk.startAnimation(operatingAnim);
             }
             img_disk.setVisibility(View.VISIBLE);
-            ll_bg.setVisibility(View.GONE);
         } else if (id == RoomSession.PlayNetSeek) {
 
         } else if (id == RoomSession.PlayNetStop) {
+
+            if (videoXWalkView != null) {
+                videoXWalkView.setVisibility(View.INVISIBLE);
+                videoXWalkView.setZOrderOnTop(false);
+            }
+
             sur_container.setVisibility(View.GONE);
             sur_screen.setVisibility(View.GONE);
+
             if (sur_player_view != null) {
+                Stream stream = (Stream) args[0];
+                if (stream.isVideo() && frameListener != null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sur_player_view.removeFrameListener(frameListener);
+                        }
+                    });
+                    frameListener = null;
+                }
                 sur_player_view.setVisibility(View.GONE);
                 sur_player_view.release();
             }
+
             sur_container.setVisibility(View.INVISIBLE);
             img_disk.clearAnimation();
             img_disk.setVisibility(View.GONE);
@@ -1013,23 +1334,50 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
                 sur_player_view.setVisibility(View.INVISIBLE);
                 sur_player_view.release();
             }
+
+            if (videoXWalkView != null) {
+                final JSONObject js = new JSONObject();
+                try {
+                    js.put("type", "room-disconnected");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (movieXWalkView != null) {
+                final JSONObject js = new JSONObject();
+                try {
+                    js.put("type", "room-disconnected");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             Tools.ShowProgressDialog(this, getResources().getString(R.string.connected));
         } else if (id == RoomSession.MediaControl) {
             Stream stream = (Stream) args[0];
             boolean isplay = (boolean) args[1];
-            if (!stream.isVideo()) {
-                if (isplay) {
-                    img_disk.clearAnimation();
-                } else {
-                    ll_bg.setVisibility(View.GONE);
+            if (isplay) {
+                img_disk.clearAnimation();
+            } else {
+                if (!stream.isVideo()) {
                     img_disk.setVisibility(View.VISIBLE);
                     img_disk.startAnimation(operatingAnim);
                 }
             }
-            if (!isplay) {
-                ll_bg.setVisibility(View.GONE);
-            }
         } else if (id == RoomSession.playBackUpdateTime) {
+
             if (isEnd) {
                 return;
             }
@@ -1047,8 +1395,8 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         } else if (id == RoomSession.playBackDuration) {
             starttime = (long) args[0];
             endtime = (long) args[1];
-            ll_bg.setVisibility(View.GONE);
         } else if (id == RoomSession.playBackEnd) {
+
             isPlayPlayback = false;
             isEnd = true;
             img_play_back.setImageResource(R.drawable.btn_play_normal);
@@ -1068,9 +1416,8 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             sur_screen.setZOrderOnTop(true);
             sur_screen.setZOrderMediaOverlay(true);
             Stream stream = (Stream) args[0];
-            sur_screen.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
+            sur_screen.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
             RoomManager.getInstance().playVideo(stream.getExtensionId(), sur_screen);
-            ll_bg.setVisibility(View.GONE);
         } else if (id == RoomSession.CloseShareScreen) {
             sur_container.setVisibility(View.GONE);
             sur_player_view.setVisibility(View.GONE);
@@ -1097,6 +1444,136 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
             String msg = i == 1 ? getString(R.string.udp_alert) : getString(R.string.fire_wall_alert);
             Tools.ShowAlertDialog(this, msg);
 
+        } else if (id == RoomSession.playBackClearAll) {
+            if (videoXWalkView != null) {
+                JSONObject js = new JSONObject();
+                try {
+                    js.put("type", "room-playback-clear_all");
+                    videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (movieXWalkView != null) {
+                JSONObject js = new JSONObject();
+                try {
+                    js.put("type", "room-playback-clear_all");
+                    movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else if (id == RoomSession.RemoteMsg) {
+            boolean add = (boolean) args[0];
+            String id1 = (String) args[1];
+            String name = (String) args[2];
+            long ts = (long) args[3];
+            Object data = args[4];
+            if (add) {
+                OnRemotePubMsg(id1, name, ts, data);
+            } else {
+                OnRemoteDelMsg(id1, name, ts, data);
+            }
+        } else if (id == RoomSession.PlayMovie) {
+
+            if (movieXWalkView != null) {
+                movieXWalkView.setVisibility(View.VISIBLE);
+                movieXWalkView.setZOrderOnTop(true);
+            }
+
+            re_loading.setVisibility(View.VISIBLE);
+            animationDrawable = (AnimationDrawable) loadingImageView.getDrawable();
+            animationDrawable.start();
+
+            isWBMediaPlay = false;
+            if (sur_player_view != null) {
+                sur_player_view.release();
+            }
+            sur_container.setVisibility(View.VISIBLE);
+            sur_screen.setVisibility(View.GONE);
+            sur_player_view.setVisibility(View.VISIBLE);
+            sur_player_view.init(EglBase.create().getEglBaseContext(), null);
+            sur_player_view.setZOrderOnTop(true);
+            sur_player_view.setZOrderMediaOverlay(true);
+
+            Stream stream = (Stream) args[0];
+            sur_player_view.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
+            RoomManager.getInstance().playVideo(stream.getExtensionId(), sur_player_view);
+
+            frameListener = new EglRenderer.FrameListener() {
+                @Override
+                public void onFrame(Bitmap bitmap) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (animationDrawable != null && animationDrawable.isRunning()) {
+                                animationDrawable.stop();
+                            }
+                            re_loading.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            };
+            sur_player_view.addFrameListener(frameListener, 0);
+
+        } else if (id == RoomSession.UnPlayMovie) {
+
+            if (movieXWalkView != null) {
+                movieXWalkView.setVisibility(View.INVISIBLE);
+                movieXWalkView.setZOrderOnTop(false);
+            }
+
+            sur_container.setVisibility(View.GONE);
+            sur_screen.setVisibility(View.GONE);
+            if (sur_player_view != null) {
+                if (frameListener != null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sur_player_view.removeFrameListener(frameListener);
+                        }
+                    });
+                    frameListener = null;
+                }
+                sur_player_view.setVisibility(View.GONE);
+                sur_player_view.release();
+            }
+            sur_container.setVisibility(View.INVISIBLE);
+
+            if (isWBMediaPlay) {
+                RoomManager.isMediaPublishing = true;
+                if (RoomSession.getInstance().isClassBegin) {
+                    RoomManager.getInstance().publishMedia(url, isvideo, "", fileid, "__all");
+                } else {
+                    RoomManager.getInstance().publishMedia(url, isvideo, "", fileid, RoomManager.getInstance().getMySelf().peerId);
+                }
+                isWBMediaPlay = false;
+            }
+            RoomSession.mediaPublishStream = null;
+        }
+    }
+
+    private void OnRemotePubMsg(String id, String name, long ts, Object data) {
+        if (name.equals("ClassBegin")) {
+
+        }
+    }
+
+    private void OnRemoteDelMsg(String id, String name, long ts, Object data) {
+        if (name.equals("ClassBegin")) {
+            if (videoXWalkView != null) {
+                videoXWalkView.setVisibility(View.INVISIBLE);
+                videoXWalkView.setZOrderOnTop(false);
+            }
+        }
+
+        if (name.equals("ClassBegin")) {
+            if (movieXWalkView != null) {
+                movieXWalkView.setVisibility(View.INVISIBLE);
+                movieXWalkView.setZOrderOnTop(false);
+            }
         }
     }
 
@@ -1185,5 +1662,132 @@ public class RoomActivity extends FragmentActivity implements WBStateCallBack, N
         RoomSession.mediaPublishStream = null;
         RoomSession.mediaunPublishStream = null;
         RoomSession.updateAttributeStream = null;
+        RoomSession.jsVideoWBTempMsg = new JSONArray();
+        if (videoXWalkView != null) {
+            videoXWalkView.removeAllViews();
+            videoXWalkView.onDestroy();
+        }
+        if (movieXWalkView != null) {
+            movieXWalkView.removeAllViews();
+            movieXWalkView.onDestroy();
+        }
+    }
+
+    @Override
+    public boolean onRemoteMsg(boolean add, String id, String name, long ts, Object data, String fromID, String associatedMsgID, String associatedUserID) {
+        if (!add) {
+            RoomSession.jsVideoWBTempMsg = new JSONArray();
+        }
+
+        JSONObject jsobj = new JSONObject();
+        final JSONObject js = new JSONObject();
+        try {
+            jsobj.put("id", id);
+            jsobj.put("ts", ts);
+            jsobj.put("data", data == null ? null : data.toString());
+            jsobj.put("name", name);
+            jsobj.put("fromID", fromID);
+            if (!associatedMsgID.equals("")) {
+                jsobj.put("associatedMsgID", associatedMsgID);
+            }
+            if (!associatedUserID.equals("")) {
+                jsobj.put("associatedUserID", associatedUserID);
+            }
+            if (add) {
+                js.put("type", "room-pubmsg");
+            } else {
+                js.put("type", "room-delmsg");
+            }
+            js.put("message", jsobj);
+            if (associatedMsgID.equals("VideoWhiteboard") || id.equals("VideoWhiteboard")) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                        movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                    }
+                });
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public void roomManagerRoomLeaved() {
+        roomDisConnect();
+    }
+
+    @Override
+    public void roomManagerPlayBackClearAll() {
+        roomPlaybackClearAll();
+    }
+
+    @Override
+    public void roomManagerRoomConnectFaild() {
+        roomDisConnect();
+    }
+
+    private void roomDisConnect() {
+        if (videoXWalkView != null) {
+            final JSONObject js = new JSONObject();
+            try {
+                js.put("type", "room-disconnected");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (movieXWalkView != null) {
+            final JSONObject js = new JSONObject();
+            try {
+                js.put("type", "room-disconnected");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void roomPlaybackClearAll() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("type", "room-playback-clear_all");
+            videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+            movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void transmitWindowSize(int wid, int hid) {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("type", "transmitWindowSize");
+            JSONObject jsmsg = new JSONObject();
+            jsmsg.put("windowWidth", wid);
+            jsmsg.put("windowHeight", hid);
+            js.put("windowSize", jsmsg);
+            if (videoXWalkView != null) {
+                videoXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+            }
+            if (movieXWalkView != null) {
+                movieXWalkView.loadUrl("javascript:MOBILETKSDK.receiveInterface.dispatchEvent(" + js.toString() + ")");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

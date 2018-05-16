@@ -226,6 +226,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("type", 2);
                     intent.putExtra("id", vedioLists.get(position).getCastId());
                     intent.putExtra("path", vedioLists.get(position).getBack_url());
+                    intent.putExtra("room", vedioLists.get(position).getRoom_mun());
                     context.startActivity(intent);
                 }
             });
@@ -306,6 +307,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("type", 1);
                     intent.putExtra("id", liveCastLists.get(position).getCastId());
                     intent.putExtra("room", liveCastLists.get(position).getRoom_mun());
+                    intent.putExtra("path", liveCastLists.get(position).getBack_url());
                     context.startActivity(intent);
                 }
             });
